@@ -1,8 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./Home.module.css";
 import NavBar from "../components/NavBar";
+import Cards from "../components/Cards";
+import { getGames } from "../redux/actions";
+import { useDispatch } from "react-redux";
 
 const Home = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getGames());
+  }, [dispatch]);
+
   return (
     <div className={styles.home}>
       <div className={styles.filtros_container}>
@@ -12,7 +20,7 @@ const Home = () => {
         <div className={styles.filtros}></div>
       </div>
       <div className={styles.cards}>
-        <div className={styles.cards}></div>
+        <Cards />
       </div>
     </div>
   );
