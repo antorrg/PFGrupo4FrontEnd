@@ -1,13 +1,16 @@
+// hooks ----------------------------------------
 import { Routes, Route } from "react-router-dom";
-// Views ----------------------------
-import Landing from "./views/Landing/Landing";
-import Home from "./views/Home";
-import Detail from "./views/Detail";
-import Carrito from "./views/Carrito";
-import Wishlist from "./views/Wishlist";
-import NotFound from "./views/NotFound";
-import Footer from "./components/Footer";
-import NavBar from "./components/NavBar";
+// views ----------------------------------------
+import {
+  Landing,
+  Home,
+  Detail,
+  Carrito,
+  Wishlist,
+  NotFound,
+  Footer,
+  NavBar,
+} from "./views/index";
 import "./app.css";
 
 function App() {

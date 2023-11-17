@@ -3,7 +3,7 @@ import React from "react";
 const Landing = () => {
   return (
     <section className="w-[100%] flex flex-col items-center justify-center text-center">
-      <section className="relative flex w-full h-[90vh] items-center justify-center bg-[url('src/views/Landing/all_games.jpg')] bg-cover bg-center">
+      <section className="relative flex w-full h-[90vh] items-center justify-center bg-[url('./src/views/Landing/all_games.jpg')] bg-cover bg-center">
         <div class="absolute inset-0 bg-black opacity-50"></div>
         <div className="max-w-[700px] gap-10 flex items-center justify-evenly flex-col z-10">
           <h1 className="text-7xl font-bold text-white">
