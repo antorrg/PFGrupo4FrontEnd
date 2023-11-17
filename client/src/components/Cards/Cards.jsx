@@ -1,13 +1,10 @@
-import {  useState } from "react";
-import Card from "./Card";
-import { useSelector} from "react-redux"
-import style from "./Cards.module.css"
-
+import { useState } from "react";
+import Card from "../Card/Card";
+import { useSelector } from "react-redux";
+import style from "./Cards.module.css";
 
 const Cards = () => {
-
   const games = useSelector((state) => state.games);
- 
 
   let [numPag, setNumPag] = useState(1);
 
@@ -25,9 +22,9 @@ const Cards = () => {
 
   return (
     <div>
-      <div className={style.cards } >
+      <div className={style.cards}>
         {games.map((game) => (
-          <Card  game={game} />
+          <Card game={game} />
         ))}
       </div>
       <div>

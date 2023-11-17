@@ -25,5 +25,5 @@
 .cards {
   flex: 1;
   height: 50rem;
-  background-color: rgb(34, 34, 34);
+  /* background-color: rgb(34, 34, 34); */
 }
