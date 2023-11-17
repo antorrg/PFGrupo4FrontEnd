@@ -1,7 +1,14 @@
-import { useState } from "react";
+import {  useState } from "react";
 import Card from "./Card";
+import { useSelector} from "react-redux"
+import style from "./Cards.module.css"
 
-const Cards = ({ games }) => {
+
+const Cards = () => {
+
+  const games = useSelector((state) => state.games);
+ 
+
   let [numPag, setNumPag] = useState(1);
 
   const handlerAnt = () => {
@@ -18,15 +25,15 @@ const Cards = ({ games }) => {
 
   return (
     <div>
-      <div>
+      <div className={style.cards } >
         {games.map((game) => (
-          <Card key={game.id} game={game} />
+          <Card  game={game} />
         ))}
       </div>
       <div>
         <button onClick={handlerHome}>Inicio</button>
         {numPag > 1 && <button onClick={handlerAnt}>Anterior</button>}
-        <p className={style.styleButton1}> Página {numPag}</p>
+        <p> Página {numPag}</p>
         <button onClick={handlerNext}>Siguiente</button>
       </div>
     </div>
