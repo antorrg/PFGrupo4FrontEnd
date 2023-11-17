@@ -1,6 +1,7 @@
 import { NavLink, Link } from "react-router-dom";
 import logo from "./logo.png";
 import styles from "./NavBar.module.css";
+import SearchBar from "./SearchBar";
 
 export default function NavBar() {
   const auth = true;
@@ -13,6 +14,7 @@ export default function NavBar() {
         <NavLink to={"/home"}>home</NavLink>
         {auth && <Link to={"/carrito"}>carrito</Link>}
         {auth && <Link to={"/wishlist"}>wishlist</Link>}
+      <SearchBar/>
       </div>
     </div>
   );
