@@ -1,12 +1,14 @@
 import { useState } from "react";
 import Select from "react-select";
 
+import styles from "../views/Home.module.css";
+
 export default function Filters() {
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [selectedPlatforms, setSelectedPlatforms] = useState([]);
   const [priceFilter, setPriceFilter] = useState("all");
-  const [minPrice, setMinPrice] = useState(0);
-  const [maxPrice, setMaxPrice] = useState(100);
+  const [minPrice, setMinPrice] = useState();
+  const [maxPrice, setMaxPrice] = useState();
   const [sortOrder, setSortOrder] = useState("asc");
 
   const applyFilters = () => {
@@ -19,68 +21,78 @@ export default function Filters() {
 
   return (
     <div>
-      <h1>Filtrar</h1>
-
-      <label>Géneros</label>
       <Select
         options={[
           { value: "action", label: "Acción" },
           { value: "adventure", label: "Aventura" },
-          // Otras opciones de géneros
         ]}
         isMulti
         onChange={(selectedOptions) => setSelectedGenres(selectedOptions)}
+        placeholder="Plataformas..."
       />
+      <br />
 
-      <label>Plataformas</label>
       <Select
         options={[
           { value: "pc", label: "PC" },
           { value: "ps5", label: "PS5" },
-          // Otras opciones de plataformas
         ]}
         isMulti
         onChange={(selectedOptions) => setSelectedPlatforms(selectedOptions)}
-        placeholder="Selecciona plataformas"
+        placeholder="Géneros..."
       />
-
-      <label>Precio:</label>
-      <select
-        value={priceFilter}
-        onChange={(event) => setPriceFilter(event.target.value)}>
-        <option value="all">Todos</option>
-        <option value="less">Menor precio</option>
-        <option value="greater">Mayor precio</option>
-        <option value="range">Rango</option>
-      </select>
-
-      {priceFilter === "range" && (
+      <br />
+      <Select
+        options={[
+          { value: "asc", label: "Ascendente" },
+          { value: "desc", label: "Descendente" },
+        ]}
+        // value={sortOrder}
+        // onChange={(event) => setSortOrder(event.target.value)}>
+        placeholder="Ordenar por nombre"
+      />
+      <br />
+      <Select
+        options={[
+          { value: "digital", label: "Digital" },
+          { value: "fisico", label: "Físico" },
+        ]}
+        // value={sortOrder}
+        // onChange={(event) => setSortOrder(event.target.value)}>
+        placeholder="Formato..."
+      />
+      <br />
+      <Select
+        options={[
+          { value: "all", label: "Todos" },
+          { value: "less", label: "Menor precio" },
+          { value: "greater", label: "Mayor precio" },
+          // { value: "range", label: "Rango" },
+        ]}
+        onChange={(selectedOptions) => setPriceFilter(selectedOptions)}
+        placeholder="Precio..."
+      />
+      <br />
+      <div>
+        <input
+          type="number"
+          value={minPrice}
+          onChange={(event) => setMinPrice(Number(event.target.value))}
+          placeholder="Precio mínimo..."
+        />
         <div>
-          <label>Min:</label>
-          <input
-            type="number"
-            value={minPrice}
-            onChange={(event) => setMinPrice(Number(event.target.value))}
-          />
-
-          <label>Max:</label>
+          <br />
           <input
             type="number"
             value={maxPrice}
             onChange={(event) => setMaxPrice(Number(event.target.value))}
+            placeholder="Precio máximo..."
           />
         </div>
-      )}
-
-      <label>Ordenar por nombre:</label>
-      <select
-        value={sortOrder}
-        onChange={(event) => setSortOrder(event.target.value)}>
-        <option value="asc">Ascendente</option>
-        <option value="desc">Descendente</option>
-      </select>
+      </div>
 
       <button onClick={applyFilters}>Aplicar Filtros </button>
+      <br />
       <button onClick={resetFilters}>Restablecer Filtros</button>
     </div>
   );
