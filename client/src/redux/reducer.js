@@ -1,13 +1,21 @@
-import { PRUEVA } from "./actions";
+import { GET_GAMES } from "./actions";
 
 let initialState = {
-  allGames: [],
+  games: [],
+  backUpGames: [],
+  detailGame: [],
+
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case PRUEVA:
-      return { ...state, allGames: (state.allGames += action.payload) };
+    case GET_GAMES:
+      return {
+        ...state,
+        backUpGames: action.payload,
+        games: action.payload,
+      };
+
     default:
       return { ...state };
   }
