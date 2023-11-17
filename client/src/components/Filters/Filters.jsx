@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Select from "react-select";
 
-import styles from "../views/Home.module.css";
+import styles from "../../views/Home/Home.module.css";
 
 export default function Filters() {
   const [selectedGenres, setSelectedGenres] = useState([]);

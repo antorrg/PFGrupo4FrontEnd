@@ -1,9 +1,11 @@
 .navBar {
-  width: 100%;
-  height: 100px;
+  padding: 10px;
+  width: 80%;
+  height: 10vh;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  /* margin-bottom: 1rem; */
 }
 
 .navBar a:first-child {
@@ -11,6 +13,7 @@
 }
 
 .navBar a {
+  font-weight: 700;
   cursor: pointer;
 }
 
@@ -21,8 +24,8 @@
 
 .views_container {
   font-weight: 600;
-  width: 400px;
   display: flex;
+  gap: 4rem;
   align-items: center;
   justify-content: space-between;
 }

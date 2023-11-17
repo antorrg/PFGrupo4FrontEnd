@@ -1,10 +1,10 @@
 import { NavLink, Link } from "react-router-dom";
 import logo from "./logo.png";
 import styles from "./NavBar.module.css";
-import SearchBar from "./SearchBar";
+import SearchBar from "../SearchBar/SearchBar";
 
 export default function NavBar() {
-  const auth = true;
+  const auth = false;
   return (
     <div className={styles.navBar}>
       <Link to={"/"}>
@@ -14,7 +14,8 @@ export default function NavBar() {
         <NavLink to={"/home"}>home</NavLink>
         {auth && <Link to={"/carrito"}>carrito</Link>}
         {auth && <Link to={"/wishlist"}>wishlist</Link>}
-      <SearchBar/>
+        {auth === false && <Link to={"/login"}>Login | Join</Link>}
+        <SearchBar />
       </div>
     </div>
   );
