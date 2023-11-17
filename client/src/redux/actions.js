@@ -1,5 +1,6 @@
 import axios from "axios";
 export const GET_GAMES = "GET_GAMES";
+const RUTA_GET_GAMES = "http://localhost:3001/games";
 
 export const getGames = () => {
   return async (dispatch) => {
