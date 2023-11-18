@@ -8,7 +8,6 @@ export const getGames = () => {
   return async (dispatch) => {
     try {
       const { data } = await axios("/games");
-      console.log(data);
       return dispatch({
         type: GET_GAMES,
         payload: data,

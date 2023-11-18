@@ -7,7 +7,7 @@ const Card = ({ game }) => {
     <div className="w-[220px] h-[400px] bg-[#1F0A4D] text-white flex flex-col">
       <img className="w-full h-[250px] object-cover" src={image} alt={name} />
       <div className="flex w-full items-center justify-evenly mt-4">
-        {platforms.map((p) => {
+        {/* {platforms.map((p) => {
           return (
             <img
               key={p}
@@ -16,7 +16,7 @@ const Card = ({ game }) => {
               alt={p}
             />
           );
-        })}
+        })} */}
       </div>
       <div className="text-left p-4 flex-1">
         <Link to={`/detail/${id}`}>

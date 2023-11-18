@@ -20,10 +20,7 @@ function Detail() {
       <div>
         <div>
           <h1> {detailGame?.name}</h1>
-          <img
-            src={detailGame?.image}
-            alt={detailGame?.name}
-          />
+          <img src={detailGame?.image} alt={detailGame?.name} />
           <p>Descripción: {detailGame?.description} </p>
           <p>Plataformas: {detailGame?.platforms} </p>
           <p>Géneros: {detailGame?.genres} </p>
