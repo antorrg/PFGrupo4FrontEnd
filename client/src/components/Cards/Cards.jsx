@@ -1,11 +1,9 @@
 import { useState } from "react";
 import Card from "../Card/Card";
 import { useSelector } from "react-redux";
-import style from "./Cards.module.css";
 
 const Cards = () => {
   const games = useSelector((state) => state.games);
-
   let [numPag, setNumPag] = useState(1);
 
   const handlerAnt = () => {
@@ -22,12 +20,12 @@ const Cards = () => {
 
   return (
     <div>
-      <div className={style.cards}>
+      <div className="flex justify-center flex-wrap gap-4">
         {games.map((game) => (
           <Card game={game} />
         ))}
       </div>
-      <div>
+      <div className="flex items-center justify-center p-4 gap-4">
         <button onClick={handlerHome}>Inicio</button>
         {numPag > 1 && <button onClick={handlerAnt}>Anterior</button>}
         <p> Página {numPag}</p>
