@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import styles from "./Home.module.css";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import Cards from "../../components/Cards/Cards";
 import { getGames } from "../../redux/actions";
@@ -13,8 +12,8 @@ const Home = () => {
   }, [dispatch]);
 
   return (
-    <div className={styles.home}>
-      <div className={styles.filtros_container}>
+    <div className="mt-4 flex items-start justify-center gap-8 w-[80%]">
+      <div className="p-4 w-[220px] h-auto bg-[#5825cc]">
         <SearchBar />
         <br />
         <Filters />
@@ -23,7 +22,7 @@ const Home = () => {
         <div className={styles.filtros}></div>
         <div className={styles.filtros}></div> */}
       </div>
-      <div className={styles.cards}>
+      <div className="flex-1 h-auto">
         <Cards />
       </div>
     </div>

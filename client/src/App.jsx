@@ -10,6 +10,7 @@ import {
   NotFound,
   Footer,
   NavBar,
+  Create,
 } from "./views/index";
 import "./app.css";
 
@@ -23,6 +24,7 @@ function App() {
         <Route path="/carrito" element={<Carrito />} />
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/detail/:id" element={<Detail />} />
+        <Route path="/create" element={<Create />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
