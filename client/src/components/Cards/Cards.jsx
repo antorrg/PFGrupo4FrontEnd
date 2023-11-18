@@ -7,8 +7,8 @@ const Cards = () => {
 
   return (
     <div className="flex justify-center flex-wrap gap-4">
-      {games.map((game) => (
-        <Card game={game} />
+      {games.map((element) => (
+        <Card  key= {element.id} game={element} />
       ))}
     </div>
   );

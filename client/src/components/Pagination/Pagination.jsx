@@ -1,7 +1,7 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 import { useState } from "react";
 import {useDispatch} from "react-redux"
-import { getPage } from "../../redux/actions";
+
 
 
 export default function Pagination() {
