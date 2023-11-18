@@ -17,7 +17,7 @@ const Carousel = () => {
     slidesToScroll: 1,
     initialSlide: 0,
     autoplay: true,
-    autoplaySpeed: 2000,
+    autoplaySpeed: 1500,
     pauseOnHover: true,
   };
 
@@ -25,7 +25,7 @@ const Carousel = () => {
     <Slider {...settings} className="flex items-center justify-center">
       {games.slice(0, 10).map((game, index) => {
         return (
-          <div className="w-[300px] h-[500px]">
+          <div className="w-[300px] h-[400px]">
             <img
               src={game.image}
               alt={`imagen-${index}`}

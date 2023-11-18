@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 
 const Card = ({ game }) => {
   const { id, platforms, name, image, price } = game;
-
   return (
     <div className="w-[220px] h-[400px] bg-[#1F0A4D] text-white flex flex-col">
       <img className="w-full h-[250px] object-cover" src={image} alt={name} />
