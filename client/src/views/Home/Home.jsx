@@ -4,6 +4,7 @@ import Cards from "../../components/Cards/Cards";
 import { getGames } from "../../redux/actions";
 import { useDispatch } from "react-redux";
 import Filters from "../../components/Filters/Filters";
+import Pagination from "../../components/Pagination/Pagination";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -23,6 +24,7 @@ const Home = () => {
         <div className={styles.filtros}></div> */}
       </div>
       <div className="flex-1 h-auto">
+        <Pagination/>
         <Cards />
       </div>
     </div>
