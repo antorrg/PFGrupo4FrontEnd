@@ -1,3 +1,40 @@
+import { useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { clearDetails, getDetails } from "../../redux/actions";
+
+function Detail() {
+  const dispatch = useDispatch();
+  const { id } = useParams();
+  const detailGame = useSelector((state) => state.detailGame);
+  console.log(detailGame);
+  useEffect(() => {
+    dispatch(getDetails(id));
+    return () => {
+      dispatch(clearDetails());
+    };
+  }, [dispatch, id]);
+
+  return (
+    <div>
+      <div>
+        <div>
+          <h1> {detailGame?.name}</h1>
+          <img
+            src={detailGame?.image}
+            alt={detailGame?.name}
+          />
+          <p>Descripción: {detailGame?.description} </p>
+          <p>Plataformas: {detailGame?.platforms} </p>
+          <p>Géneros: {detailGame?.genres} </p>
+          <p>Fecha de lanzamiento: {detailGame?.released} </p>
+          <p>Rating: {detailGame?.rating} </p>
+        </div>
+        <div>
+          <Link to="/home">
+            <h3>Atras</h3>
+          </Link>
+=======
 import React from "react";
 import { useParams } from "react-router-dom";
 
@@ -417,37 +454,7 @@ const Detail = () => {
                   <li class="text-gray-400">
                     <span class="text-gray-600">
                       Dyed with our proprietary colors
-                    </span>
-                  </li>
-                  <li class="text-gray-400">
-                    <span class="text-gray-600">
-                      Pre-washed &amp; pre-shrunk
-                    </span>
-                  </li>
-                  <li class="text-gray-400">
-                    <span class="text-gray-600">Ultra-soft 100% cotton</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
 
-            <div class="mt-10">
-              <h2 class="text-sm font-medium text-gray-900">Details</h2>
-
-              <div class="mt-4 space-y-6">
-                <p class="text-sm text-gray-600">
-                  The 6-Pack includes two black, two white, and two heather gray
-                  Basic Tees. Sign up for our subscription service and be the
-                  first to get new, exciting colors, like our upcoming
-                  &quot;Charcoal Gray&quot; limited release.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 export default Detail;
+
