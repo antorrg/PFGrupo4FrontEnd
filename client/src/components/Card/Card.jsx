@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-const Card = ({ game }) => {
+const Card = (game) => {
   const { id, platforms, name, image, price } = game;
 
   return (
@@ -22,7 +22,7 @@ const Card = ({ game }) => {
         <Link to={`/detail/${id}`}>
           <h3 className="text-sm font-bold">{name}</h3>
         </Link>
-        <h4 className="text-2xl font-extrabold">8,99$</h4>
+        <h4 className="text-2xl font-extrabold">{price}</h4>
       </div>
     </div>
   );
