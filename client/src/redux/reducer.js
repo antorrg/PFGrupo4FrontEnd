@@ -1,10 +1,9 @@
-import { GET_GAMES } from "./actions";
+import { GET_GAMES, GET_DETAILS, CLEAR_DETAILS } from "./actions";
 
 let initialState = {
   games: [],
   backUpGames: [],
   detailGame: [],
-
 };
 
 const reducer = (state = initialState, action) => {
@@ -12,8 +11,20 @@ const reducer = (state = initialState, action) => {
     case GET_GAMES:
       return {
         ...state,
-        backUpGames: action.payload,
         games: action.payload,
+        backUpGames: action.payload,
+      };
+
+    case GET_DETAILS:
+      return {
+        ...state,
+        detailGame: action.payload,
+      };
+
+    case CLEAR_DETAILS:
+      return {
+        ...state,
+        detailGame: [],
       };
 
     default:
