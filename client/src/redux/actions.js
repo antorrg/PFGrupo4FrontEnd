@@ -11,7 +11,10 @@ export const getGames = () => {
   return async (dispatch) => {
     try {
       const { data } = await axios("/games");
+<<<<<<< HEAD
 
+=======
+>>>>>>> 016543502280d19f56269b6253a284be13b1471b
       return dispatch({
         type: GET_GAMES,
         payload: data,
