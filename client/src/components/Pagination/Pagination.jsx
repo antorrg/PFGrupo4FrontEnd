@@ -16,7 +16,7 @@ export default function Pagination() {
     setNumPag(numPag + 1);
   };
 
-  const handleSelect = (  value) => {
+  const handleSelect = ( value) => {
     
  console.log(value);
   
