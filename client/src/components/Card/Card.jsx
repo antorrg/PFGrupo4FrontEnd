@@ -1,17 +1,12 @@
 import { Link } from "react-router-dom";
 
-const Card = ({game}) => {
-  const { id, Platforms, name, image, price } = game;
-
+const Card = ({ game }) => {
+  const { id, platforms, name, image, price } = game;
   return (
     <div className="w-[220px] h-[400px] bg-[#1F0A4D] text-white flex flex-col">
       <img className="w-full h-[250px] object-cover" src={image} alt={name} />
-      <div className="flex w-full items-center justify-evenly mt-4">
-<<<<<<< HEAD
-        {/* {platforms.map((p) => {
-=======
-        {Platforms.map((p) => {
->>>>>>> 59f416db27c0311253da5f87acb987be2cd0e663
+      {/* <div className="flex w-full items-center justify-evenly mt-4">
+        {platforms.map((p) => {
           return (
             <img
               key={p}
@@ -20,8 +15,8 @@ const Card = ({game}) => {
               alt={p}
             />
           );
-        })} */}
-      </div>
+        })}
+      </div> */}
       <div className="text-left p-4 flex-1">
         <Link to={`/detail/${id}`}>
           <h3 className="text-sm font-bold">{name}</h3>
