@@ -11,7 +11,6 @@ export const getGames = () => {
   return async (dispatch) => {
     try {
       const { data } = await axios("/games");
-
       return dispatch({
         type: GET_GAMES,
         payload: data,

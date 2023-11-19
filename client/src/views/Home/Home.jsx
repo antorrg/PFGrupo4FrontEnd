@@ -8,6 +8,7 @@ import Pagination from "../../components/Pagination/Pagination";
 
 const Home = () => {
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(getGames());
   }, [dispatch]);
@@ -24,7 +25,7 @@ const Home = () => {
         <div className={styles.filtros}></div> */}
       </div>
       <div className="flex-1 h-auto">
-        <Pagination/>
+        <Pagination />
         <Cards />
       </div>
     </div>
