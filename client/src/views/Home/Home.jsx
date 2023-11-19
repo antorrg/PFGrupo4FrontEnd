@@ -7,6 +7,7 @@ import Filters from "../../components/Filters/Filters";
 import Pagination from "../../components/Pagination/Pagination";
 
 const Home = () => {
+  
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -33,3 +34,4 @@ const Home = () => {
 };
 
 export default Home;
+
