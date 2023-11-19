@@ -1,7 +1,12 @@
 import React from "react";
+import Formulario from "../../components/Form/Form";
 
 const Create = () => {
-  return <div>Create</div>;
+  return (
+    <div>
+      <Formulario/>
+    </div>
+  )
 };
 
 export default Create;

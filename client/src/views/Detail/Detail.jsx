@@ -25,7 +25,7 @@ function Detail() {
             alt={detailGame?.name}
           />
           <p>Descripción: {detailGame?.description} </p>
-          <p>Plataformas: {detailGame?.platforms} </p>
+          <p>Plataformas:  </p>
           <p>Géneros: {detailGame?.genres} </p>
           <p>Fecha de lanzamiento: {detailGame?.released} </p>
           <p>Rating: {detailGame?.rating} </p>
