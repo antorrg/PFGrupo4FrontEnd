@@ -1,30 +1,40 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { getGames } from "../../redux/actions";
+import { useSelector } from "react-redux";
+
 
 export default function Pagination() {
-  const dispatch = useDispatch();
-  const finPag = 20;
-  let [numPag, setNumPag] = useState(1);
+   const dispatch = useDispatch();
   
+   const games = useSelector(state => state.games)
+   const {PaginationData} = games
+   const {totalPages} = PaginationData
+   const finPag = totalPages - 1
+   let [numPag, setNumPag] = useState(0);
+   
+   useEffect(() => {
+     dispatch(getGames(numPag));
+   }, [numPag, dispatch]);
 
   const handlerAnt = () => {
-    if (numPag > 1) setNumPag(numPag - 1);
-  };
+    if (numPag > 0) setNumPag(numPag - 1);
+    };
 
   const handlerNext = () => {
     setNumPag(numPag + 1);
+  
   };
 
   const handleSelect = ( value) => {
     
- console.log(value);
-  
-}
+    dispatch(getGames(value))
+  }
   const handlerHome = () => {
-    setNumPag(1);
+    setNumPag(0);
   };
-  console.log(numPag);
+  
 
   return (
     <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
@@ -49,7 +59,7 @@ export default function Pagination() {
             className="isolate inline-flex -space-x-px rounded-md shadow-sm"
             aria-label="Pagination"
           >
-            {numPag !== 1 && (
+            {numPag > 0 && (
               <a
                 href="#"
                 className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
@@ -64,13 +74,13 @@ export default function Pagination() {
             )}
             {/* Current: "z-10 bg-indigo-600 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600", Default: "text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0" */}
            
-            <a
+           {numPag > 0  && <a
               href="#"
               onClick={() => handlerHome()}
               className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
             >
              Home
-            </a>
+            </a>}
             <a
             id="1"
               href="#"
@@ -80,45 +90,22 @@ export default function Pagination() {
             >
               {numPag}
             </a>
-            <a
+           { numPag !== finPag  && <a
               href="#"
               onClick={() => handleSelect(numPag + 1)}
               className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
             >
               {numPag + 1}
-            </a>
-            <a
+            </a>}
+            { numPag !== finPag  &&  numPag !== finPag -1 && <a
               href="#"
               onClick={() => handleSelect(numPag + 2)}
               className="relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 md:inline-flex"
             >
               {numPag + 2}
-            </a>
-            { numPag + 1 !== finPag - 4 && <span className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-300 focus:outline-offset-0">
-              ...
-            </span>}
-            <a
-              href="#"
-              onClick={() => handleSelect(finPag - 2)}
-              className="relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 md:inline-flex"
-            >
-              {finPag - 2}
-            </a>
-            <a
-              href="#"
-              onClick={() => handleSelect(finPag - 1)}
-              className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
-            >
-              {finPag - 1}
-            </a>
-            <a
-              href="#"
-              onClick={() => handleSelect(finPag)}
-              className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
-            >
-              {finPag}
-            </a>
-           { finPag - 5 !== numPag && <a
+            </a>}
+           
+           { numPag !== finPag  && <a
               href="#"
               className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
             >

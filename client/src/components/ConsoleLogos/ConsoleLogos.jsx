@@ -1,8 +1,8 @@
 import React from "react";
 import iconsPlatforms from "./iconsPlatforms.js";
 
-const ConsoleLogos = ({ platforms }) => {
-  const consoles = platforms
+const ConsoleLogos = ({ Platforms }) => {
+  const consoles = Platforms
     .map((p) => {
       return iconsPlatforms(p);
     })

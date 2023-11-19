@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 
 const Carousel = () => {
   const games = useSelector((state) => state.games);
-
+ const {videogames} = games 
   const settings = {
     dots: true,
     infinite: true,
@@ -23,7 +23,7 @@ const Carousel = () => {
 
   return (
     <Slider {...settings} className="flex items-center justify-center">
-      {games.slice(0, 10).map((game, index) => {
+      {videogames.slice(0, 10).map((game, index) => {
         return (
           <div className="w-[300px] h-[400px]">
             <img

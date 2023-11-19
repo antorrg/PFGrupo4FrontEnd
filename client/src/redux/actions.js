@@ -7,10 +7,10 @@ export const GET_PLATFORMS = "GET_PLATFORMS";
 export const GET_GENRES = "GET_GENRES";
 export const SEARCH_GAME = "SEARCH_GAME";
 
-export const getGames = () => {
+export const getGames = (value) => {
   return async (dispatch) => {
     try {
-      const { data } = await axios("/games");
+      const { data } = await axios(`/videogames?page=${value}&size=3`);
 
       return dispatch({
         type: GET_GAMES,
