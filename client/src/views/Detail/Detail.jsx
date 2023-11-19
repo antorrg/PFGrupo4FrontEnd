@@ -25,10 +25,11 @@ function Detail() {
             alt={detailGame?.name}
           />
           <p>Descripción: {detailGame?.description} </p>
-          <p>Plataformas:  </p>
-          <p>Géneros: {detailGame?.genres} </p>
+          <p>Plataformas: {detailGame?.platforms?.map((p) => p).join(", ")} </p>
+          <p>Géneros: {detailGame?.genres?.map((g) => g).join(", ")} </p>
           <p>Fecha de lanzamiento: {detailGame?.released} </p>
-          <p>Rating: {detailGame?.rating} </p>
+          <p>Precio: {detailGame?.price} </p>
+          {/* <p>Rating: {detailGame?.rating} </p> */}
         </div>
         <div>
           <Link to="/home">
@@ -39,5 +40,4 @@ function Detail() {
     </div>
   );
 }
-
 export default Detail;

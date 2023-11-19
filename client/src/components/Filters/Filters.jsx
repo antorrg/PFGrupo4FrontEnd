@@ -1,13 +1,33 @@
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useState, useEffect } from "react";
 import Select from "react-select";
 
+import { getPlatforms, getGenres } from "../../redux/actions";
+
 export default function Filters() {
+  const dispatch = useDispatch();
+  const platforms = useSelector((state) => state.platforms);
+  const genres = useSelector((state) => state.genres);
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [selectedPlatforms, setSelectedPlatforms] = useState([]);
   const [priceFilter, setPriceFilter] = useState("all");
   const [minPrice, setMinPrice] = useState();
   const [maxPrice, setMaxPrice] = useState();
   const [sortOrder, setSortOrder] = useState("asc");
+
+  const platformsOptions = platforms.map((platform) => ({
+    value: platform.name,
+    label: platform.name,
+  }));
+  const genresOptions = genres.map((platform) => ({
+    value: platform.name,
+    label: platform.name,
+  }));
+
+  useEffect(() => {
+    dispatch(getPlatforms());
+    dispatch(getGenres());
+  }, [dispatch]);
 
   const applyFilters = () => {
     // Lógica de filtrado
@@ -20,23 +40,16 @@ export default function Filters() {
   return (
     <div>
       <Select
-        options={[
-          { value: "action", label: "Acción" },
-          { value: "adventure", label: "Aventura" },
-        ]}
+        options={platformsOptions}
         isMulti
-        onChange={(selectedOptions) => setSelectedGenres(selectedOptions)}
+        onChange={(selectedOptions) => setSelectedPlatforms(selectedOptions)}
         placeholder="Plataformas..."
       />
       <br />
-
       <Select
-        options={[
-          { value: "pc", label: "PC" },
-          { value: "ps5", label: "PS5" },
-        ]}
+        options={genresOptions}
         isMulti
-        onChange={(selectedOptions) => setSelectedPlatforms(selectedOptions)}
+        onChange={(selectedOptions) => setSelectedGenres(selectedOptions)}
         placeholder="Géneros..."
       />
       <br />
@@ -45,29 +58,28 @@ export default function Filters() {
           { value: "asc", label: "Ascendente" },
           { value: "desc", label: "Descendente" },
         ]}
-        // value={sortOrder}
-        // onChange={(event) => setSortOrder(event.target.value)}>
+        value={sortOrder}
+        onChange={(selectedOption) => setSortOrder(selectedOption.value)}
         placeholder="Ordenar por nombre"
       />
       <br />
-      <Select
+      {/* <Select
         options={[
           { value: "digital", label: "Digital" },
           { value: "fisico", label: "Físico" },
         ]}
-        // value={sortOrder}
-        // onChange={(event) => setSortOrder(event.target.value)}>
+        value={format}
+        onChange={(selectedOption) => setFormat(selectedOption.value)}
         placeholder="Formato..."
       />
-      <br />
+      <br /> */}
       <Select
         options={[
           { value: "all", label: "Todos" },
           { value: "less", label: "Menor precio" },
           { value: "greater", label: "Mayor precio" },
-          // { value: "range", label: "Rango" },
         ]}
-        onChange={(selectedOptions) => setPriceFilter(selectedOptions)}
+        onChange={(selectedOption) => setPriceFilter(selectedOption.value)}
         placeholder="Precio..."
       />
       <br />
@@ -75,7 +87,7 @@ export default function Filters() {
         <input
           type="number"
           value={minPrice}
-          onChange={(event) => setMinPrice(Number(event.target.value))}
+          onChange={(event) => setMinPrice(event.target.value)}
           placeholder="Precio mínimo..."
         />
         <div>
@@ -83,7 +95,7 @@ export default function Filters() {
           <input
             type="number"
             value={maxPrice}
-            onChange={(event) => setMaxPrice(Number(event.target.value))}
+            onChange={(event) => setMaxPrice(event.target.value)}
             placeholder="Precio máximo..."
           />
         </div>

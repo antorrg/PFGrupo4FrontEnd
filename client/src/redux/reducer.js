@@ -1,9 +1,11 @@
-import { GET_GAMES, GET_DETAILS, CLEAR_DETAILS } from "./actions";
+import { GET_GAMES, GET_DETAILS, CLEAR_DETAILS, GET_PLATFORMS, GET_GENRES } from "./actions";
 
 let initialState = {
   games: [],
   backUpGames: [],
   detailGame: [],
+  platforms: [],
+  genres: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -25,6 +27,18 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         detailGame: [],
+      };
+
+    case GET_PLATFORMS:
+      return {
+        ...state,
+        platforms: action.payload,
+      };
+
+    case GET_GENRES:
+      return {
+        ...state,
+        genres: action.payload,
       };
 
     default:
