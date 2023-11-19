@@ -1,12 +1,14 @@
 import React from "react";
 import iconsPlatforms from "./iconsPlatforms.js";
 
-const ConsolesLogos = ({ Platforms }) => {
-  const consoles = Platforms.map((p) => {
-    return iconsPlatforms(p.name);
-  }).filter((value, index, self) => {
-    return self.indexOf(value) === index;
-  });
+const ConsoleLogos = ({ platforms }) => {
+  const consoles = platforms
+    .map((p) => {
+      return iconsPlatforms(p);
+    })
+    .filter((value, index, self) => {
+      return self.indexOf(value) === index;
+    });
 
   return (
     <div className="flex w-full items-center justify-start gap-2 p-2">
@@ -24,4 +26,4 @@ const ConsolesLogos = ({ Platforms }) => {
   );
 };
 
-export default ConsolesLogos;
+export default ConsoleLogos;
