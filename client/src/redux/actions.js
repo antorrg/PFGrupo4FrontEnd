@@ -9,7 +9,6 @@ export const getGames = () => {
   return async (dispatch) => {
     try {
       const { data } = await axios("/games");
-      console.log(data);
       return dispatch({
         type: GET_GAMES,
         payload: data,
@@ -23,7 +22,7 @@ export const getGames = () => {
 export const getDetails = (id) => {
   return async function (dispatch) {
     try {
-      const response = await axios.get(`/${id}`);
+      const response = await axios.get(`/games/${id}`);
       return dispatch({
         type: GET_DETAILS,
         payload: response.data,
