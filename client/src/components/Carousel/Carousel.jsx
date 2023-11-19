@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 
 const Carousel = () => {
   const games = useSelector((state) => state.games);
- const {videogames} = games 
+  const { videogames } = games;
   const settings = {
     dots: true,
     infinite: true,

@@ -5,8 +5,6 @@ import Filters from "../../components/Filters/Filters";
 import Pagination from "../../components/Pagination/Pagination";
 
 const Home = () => {
-  
-
   return (
     <div className="mt-4 flex items-start justify-center gap-8 w-[80%]">
       <div className="p-4 w-[220px] h-auto bg-[#5825cc]">
@@ -27,4 +25,3 @@ const Home = () => {
 };
 
 export default Home;
-

@@ -10,8 +10,7 @@ export const SEARCH_GAME = "SEARCH_GAME";
 export const getGames = (value) => {
   return async (dispatch) => {
     try {
-      const { data } = await axios(`/videogames?page=${value}&size=3`);
-
+      const { data } = await axios(`/videogames?page=${value}&size=6`);
       return dispatch({
         type: GET_GAMES,
         payload: data,
@@ -82,5 +81,4 @@ export const searchGame = (name) => {
       alert(error);
     }
   };
-
-}
+};
