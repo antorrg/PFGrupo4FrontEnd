@@ -14,7 +14,14 @@ import { useDispatch } from "react-redux";
 const Landing = () => {
   const dispatch = useDispatch()
   useEffect(() => {
-    dispatch(getGames(0))
+    dispatch(getGames({
+      page: 0,
+      platforms: "",
+      genres: "",
+      minPrice: -1,
+      maxPrice: -1,
+      name: ""
+    }));
     AOS.init();
   }, []);
   return (

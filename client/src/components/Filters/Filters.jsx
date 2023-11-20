@@ -3,16 +3,20 @@ import { useState, useEffect } from "react";
 import Select from "react-select";
 
 import { getPlatforms, getGenres } from "../../redux/actions";
+import { updateFilterObj } from "../../redux/actions";
+import { getGames } from "../../redux/actions";
 
 export default function Filters() {
   const dispatch = useDispatch();
+  //const filtersObj = useSelector((state) => state.filtersObj);
+  const filtersObj = useSelector((state) => state.filtersObj);
   const platforms = useSelector((state) => state.platforms);
   const genres = useSelector((state) => state.genres);
-  const [selectedGenres, setSelectedGenres] = useState([]);
-  const [selectedPlatforms, setSelectedPlatforms] = useState([]);
+  //const [selectedGenres, setSelectedGenres] = useState([]);
+  //const [selectedPlatforms, setSelectedPlatforms] = useState([]);
   const [priceFilter, setPriceFilter] = useState("all");
-  const [minPrice, setMinPrice] = useState();
-  const [maxPrice, setMaxPrice] = useState();
+  //const [minPrice, setMinPrice] = useState("");
+  //const [maxPrice, setMaxPrice] = useState("");
   const [sortOrder, setSortOrder] = useState("asc");
 
   const platformsOptions = platforms.map((platform) => ({
@@ -30,26 +34,95 @@ export default function Filters() {
   }, [dispatch]);
 
   const applyFilters = () => {
-    // Lógica de filtrado
+    dispatch(getGames(filtersObj));
+    //console.log("selectedPlatforms: " + JSON.stringify(selectedPlatforms));
+    /*const auxFilter  = {
+      page: 0,
+      platforms: selectedPlatforms.map((platf) => {
+        return platf.value;
+      }).join(","),
+      genres: selectedGenres.map((genre) => {
+        return genre.value;
+      }).join(","),
+      minPrice: minPrice === "" ? -1 : +minPrice,
+      maxPrice: maxPrice === "" ? -1 : +maxPrice
+    }*/
+    
+    /*dispatch(getGames({
+      page: 0,
+      platforms: "",
+      genres: "",
+      minPrice: -1,
+      maxPrice: -1,
+      name: ""
+    }));*/
   };
 
   const resetFilters = () => {
     // Restablecer filtros
+    dispatch(getGames({
+      page: 0,
+      platforms: "",
+      genres: "",
+      minPrice: -1,
+      maxPrice: -1,
+      name: ""
+    }));
   };
+
+  const platformsHandler = (auxSelectedOptions) => {
+    //console.log("auxSelectedOptions: " + JSON.stringify(auxSelectedOptions));
+    const auxFilter  = {
+      platforms: auxSelectedOptions.map((platf) => {
+        return platf.value;
+      }).join(",")
+    }
+
+    dispatch(updateFilterObj(auxFilter));
+  }
+
+  const genresHandler = (auxSelectedOptions) => {
+    //console.log("auxSelectedOptions: " + JSON.stringify(auxSelectedOptions));
+    const auxFilter  = {
+      genres: auxSelectedOptions.map((genre) => {
+        return genre.value;
+      }).join(",")
+    }
+
+    dispatch(updateFilterObj(auxFilter));
+  }
+
+  const minPriceHandler = (value) => {
+    //console.log("auxSelectedOptions: " + JSON.stringify(auxSelectedOptions));
+    const auxFilter  = {
+      minPrice: value === "" ? -1 : +value
+    }
+
+    dispatch(updateFilterObj(auxFilter));
+  }
+
+  const maxPriceHandler = (value) => {
+    //console.log("auxSelectedOptions: " + JSON.stringify(auxSelectedOptions));
+    const auxFilter  = {
+      maxPrice: value === "" ? -1 : +value
+    }
+
+    dispatch(updateFilterObj(auxFilter));
+  }
 
   return (
     <div>
       <Select
         options={platformsOptions}
         isMulti
-        onChange={(selectedOptions) => setSelectedPlatforms(selectedOptions)}
+        onChange={(selectedOptions) => platformsHandler(selectedOptions)}
         placeholder="Plataformas..."
       />
       <br />
       <Select
         options={genresOptions}
         isMulti
-        onChange={(selectedOptions) => setSelectedGenres(selectedOptions)}
+        onChange={(selectedOptions) => genresHandler(selectedOptions)}
         placeholder="Géneros..."
       />
       <br />
@@ -86,16 +159,16 @@ export default function Filters() {
       <div>
         <input
           type="number"
-          value={minPrice}
-          onChange={(event) => setMinPrice(event.target.value)}
+          //value={minPrice}
+          onChange={(event) => minPriceHandler(event.target.value)}
           placeholder="Precio mínimo..."
         />
         <div>
           <br />
           <input
             type="number"
-            value={maxPrice}
-            onChange={(event) => setMaxPrice(event.target.value)}
+            //value={maxPrice}
+            onChange={(event) => maxPriceHandler(event.target.value)}
             placeholder="Precio máximo..."
           />
         </div>
