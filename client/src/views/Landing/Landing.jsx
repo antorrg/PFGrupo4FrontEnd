@@ -7,9 +7,14 @@ import { Link } from "react-router-dom";
 import AOS from "aos";
 // components -------------------------
 import Carousel from "../../components/Carousel/Carousel.jsx";
+import { getGames } from "../../redux/actions";
+import { useDispatch } from "react-redux";
+
 
 const Landing = () => {
+  const dispatch = useDispatch()
   useEffect(() => {
+    dispatch(getGames(0))
     AOS.init();
   }, []);
   return (
@@ -47,7 +52,7 @@ const Landing = () => {
         <div className="flex items-center justify-evenly gap-8 flex-col overflow-hidden h-full">
           <h1 className="text-5xl font-bold">ACCEDE A +1000 JUEGOS</h1>
           <div className="w-full">
-            <Carousel />
+            
           </div>
           <p>
             Mas de 1000 juegos a tu disposición!
