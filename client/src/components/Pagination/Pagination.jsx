@@ -27,7 +27,7 @@ export default function Pagination() {
 
   const handleSelect = (value) => {
     dispatch(getGames(value));
-  };
+  }
   const handlerHome = () => {
     setNumPag(0);
   };
