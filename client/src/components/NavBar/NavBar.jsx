@@ -1,22 +1,39 @@
 import { NavLink, Link } from "react-router-dom";
 import logo from "./logo.png";
-import styles from "./NavBar.module.css";
 // import SearchBar from "../SearchBar/SearchBar";
 
 export default function NavBar() {
   const auth = true;
   const admin = true;
   return (
-    <div className={styles.navBar}>
-      <Link to={"/"}>
-        <img src={logo} alt="logo" className={styles.logo} />
+    <div className="p-2 w-[80%] h-[100px] flex justify-between items-center">
+      <Link to={"/"} className=" h-full font-bold cursor-pointer">
+        <img src={logo} alt="logo" className="h-full w-auto" />
       </Link>
-      <div className={styles.views_container}>
-        <NavLink to={"/home"}>home</NavLink>
-        {auth && <Link to={"/carrito"}>carrito</Link>}
-        {auth && <Link to={"/wishlist"}>wishlist</Link>}
-        {admin && <Link to={"/create"}>create</Link>}
-        {auth === false && <Link to={"/login"}>Login | Join</Link>}
+      <div className="hidden font-semibold sm:flex gap-16 items-center justify-between">
+        <NavLink to={"/home"} className="font-bold cursor-pointer">
+          home
+        </NavLink>
+        {auth && (
+          <Link to={"/carrito"} className="font-bold cursor-pointer">
+            carrito
+          </Link>
+        )}
+        {auth && (
+          <Link to={"/wishlist"} className="font-bold cursor-pointer">
+            wishlist
+          </Link>
+        )}
+        {admin && (
+          <Link to={"/create"} className="font-bold cursor-pointer">
+            create
+          </Link>
+        )}
+        {auth === false && (
+          <Link to={"/login"} className="font-bold cursor-pointer">
+            Login | Join
+          </Link>
+        )}
         {/* <SearchBar /> */}
       </div>
     </div>
