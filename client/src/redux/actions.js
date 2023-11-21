@@ -6,10 +6,46 @@ export const CLEAR_DETAILS = "CLEAR_DETAILS";
 export const GET_PLATFORMS = "GET_PLATFORMS";
 export const GET_GENRES = "GET_GENRES";
 export const SEARCH_GAME = "SEARCH_GAME";
+export const SET_FILTER = "SET_FILTER";
 
+export const updateFilterObj = (filter) => {
+  return (dispatch) => {
+    return dispatch({
+      type: SET_FILTER,
+      payload: filter
+    });
+  }
+}
+
+export const getGames = (filtersObj) => {
+  return async (dispatch) => {
+    try {
+      let filterString = `?page=${filtersObj.page}&size=6`;
+      for(const key in filtersObj){
+        if(key !== "page" && filtersObj[key]!== "" && filtersObj[key]!== -1){
+          filterString += "&" + key + "=" + filtersObj[key];
+        }
+      }
+      //filterString = filterString.substring(0, filterString.length - 1);
+      console.log("filterString: " + filterString);
+      const { data } = await axios(`/videogames${filterString}`);
+      //console.log(JSON.stringify(data));
+      return dispatch({
+        type: GET_GAMES,
+        payload: data,
+      });
+    } catch (error) {
+      alert(error);
+    }
+  };
+};
+
+/*
 export const getGames = (value) => {
   return async (dispatch) => {
     try {
+      let filterString = "";
+      
       const { data } = await axios(`/videogames?page=${value}&size=6`);
       return dispatch({
         type: GET_GAMES,
@@ -20,6 +56,7 @@ export const getGames = (value) => {
     }
   };
 };
+*/
 
 export const getDetails = (id) => {
   return async function (dispatch) {
