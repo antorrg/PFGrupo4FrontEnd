@@ -73,6 +73,7 @@ export default function Filters() {
   const platformsHandler = (auxSelectedOptions) => {
     //console.log("auxSelectedOptions: " + JSON.stringify(auxSelectedOptions));
     const auxFilter  = {
+      page: 0,
       platforms: auxSelectedOptions.map((platf) => {
         return platf.value;
       }).join(",")
@@ -84,6 +85,7 @@ export default function Filters() {
   const genresHandler = (auxSelectedOptions) => {
     //console.log("auxSelectedOptions: " + JSON.stringify(auxSelectedOptions));
     const auxFilter  = {
+      page: 0,
       genres: auxSelectedOptions.map((genre) => {
         return genre.value;
       }).join(",")
@@ -95,6 +97,7 @@ export default function Filters() {
   const minPriceHandler = (value) => {
     //console.log("auxSelectedOptions: " + JSON.stringify(auxSelectedOptions));
     const auxFilter  = {
+      page: 0,
       minPrice: value === "" ? -1 : +value
     }
 
@@ -104,6 +107,7 @@ export default function Filters() {
   const maxPriceHandler = (value) => {
     //console.log("auxSelectedOptions: " + JSON.stringify(auxSelectedOptions));
     const auxFilter  = {
+      page: 0,
       maxPrice: value === "" ? -1 : +value
     }
 

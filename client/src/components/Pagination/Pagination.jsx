@@ -1,20 +1,27 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { getGames } from "../../redux/actions";
+import { getGames, updateFilterObj } from "../../redux/actions";
 import { useSelector } from "react-redux";
 
 export default function Pagination() {
   const dispatch = useDispatch();
 
   const games = useSelector((state) => state.games);
+  const filtersObj = useSelector((state) => state.filtersObj);
   const { PaginationData } = games;
   const { totalPages } = PaginationData;
   const finPag = totalPages - 1;
   let [numPag, setNumPag] = useState(0);
 
   useEffect(() => {
-    dispatch(getGames(numPag));
+    const auxFilter  = {
+      page: numPag
+    }
+
+    dispatch(updateFilterObj(auxFilter));
+    //dispatch(getGames(numPag));
+    dispatch(getGames(filtersObj));
   }, [numPag, dispatch]);
 
   const handlerAnt = () => {
