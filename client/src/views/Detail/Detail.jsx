@@ -20,13 +20,10 @@ function Detail() {
       <div>
         <div>
           <h1> {detailGame?.name}</h1>
-          <img
-            src={detailGame?.image}
-            alt={detailGame?.name}
-          />
+          <img src={detailGame?.image} alt={detailGame?.name} />
           <p>Descripción: {detailGame?.description} </p>
-          <p>Plataformas: {detailGame?.platforms?.map((p) => p).join(", ")} </p>
-          <p>Géneros: {detailGame?.genres?.map((g) => g).join(", ")} </p>
+          <p>Plataformas: {detailGame?.Platforms?.map((p) => p).join(", ")} </p>
+          <p>Géneros: {detailGame?.Genres?.map((g) => g).join(", ")} </p>
           <p>Fecha de lanzamiento: {detailGame?.released} </p>
           <p>Precio: {detailGame?.price} </p>
           {/* <p>Rating: {detailGame?.rating} </p> */}
