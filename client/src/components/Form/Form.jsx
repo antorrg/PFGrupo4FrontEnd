@@ -31,14 +31,15 @@ const Formulario = () => {
     name: Yup.string()
       .required("Campo Requerido")
       .min(5, `Mínimo 5 caracteres`),
-    image: Yup.string().url("Ingresa una URL valida"),
+    image: Yup.string().url("Ingresa una URL valida") 
+    .required("URL Obligatoria"),
     platforms: Yup.array()
       .min(1, "Selecciona al menos una plataforma")
       .required("Campo obligatorio"),
     released: Yup.string()
     .matches(
-      /^\d{4}\-\d{2}\-\d{2}$/,
-      'Ingresa una fecha válida en formato YYYY-MM-DD'
+      /^\d{4}\/\d{2}\/\d{2}$/,
+      'Ingresa una fecha válida en formato YYYY/MM/DD'
       )
       .required('Este campo es requerido'),
     price: Yup.number()
