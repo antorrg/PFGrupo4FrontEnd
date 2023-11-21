@@ -1,5 +1,8 @@
 // hooks ----------------------------------------
 import { Routes, Route } from "react-router-dom";
+import { useEffect } from "react";
+import { getGames } from "./redux/actions";
+import { useDispatch } from "react-redux";
 // views ----------------------------------------
 import {
   Landing,
@@ -15,6 +18,20 @@ import {
 import "./app.css";
 
 function App() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(
+      getGames({
+        page: 0,
+        platforms: "",
+        genres: "",
+        minPrice: -1,
+        maxPrice: -1,
+        name: "",
+      })
+    );
+  }, []);
+
   return (
     <div className="app_container">
       <NavBar />
