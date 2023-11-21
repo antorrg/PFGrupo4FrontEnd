@@ -38,8 +38,8 @@ const Formulario = () => {
       .required("Campo obligatorio"),
     released: Yup.string()
     .matches(
-      /^\d{4}\-\d{2}\-\d{2}$/,
-      'Ingresa una fecha válida en formato YYYY-MM-DD'
+      /^\d{4}\/\d{2}\/\d{2}$/,
+      'Ingresa una fecha válida en formato YYYY/MM/DD'
       )
       .required('Este campo es requerido'),
     price: Yup.number()
