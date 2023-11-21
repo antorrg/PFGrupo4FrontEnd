@@ -19,8 +19,10 @@ import {
 
 function App() {
   const dispatch = useDispatch();
+
   const bgPage = useSelector((state) => state.bgPage);
-  const pageProperties = `bg-${bgPage} my-0 mx-auto flex flex-col items-center justify-between min-h-screen`;
+  const pageProperties = `bg-[url(${bgPage})] bg-cover bg-center opacity-20 w-screen h-screen absolute -z-[1] top-0 left-0`;
+
   useEffect(() => {
     dispatch(
       getGames({
@@ -35,7 +37,10 @@ function App() {
   }, []);
 
   return (
-    <div className={pageProperties}>
+    <div className="my-0 mx-auto flex flex-col items-center justify-between min-h-screen">
+      <div className={pageProperties}>
+        <div className="bg-gradient-to-t from-white to-transparent w-full h-[30%] bottom-0 absolute"></div>
+      </div>
       <NavBar />
       <Routes>
         <Route path="/" element={<Landing />} />

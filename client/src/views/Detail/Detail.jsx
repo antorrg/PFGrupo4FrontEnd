@@ -11,18 +11,21 @@ function Detail() {
 
   useEffect(() => {
     dispatch(getDetails(id));
-    dispatch(changeBg(detailGame.image));
     return () => {
       dispatch(clearDetails());
     };
   }, [dispatch, id]);
 
+  if(detailGame.image){
+    dispatch(changeBg(detailGame.image));
+  }
+
   return (
     <div className="overflow-hidden w-screen flex-1 ">
-      <div>
-        <div>
+      <div className="w-full">
+        <div className="flex">
           <h1> {detailGame?.name}</h1>
-          <img src={detailGame?.image} alt={detailGame?.name} />
+          <img src={detailGame?.image} alt={detailGame?.name} className="w-[50%]"/>
           <p>Descripción: {detailGame?.description} </p>
           {/* <p>Plataformas: {detailGame?.Platforms?.map((p) => p).join(", ")} </p> */}
           {detailGame?.Platforms && (

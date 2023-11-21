@@ -22,7 +22,7 @@ let initialState = {
     maxPrice: -1,
     name: "",
   },
-  bgPage: "black",
+  bgPage: "",
 };
 
 const reducer = (state = initialState, action) => {
@@ -72,7 +72,7 @@ const reducer = (state = initialState, action) => {
       };
 
     case CHANGE_BG:
-      return { ...state, bgPage: action.payload };
+      return { ...state, bgPage: action.payload}
     default:
       return { ...state };
   }
