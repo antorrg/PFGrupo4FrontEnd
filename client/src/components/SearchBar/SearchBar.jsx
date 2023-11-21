@@ -17,7 +17,7 @@ export default function SearchBar() {
   }
 
   return (
-    <form className="group relative">
+    <div className="group relative">
       <svg
         width="20"
         height="20"
@@ -40,6 +40,6 @@ export default function SearchBar() {
         onChange={(event) => onSearchByName(event)}
         //onChange={(event) => setSearchTerm(event.target.value)}
       />
-    </form>
+    </div>
   );
 }
