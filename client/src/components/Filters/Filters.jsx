@@ -28,6 +28,10 @@ export default function Filters() {
     label: platform.name,
   }));
 
+  const clearSelection = () => {
+    setSelectedOptions([]);
+  };
+
   useEffect(() => {
     dispatch(getPlatforms());
     dispatch(getGenres());
