@@ -21,7 +21,8 @@ function App() {
   const dispatch = useDispatch();
 
   const bgPage = useSelector((state) => state.bgPage);
-  const pageProperties = `bg-[url(${bgPage})] bg-cover bg-center opacity-20 w-screen h-screen absolute -z-[1] top-0 left-0`;
+  console.log(bgPage);
+  const backgroundPage = `bg-[url(${bgPage})] bg-cover bg-center opacity-20 w-full h-screen absolute -z-10 top-0 left-0`;
 
   useEffect(() => {
     dispatch(
@@ -38,8 +39,8 @@ function App() {
 
   return (
     <div className="my-0 mx-auto flex flex-col items-center justify-between min-h-screen">
-      <div className={pageProperties}>
-        <div className="bg-gradient-to-t from-white to-transparent w-full h-[30%] bottom-0 absolute"></div>
+      <div className={backgroundPage}>
+        {/* <div className="bg-gradient-to-t from-white to-transparent w-full h-[30%] bottom-0 absolute"></div> */}
       </div>
       <NavBar />
       <Routes>
