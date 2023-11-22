@@ -3,17 +3,22 @@ import React, { useDebugValue } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { updateFilterObj } from "../../redux/actions";
 
-export default function SearchBar() {
+export default function SearchBar(props) {
   //const [searchTerm, setSearchTerm] = useState("");
   //const filterObj = useSelector((state) => state.filterObj);
+
+  const { setSearchText } = props;
+
   const dispatch = useDispatch();
 
   const onSearchByName = (event) => {
     event.preventDefault();
+    setSearchText(event.target.value);
+    /*event.preventDefault();
     const auxFilter = {
       name: event.target.value
     };
-    dispatch(updateFilterObj(auxFilter));
+    dispatch(updateFilterObj(auxFilter));*/
   }
 
   return (

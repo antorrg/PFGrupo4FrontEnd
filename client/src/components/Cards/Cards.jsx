@@ -2,9 +2,9 @@ import { useState } from "react";
 import Card from "../Card/Card";
 import { useSelector } from "react-redux";
 
-const Cards = () => {
-  const games = useSelector((state) => state.games);
-  const { videogames } = games;
+const Cards = (props) => {
+  //const games = useSelector((state) => state.games);
+  const { videogames } = props;
   return (
     <div className="flex justify-center flex-wrap gap-4">
       {videogames.map((element) => (
