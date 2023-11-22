@@ -1,6 +1,7 @@
 // styles -----------------------------
 import "aos/dist/aos.css";
 import consoles from "./consoles.png";
+import videogames from "./videogames.png";
 // hooks ------------------------------
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
@@ -17,6 +18,7 @@ const Landing = () => {
       <section className="relative flex w-full h-[90vh] items-center justify-center bg-[url('./src/views/Landing/all_games.jpg')] bg-cover bg-center">
         <div className="absolute inset-0 bg-black opacity-50"></div>
         <div
+          data-aos-duration="2000"
           data-aos="fade-in"
           className="max-w-[700px] gap-10 flex items-center justify-evenly flex-col z-10"
         >
@@ -41,6 +43,7 @@ const Landing = () => {
         </div>
       </section>
       <section
+        data-aos-duration="2000"
         data-aos="fade-up"
         className="flex w-full h-[100vh] items-start justify-center overflow-hidden"
       >
@@ -51,27 +54,35 @@ const Landing = () => {
         </div>
       </section>
       <section
+        data-aos-duration="2000"
         data-aos="fade-up"
-        className="grid grid-cols-2 grid-rows-3	w-10/12 h-[100vh] items-center justify-center"
+        className="grid grid-cols-2 grid-rows-3	w-10/12 h-[100vh] items-center justify-center py-12"
       >
         <img
+          data-aos="fade-right"
+          data-aos-duration="2000"
           src={consoles}
           alt="consoles"
-          className="col-start-1 col-end-2 row-start-1 row-end-3"
+          className="col-start-1 col-end-2 row-start-1 row-end-3 w-[80%] h-auto object-contain justify-self-center"
         />
-        <div className="flex items-center h-full gap-8 flex-col col-start-2 col-end-3 row-start-1 row-end-2 text-right">
-          <h1 className="text-5xl font-bold">DE TODAS LAS CONSOLAS</h1>
+        <div className="flex items-end h-full gap-8 flex-col col-start-2 col-end-3 row-start-1 row-end-2 text-right">
+          <h1 className="text-5xl font-bold w-[60%]">DE TODAS LAS CONSOLAS</h1>
         </div>
-        <div className="flex items-center h-full gap-8 flex-col col-start-1 col-end-2 row-start-3 row-end-4 text-left">
-          <h1 className="text-5xl font-bold">EN FORMATO FISICO Y/O DIGITAL</h1>
+        <div className="flex items-start h-full gap-8 flex-col col-start-1 col-end-2 row-start-3 row-end-4 text-left">
+          <h1 className="text-5xl font-bold w-[50%]">
+            EN FORMATO FISICO Y/O DIGITAL
+          </h1>
         </div>
         <img
-          src={consoles}
+          data-aos="fade-left"
+          data-aos-duration="2000"
+          src={videogames}
           alt="consoles"
-          className="col-start-2 col-end-3 row-start-2 row-end-4"
+          className="col-start-2 col-end-3 row-start-2 row-end-4 w-[70%] h-auto object-contain justify-self-center"
         />
       </section>
       <section
+        data-aos-duration="2000"
         data-aos="fade-up"
         className="flex w-full h-[90vh] items-center justify-center bg-[url('./src/views/Landing/community.jpg')] bg-cover bg-center"
       >

@@ -15,9 +15,9 @@ const Pagination = () => {
   let [numPag, setNumPag] = useState(0);
 
   useEffect(() => {
-    const auxFilter  = {
-      page: numPag
-    }
+    const auxFilter = {
+      page: numPag,
+    };
 
     dispatch(updateFilterObj(auxFilter));
     //dispatch(getGames(numPag));
