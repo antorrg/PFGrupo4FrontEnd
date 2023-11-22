@@ -14,14 +14,17 @@ import {
   NotFound,
   Footer,
   NavBar,
-  Create,
+  Admin,
 } from "./views/index";
 
 function App() {
   const dispatch = useDispatch();
 
   const bgPage = useSelector((state) => state.bgPage);
-  const backgroundPage = `bg-[url(${bgPage})] bg-cover bg-center opacity-20 w-full h-screen absolute -z-10 top-0 left-0`;
+  console.log(bgPage)
+  const backgroundImage = {
+    backgroundImage: `url(${bgPage})`,
+  };
 
   useEffect(() => {
     dispatch(
@@ -39,8 +42,8 @@ function App() {
   return (
     <NextUIProvider>
       <div className="my-0 mx-auto flex flex-col items-center justify-between min-h-screen">
-        <div className={backgroundPage}>
-          {/* <div className="bg-gradient-to-t from-white to-transparent w-full h-[30%] bottom-0 absolute"></div> */}
+        <div className="bg-cover bg-center opacity-70 w-full h-screen absolute -z-10 top-0 left-0" style={backgroundImage}>
+          <div className="bg-gradient-to-t from-white to-transparent w-full h-[50%] bottom-0 absolute"></div>
         </div>
         <NavBar />
         <Routes>
@@ -49,7 +52,7 @@ function App() {
           <Route path="/carrito" element={<Carrito />} />
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/detail/:id" element={<Detail />} />
-          <Route path="/create" element={<Create />} />
+          <Route path="/admin" element={<Admin />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <Footer />

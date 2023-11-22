@@ -6,7 +6,7 @@ export default function NavBar() {
   const auth = true;
   const admin = true;
   return (
-    <div className="p-2 w-[80%] h-[100px] flex justify-between items-center">
+    <div className="p-2 w-[80%] h-[10vh] max-h-[100px] flex justify-between items-center">
       <Link to={"/"} className=" h-full font-bold cursor-pointer">
         <img src={logo} alt="logo" className="h-full w-auto" />
       </Link>
@@ -25,8 +25,8 @@ export default function NavBar() {
           </Link>
         )}
         {admin && (
-          <Link to={"/create"} className="font-bold cursor-pointer">
-            create
+          <Link to={"/admin"} className="font-bold cursor-pointer">
+            admin
           </Link>
         )}
         {auth === false && (

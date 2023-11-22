@@ -7,7 +7,7 @@ import Wishlist from "./Wishlist/Wishlist";
 import NotFound from "./NotFound/NotFound";
 import Footer from "../components/Footer/Footer";
 import NavBar from "../components/NavBar/NavBar";
-import Create from "./Create/Create";
+import Admin from "./Admin/Admin";
 
 export {
   Landing,
@@ -18,5 +18,5 @@ export {
   NotFound,
   Footer,
   NavBar,
-  Create,
+  Admin,
 };
