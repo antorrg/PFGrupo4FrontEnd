@@ -2,7 +2,8 @@
 import { Routes, Route } from "react-router-dom";
 import { useEffect } from "react";
 import { getGames } from "./redux/actions";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { changeBg } from "./redux/actions";
 // views ----------------------------------------
 import {
   Landing,
@@ -15,10 +16,14 @@ import {
   NavBar,
   Create,
 } from "./views/index";
-import "./app.css";
 
 function App() {
   const dispatch = useDispatch();
+
+  const bgPage = useSelector((state) => state.bgPage);
+  console.log(bgPage);
+  const backgroundPage = `bg-[url(${bgPage})] bg-cover bg-center opacity-20 w-full h-screen absolute -z-10 top-0 left-0`;
+
   useEffect(() => {
     dispatch(
       getGames({
@@ -33,7 +38,10 @@ function App() {
   }, []);
 
   return (
-    <div className="app_container">
+    <div className="my-0 mx-auto flex flex-col items-center justify-between min-h-screen">
+      <div className={backgroundPage}>
+        {/* <div className="bg-gradient-to-t from-white to-transparent w-full h-[30%] bottom-0 absolute"></div> */}
+      </div>
       <NavBar />
       <Routes>
         <Route path="/" element={<Landing />} />

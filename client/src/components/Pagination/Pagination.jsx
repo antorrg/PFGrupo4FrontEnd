@@ -1,16 +1,9 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
-import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { getGames, updateFilterObj } from "../../redux/actions";
-import { useSelector } from "react-redux";
+import { useState } from "react";
 
 const Pagination = (props) => {
-  //const dispatch = useDispatch();
-  //const games = useSelector((state) => state.games);
-  //const filtersObj = useSelector((state) => state.filtersObj);
 
   const { PaginationData, onPageChange } = props;
-  //const { PaginationData } = games;
   const { totalItems, totalPages, currentPage, hasPrevPage, hasNextPage, prevPage, nextPage } = PaginationData;
   const finPag = totalPages - 1;
   let [numPag, setNumPag] = useState(0);
@@ -50,24 +43,6 @@ const Pagination = (props) => {
   if(currentPage != totalPages-1 && nextPage != totalPages-1) {
     indexPagesArray.push({isEllipsis: false, page: totalPages-1});
   }
-
-  /*while (createIndexPages) {
-      if(hasPrevPage)
-  }*/
-
-  //console.log("Render - hasNextPage: " + hasNextPage);
-  /*console.log("currentPage: " + currentPage);
-  console.log("nextPage: " + nextPage);*/
-
-  /*useEffect(() => {
-    const auxFilter  = {
-      page: numPag
-    }
-
-    dispatch(updateFilterObj(auxFilter));
-    //dispatch(getGames(numPag));
-    dispatch(getGames(filtersObj));
-  }, [numPag, dispatch]);*/
 
   const handlerAnt = () => {
     //if (numPag > 0) setNumPag(numPag - 1);
