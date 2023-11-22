@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import { useEffect } from "react";
 import { getGames } from "./redux/actions";
 import { useDispatch, useSelector } from "react-redux";
-import { changeBg } from "./redux/actions";
+import { NextUIProvider } from "@nextui-org/react";
 // views ----------------------------------------
 import {
   Landing,
@@ -21,7 +21,6 @@ function App() {
   const dispatch = useDispatch();
 
   const bgPage = useSelector((state) => state.bgPage);
-  console.log(bgPage);
   const backgroundPage = `bg-[url(${bgPage})] bg-cover bg-center opacity-20 w-full h-screen absolute -z-10 top-0 left-0`;
 
   useEffect(() => {
@@ -38,22 +37,24 @@ function App() {
   }, []);
 
   return (
-    <div className="my-0 mx-auto flex flex-col items-center justify-between min-h-screen">
-      <div className={backgroundPage}>
-        {/* <div className="bg-gradient-to-t from-white to-transparent w-full h-[30%] bottom-0 absolute"></div> */}
+    <NextUIProvider>
+      <div className="my-0 mx-auto flex flex-col items-center justify-between min-h-screen">
+        <div className={backgroundPage}>
+          {/* <div className="bg-gradient-to-t from-white to-transparent w-full h-[30%] bottom-0 absolute"></div> */}
+        </div>
+        <NavBar />
+        <Routes>
+          <Route path="/" element={<Landing />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/carrito" element={<Carrito />} />
+          <Route path="/wishlist" element={<Wishlist />} />
+          <Route path="/detail/:id" element={<Detail />} />
+          <Route path="/create" element={<Create />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+        <Footer />
       </div>
-      <NavBar />
-      <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/carrito" element={<Carrito />} />
-        <Route path="/wishlist" element={<Wishlist />} />
-        <Route path="/detail/:id" element={<Detail />} />
-        <Route path="/create" element={<Create />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-      <Footer />
-    </div>
+    </NextUIProvider>
   );
 }
 

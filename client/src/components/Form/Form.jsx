@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getGenres, getPlatforms } from "../../redux/actions";
 import Select from "react-select";
 import axios from "axios";
-
+import { Input } from "@nextui-org/react";
 
 const Formulario = () => {
   const dispatch = useDispatch();
@@ -24,24 +24,25 @@ const Formulario = () => {
     released: "",
     price: "",
     genres: [],
-    physicalGame: false ,
+    physicalGame: false,
   };
 
   const formSchema = Yup.object().shape({
     name: Yup.string()
       .required("Campo Requerido")
       .min(5, `Mínimo 5 caracteres`),
-    image: Yup.string().url("Ingresa una URL valida") 
-    .required("URL Obligatoria"),
+    image: Yup.string()
+      .url("Ingresa una URL valida")
+      .required("URL Obligatoria"),
     platforms: Yup.array()
       .min(1, "Selecciona al menos una plataforma")
       .required("Campo obligatorio"),
     released: Yup.string()
-    .matches(
-      /^\d{4}\/\d{2}\/\d{2}$/,
-      'Ingresa una fecha válida en formato YYYY/MM/DD'
+      .matches(
+        /^\d{4}\/\d{2}\/\d{2}$/,
+        "Ingresa una fecha válida en formato YYYY/MM/DD"
       )
-      .required('Este campo es requerido'),
+      .required("Este campo es requerido"),
     price: Yup.number()
       .required("Campo Requerido")
       .min(6, `Mínimo  6 caracteres`),
@@ -49,8 +50,7 @@ const Formulario = () => {
       .min(1, "Selecciona al menos una plataforma")
       .required("Campo obligatorio"),
     physicalGame: Yup.bool(),
-    stock: Yup.number()
-    .min(1, `Mínimo  1 caracteres`),
+    stock: Yup.number().min(1, `Mínimo  1 caracteres`),
     description: Yup.string()
       .required("Campo Requerido")
       .min(5, `Mínimo 5 caracteres`),
@@ -71,17 +71,21 @@ const Formulario = () => {
     <Formik
       initialValues={initialValues}
       validationSchema={formSchema}
-      onSubmit={async(values) => {
+      onSubmit={async (values) => {
         try {
-        await axios.post("/post",values)
-        alert("VideoGame Create ")
-      } catch (error) {
-        alert(error.message)
-      }
+          await axios.post("/post", values);
+          alert("VideoGame Create ");
+        } catch (error) {
+          alert(error.message);
+        }
       }}
     >
       {({ values, setFieldValue }) => (
-        <Form>
+        <Form className="w-[300px]">
+          <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
+            <Input type="email" label="Email" />
+            <Input type="email" label="Email" placeholder="Enter your email" />
+          </div>
           <div>
             <label htmlFor="name">Name </label>
             <Field
@@ -209,28 +213,28 @@ const Formulario = () => {
               <Field type="checkbox" name="physicalGame" />
               ¿Juego Fisico?
             </label>
-          
-          <ErrorMessage name=" physicalGame" component="div" />
-          </div> 
+
+            <ErrorMessage name=" physicalGame" component="div" />
+          </div>
 
           {values.physicalGame && (
-      <div>
-        <label htmlFor="stock">Stock</label>
-        <Field
-          className="form-control"
-          name="stock"
-          placeholder=""
-          type="number"
-        />
-        <ErrorMessage
-          name="stock"
-          component="div"
-          className="field-error text-danger"
-        />
-      </div>
-    )}
-          
-            <button type="submit">Enviar</button>
+            <div>
+              <label htmlFor="stock">Stock</label>
+              <Field
+                className="form-control"
+                name="stock"
+                placeholder=""
+                type="number"
+              />
+              <ErrorMessage
+                name="stock"
+                component="div"
+                className="field-error text-danger"
+              />
+            </div>
+          )}
+
+          <button type="submit">Enviar</button>
         </Form>
       )}
     </Formik>
