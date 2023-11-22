@@ -1,4 +1,12 @@
-import { GET_GAMES, GET_DETAILS, CLEAR_DETAILS, GET_PLATFORMS, GET_GENRES, SET_FILTER } from "./actions";
+import {
+  GET_GAMES,
+  GET_DETAILS,
+  CLEAR_DETAILS,
+  GET_PLATFORMS,
+  GET_GENRES,
+  SET_FILTER,
+  CHANGE_BG,
+} from "./actions";
 
 let initialState = {
   games: [],
@@ -12,8 +20,9 @@ let initialState = {
     genres: "",
     minPrice: -1,
     maxPrice: -1,
-    name: ""
-  }
+    name: "",
+  },
+  bgPage: "",
 };
 
 const reducer = (state = initialState, action) => {
@@ -51,15 +60,19 @@ const reducer = (state = initialState, action) => {
 
     case SET_FILTER:
       let auxFilterObj = state.filtersObj;
-      for(const property in action.payload)
-      {
-        auxFilterObj = {...auxFilterObj, [property]: action.payload[property]};
+      for (const property in action.payload) {
+        auxFilterObj = {
+          ...auxFilterObj,
+          [property]: action.payload[property],
+        };
       }
       return {
         ...state,
         filtersObj: auxFilterObj,
       };
 
+    case CHANGE_BG:
+      return { ...state, bgPage: action.payload}
     default:
       return { ...state };
   }
