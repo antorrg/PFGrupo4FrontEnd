@@ -1,22 +1,16 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
-import { useState } from "react";
 
 const Pagination = (props) => {
 
   const { PaginationData, onPageChange } = props;
   const { totalItems, totalPages, currentPage, hasPrevPage, hasNextPage, prevPage, nextPage } = PaginationData;
-  const finPag = totalPages - 1;
-  let [numPag, setNumPag] = useState(0);
 
   const indexPagesArray = [];
-  let createIndexPages = true;
-  let indexCounter = 0;
 
   if(hasPrevPage) {
     indexPagesArray.push({isEllipsis: false, page: 0});
     if(prevPage > 1) {
       indexPagesArray.push({isEllipsis: true, page: prevPage-1});
-      //indexCounter++;
     }
     if(prevPage != 0)
     {
@@ -93,16 +87,6 @@ const Pagination = (props) => {
                 />
               </a>
             )}
-
-            {/*hasPrevPage && (
-              <a
-                href="#"
-                onClick={() => handlerHome()}
-                className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
-              >
-                1
-              </a>
-            )*/}
 
             
 
