@@ -3,21 +3,10 @@ import { Routes, Route } from "react-router-dom";
 import { useEffect } from "react";
 import { getGames } from "./redux/actions";
 import { useDispatch, useSelector } from "react-redux";
-import { NextUIProvider } from "@nextui-org/react";
-// views ----------------------------------------
-import {
-  Landing,
-  Home,
-  Detail,
-  Carrito,
-  Wishlist,
-  NotFound,
-  Footer,
-  NavBar,
-  Admin,
-  Create,
-  Games,
-} from "./views/index";
+// components ----------------------------------------
+import Footer from "./components/Footer/Footer";
+import NavBar from "./components/NavBar/NavBar";
+import { renderRoutes } from "./routes/index.jsx";
 
 function App() {
   const dispatch = useDispatch();
@@ -42,31 +31,17 @@ function App() {
   }, []);
 
   return (
-    <NextUIProvider>
-      <div className="my-0 mx-auto flex flex-col items-center justify-between min-h-screen">
-        <div
-          className="bg-cover bg-center opacity-70 w-full h-screen absolute -z-10 top-0 left-0"
-          style={backgroundImage}
-        >
-          <div className="bg-gradient-to-t from-white to-transparent w-full h-[50%] bottom-0 absolute"></div>
-        </div>
-        <NavBar />
-        <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/carrito" element={<Carrito />} />
-          <Route path="/wishlist" element={<Wishlist />} />
-          <Route path="/detail/:id" element={<Detail />} />
-
-          <Route path="/admin" element={<Admin />} />
-          <Route path="/admin/games" element={<Games />} />
-          <Route path="/admin/create" element={<Create />} />
-
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-        <Footer />
+    <div className="my-0 mx-auto flex flex-col items-center justify-between min-h-screen">
+      <div
+        className="bg-cover bg-center opacity-70 w-full h-screen absolute -z-10 top-0 left-0"
+        style={backgroundImage}
+      >
+        <div className="bg-gradient-to-t from-white to-transparent w-full h-[50%] bottom-0 absolute"></div>
       </div>
-    </NextUIProvider>
+      <NavBar />
+      <Routes>{renderRoutes()}</Routes>
+      <Footer />
+    </div>
   );
 }
 

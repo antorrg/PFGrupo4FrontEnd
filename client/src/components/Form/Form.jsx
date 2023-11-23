@@ -45,7 +45,7 @@ const Formulario = () => {
         /^\d{4}\/\d{2}\/\d{2}$/,
         "Ingresa una fecha válida en formato AAAA/MM/DD"
       )
-      .required("Campo Requerido"),
+      .required("Este campo es requerido"),
     price: Yup.number()
       .test({
         name: "valid-number",
@@ -252,7 +252,6 @@ const Formulario = () => {
               <Field type="checkbox" name="physicalGame" />
               ¿Juego Fisico?
             </label>
-
             <ErrorMessage
               name=" physicalGame"
               component="div"
