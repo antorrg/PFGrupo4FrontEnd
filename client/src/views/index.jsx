@@ -8,6 +8,8 @@ import NotFound from "./NotFound/NotFound";
 import Footer from "../components/Footer/Footer";
 import NavBar from "../components/NavBar/NavBar";
 import Admin from "./Admin/Admin";
+import Create from "./Admin/Create/Create";
+import Games from "./Admin/Games/Games";
 
 export {
   Landing,
@@ -19,4 +21,6 @@ export {
   Footer,
   NavBar,
   Admin,
+  Create,
+  Games,
 };

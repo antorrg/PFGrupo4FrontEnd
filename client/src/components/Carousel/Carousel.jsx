@@ -1,14 +1,11 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import Slider from "react-slick";
-
+import axios from "axios";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-import { useSelector } from "react-redux";
-
 const Carousel = () => {
-  const games = useSelector((state) => state.games);
-  const { videogames } = games;
+  const [games, setGames] = useState({});
   const settings = {
     dots: true,
     infinite: true,
@@ -20,21 +17,35 @@ const Carousel = () => {
     autoplaySpeed: 1500,
     pauseOnHover: true,
   };
+  if (games.videogames) {
+    console.log(games.videogames[9]);
+  }
+  useEffect(() => {
+    const getGames = async () => {
+      const { data } = await axios("/videogames?page=0&size=10");
+      setGames(data);
+    };
+    getGames();
+  }, []);
 
   return (
-    <Slider {...settings} className="flex items-center justify-center">
-      {videogames.slice(0, 10).map((game, index) => {
-        return (
-          <div className="w-[300px] h-[400px]">
-            <img
-              src={game.image}
-              alt={`imagen-${index}`}
-              className="object-cover h-full w-full"
-            />
-          </div>
-        );
-      })}
-    </Slider>
+    <div>
+      {games.videogames && games.videogames[9].image ? (
+        <Slider {...settings} className="flex items-center justify-center">
+          {games.videogames.map((game, index) => {
+            return (
+              <div className="w-[300px] h-[400px]" key={game.name}>
+                <img
+                  src={game.image}
+                  alt={`imagen-${index}`}
+                  className="object-cover h-full w-full"
+                />
+              </div>
+            );
+          })}
+        </Slider>
+      ) : null}
+    </div>
   );
 };
 

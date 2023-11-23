@@ -1,5 +1,6 @@
 import React from "react";
 import Formulario from "../../components/Form/Form";
+import { Link } from "react-router-dom";
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
@@ -12,8 +13,7 @@ const user = {
 };
 const navigation = [
   { name: "Creación", href: "#", current: true },
-  { name: "Actualización", href: "#", current: false },
-  { name: "Eliminación", href: "#", current: false },
+  { name: "Juegos", href: "#", current: false },
 ];
 const userNavigation = [
   { name: "Perfil", href: "#" },
