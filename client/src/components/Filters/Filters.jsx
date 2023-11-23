@@ -5,19 +5,23 @@ import Select from "react-select";
 import { getPlatforms, getGenres } from "../../redux/actions";
 import { updateFilterObj } from "../../redux/actions";
 import { getGames } from "../../redux/actions";
+import SearchBar from "../../components/SearchBar/SearchBar";
 
-export default function Filters() {
+export default function Filters(props) {
+
+  const { onApplyFilters } = props
+
   const dispatch = useDispatch();
   //const filtersObj = useSelector((state) => state.filtersObj);
-  const filtersObj = useSelector((state) => state.filtersObj);
   const platforms = useSelector((state) => state.platforms);
   const genres = useSelector((state) => state.genres);
-  //const [selectedGenres, setSelectedGenres] = useState([]);
-  //const [selectedPlatforms, setSelectedPlatforms] = useState([]);
+  const [selectedGenres, setSelectedGenres] = useState([]);
+  const [selectedPlatforms, setSelectedPlatforms] = useState([]);
   const [priceFilter, setPriceFilter] = useState("all");
-  //const [minPrice, setMinPrice] = useState("");
-  //const [maxPrice, setMaxPrice] = useState("");
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
   const [sortOrder, setSortOrder] = useState("asc");
+  const [searchText, setSearchText] = useState('');
 
   const platformsOptions = platforms.map((platform) => ({
     value: platform.name,
@@ -37,8 +41,93 @@ export default function Filters() {
     dispatch(getGenres());
   }, [dispatch]);
 
+  const platformsHandler = (auxSelectedOptions) => {
+    setSelectedPlatforms(auxSelectedOptions);
+    //console.log("auxSelectedOptions: " + JSON.stringify(auxSelectedOptions));
+    /*const auxFilter  = {
+      page: 0,
+      platforms: auxSelectedOptions.map((platf) => {
+        return platf.value;
+      }).join(",")
+    }
+
+    dispatch(updateFilterObj(auxFilter));*/
+  }
+
+  const genresHandler = (auxSelectedOptions) => {
+    setSelectedGenres(auxSelectedOptions);
+    //console.log("auxSelectedOptions: " + JSON.stringify(auxSelectedOptions));
+    /*const auxFilter  = {
+      page: 0,
+      genres: auxSelectedOptions.map((genre) => {
+        return genre.value;
+      }).join(",")
+    }
+
+    dispatch(updateFilterObj(auxFilter));*/
+  }
+
+  const minPriceHandler = (value) => {
+    setMinPrice(value === "" ? -1 : +value);
+    //console.log("auxSelectedOptions: " + JSON.stringify(auxSelectedOptions));
+    /*const auxFilter  = {
+      page: 0,
+      minPrice: value === "" ? -1 : +value
+    }
+
+    dispatch(updateFilterObj(auxFilter));*/
+  }
+
+  const maxPriceHandler = (value) => {
+    setMaxPrice(value === "" ? -1 : +value);
+    //console.log("auxSelectedOptions: " + JSON.stringify(auxSelectedOptions));
+    /*const auxFilter  = {
+      page: 0,
+      maxPrice: value === "" ? -1 : +value
+    }
+
+    dispatch(updateFilterObj(auxFilter));*/
+  }
+
+  const setSearchTextHandler = (auxText) => {
+    setSearchText(auxText);
+  }
+
+  const resetFilters = () => {
+    // Restablecer filtros
+    onApplyFilters({
+      page: 0,
+      platforms: "",
+      genres: "",
+      minPrice: -1,
+      maxPrice: -1,
+      name: ""
+    });
+    /*dispatch(getGames({
+      page: 0,
+      platforms: "",
+      genres: "",
+      minPrice: -1,
+      maxPrice: -1,
+      name: ""
+    }));*/
+  };
+
   const applyFilters = () => {
-    dispatch(getGames(filtersObj));
+    onApplyFilters({
+      page: 0,
+      platforms: selectedPlatforms.map((platf) => {
+        return platf.value;
+      }).join(","),
+      genres: selectedGenres.map((genre) => {
+        return genre.value;
+      }).join(","),
+      minPrice: minPrice,
+      maxPrice: maxPrice,
+      name: searchText
+    });
+    //dispatch(getGames(filtersObj));
+
     //console.log("selectedPlatforms: " + JSON.stringify(selectedPlatforms));
     /*const auxFilter  = {
       page: 0,
@@ -62,64 +151,10 @@ export default function Filters() {
     }));*/
   };
 
-  const resetFilters = () => {
-    // Restablecer filtros
-    dispatch(getGames({
-      page: 0,
-      platforms: "",
-      genres: "",
-      minPrice: -1,
-      maxPrice: -1,
-      name: ""
-    }));
-  };
-
-  const platformsHandler = (auxSelectedOptions) => {
-    //console.log("auxSelectedOptions: " + JSON.stringify(auxSelectedOptions));
-    const auxFilter  = {
-      page: 0,
-      platforms: auxSelectedOptions.map((platf) => {
-        return platf.value;
-      }).join(",")
-    }
-
-    dispatch(updateFilterObj(auxFilter));
-  }
-
-  const genresHandler = (auxSelectedOptions) => {
-    //console.log("auxSelectedOptions: " + JSON.stringify(auxSelectedOptions));
-    const auxFilter  = {
-      page: 0,
-      genres: auxSelectedOptions.map((genre) => {
-        return genre.value;
-      }).join(",")
-    }
-
-    dispatch(updateFilterObj(auxFilter));
-  }
-
-  const minPriceHandler = (value) => {
-    //console.log("auxSelectedOptions: " + JSON.stringify(auxSelectedOptions));
-    const auxFilter  = {
-      page: 0,
-      minPrice: value === "" ? -1 : +value
-    }
-
-    dispatch(updateFilterObj(auxFilter));
-  }
-
-  const maxPriceHandler = (value) => {
-    //console.log("auxSelectedOptions: " + JSON.stringify(auxSelectedOptions));
-    const auxFilter  = {
-      page: 0,
-      maxPrice: value === "" ? -1 : +value
-    }
-
-    dispatch(updateFilterObj(auxFilter));
-  }
-
   return (
     <div>
+      <SearchBar setSearchText={setSearchTextHandler}/>
+      <br />
       <Select
         options={platformsOptions}
         isMulti
