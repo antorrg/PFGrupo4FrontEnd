@@ -3,18 +3,10 @@ import { Routes, Route } from "react-router-dom";
 import { useEffect } from "react";
 import { getGames } from "./redux/actions";
 import { useDispatch, useSelector } from "react-redux";
-// views ----------------------------------------
-import {
-  Landing,
-  Home,
-  Detail,
-  Carrito,
-  Wishlist,
-  NotFound,
-  Footer,
-  NavBar,
-  Admin,
-} from "./views/index";
+// components ----------------------------------------
+import Footer from "./components/Footer/Footer";
+import NavBar from "./components/NavBar/NavBar";
+import {renderRoutes} from "./routes/index.jsx";
 
 function App() {
   const dispatch = useDispatch();
@@ -45,13 +37,7 @@ function App() {
         </div>
         <NavBar />
         <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/carrito" element={<Carrito />} />
-          <Route path="/wishlist" element={<Wishlist />} />
-          <Route path="/detail/:id" element={<Detail />} />
-          <Route path="/admin" element={<Admin />} />
-          <Route path="*" element={<NotFound />} />
+          {renderRoutes()}
         </Routes>
         <Footer />
       </div>

@@ -1,11 +1,11 @@
 import React from 'react'
 
-const Update = () => {
+const Games = () => {
   return (
     <div>
-      
+      Games
     </div>
   )
 }
 
-export default Update
+export default Games
