@@ -6,7 +6,6 @@ import { getGenres, getPlatforms } from "../../redux/actions";
 import Select from "react-select";
 import axios from "axios";
 
-
 const Formulario = () => {
   const dispatch = useDispatch();
   const platforms = useSelector((state) => state.platforms);
@@ -24,36 +23,40 @@ const Formulario = () => {
     released: "",
     price: "",
     genres: [],
-    physicalGame: false ,
+    physicalGame: false,
   };
 
   const formSchema = Yup.object().shape({
     name: Yup.string()
       .required("Campo Requerido")
       .min(5, `Mínimo 5 caracteres`),
-    image: Yup.string().url("Ingresa una URL valida") 
-    .required("URL Obligatoria"),
+    image: Yup.string()
+      .url("Ingresa una URL valida")
+      .required("URL Obligatoria"),
     platforms: Yup.array()
       .min(1, "Selecciona al menos una plataforma")
-      .required("Campo obligatorio"),
+      .required("Campo Requerido"),
     released: Yup.string()
-    .matches(
-      /^\d{4}\/\d{2}\/\d{2}$/,
-      'Ingresa una fecha válida en formato YYYY/MM/DD'
+      .matches(
+        /^\d{4}\/\d{2}\/\d{2}$/,
+        "Ingresa una fecha válida en formato AAAA/MM/DD"
       )
-      .required('Este campo es requerido'),
+      .required("Campo Requerido"),
     price: Yup.number()
-      .required("Campo Requerido")
-      .min(6, `Mínimo  6 caracteres`),
+      .test({
+        name: "valid-number",
+        message: "Formato Invalido Ej: 111.11",
+        test: (value) => /^(?!0\d)\d{1,3}(\.\d{0,2})?$/.test(value),
+      })
+      .required("Campo Requerido"),
     genres: Yup.array()
       .min(1, "Selecciona al menos una plataforma")
-      .required("Campo obligatorio"),
+      .required("Campo Requerido"),
     physicalGame: Yup.bool(),
-    stock: Yup.number()
-    .min(1, `Mínimo  1 caracteres`),
+    stock: Yup.number().min(1, `Mínimo  1 caracteres`),
     description: Yup.string()
-      .required("Campo Requerido")
-      .min(5, `Mínimo 5 caracteres`),
+      .min(5, `Mínimo 5 caracteres`)
+      .required("Campo Requerido"),
   });
   const platformsOptions = platforms.map((platform) => ({
     value: platform.name,
@@ -71,21 +74,27 @@ const Formulario = () => {
     <Formik
       initialValues={initialValues}
       validationSchema={formSchema}
-      onSubmit={async(values) => {
+      onSubmit={async (values) => {
         try {
-        await axios.post("/post",values)
-        alert("VideoGame Create ")
-      } catch (error) {
-        alert(error.message)
-      }
+          await axios.post("/post", values);
+          alert("VideoGame Create ");
+        } catch (error) {
+          alert(error.message);
+        }
       }}
     >
       {({ values, setFieldValue }) => (
         <Form>
-          <div>
-            <label htmlFor="name">Name </label>
+          <div className="mb-4">
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium text-gray-700"
+            >
+              {" "}
+              Nombre{" "}
+            </label>
             <Field
-              className="form-control"
+              className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               name="name"
               placeholder=""
               type="text"
@@ -93,13 +102,20 @@ const Formulario = () => {
             <ErrorMessage
               name="name"
               component="div"
-              className="field-error text-danger"
+              className="mt-1 text-sm text-red-600"
             />
           </div>
-          <div>
-            <label htmlFor="description">Description </label>
+
+          <div className="mb-4">
+            <label
+              htmlFor="description"
+              className="block text-sm font-medium text-gray-700"
+            >
+              {" "}
+              Descripcion{" "}
+            </label>
             <Field
-              className="form-control"
+              className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               name="description"
               placeholder=""
               type="text"
@@ -107,14 +123,20 @@ const Formulario = () => {
             <ErrorMessage
               name="description"
               component="div"
-              className="field-error text-danger"
+              className="mt-1 text-sm text-red-600"
             />
           </div>
 
-          <div>
-            <label htmlFor="image">Image </label>
+          <div className="mb-4">
+            <label
+              htmlFor="image"
+              className="block text-sm font-medium text-gray-700"
+            >
+              {" "}
+              Imagen{" "}
+            </label>
             <Field
-              className="form-control"
+              className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               name="image"
               placeholder=""
               type="text"
@@ -122,12 +144,17 @@ const Formulario = () => {
             <ErrorMessage
               name="image"
               component="div"
-              className="field-error text-danger"
+              className="mt-1 text-sm text-red-600"
             />
           </div>
 
-          <div>
-            <label htmlFor="platforms">Platforms</label>
+          <div className="mb-4">
+            <label
+              htmlFor="platforms"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Plataformas
+            </label>
             <Select
               id="platforms"
               className="form-control"
@@ -139,21 +166,25 @@ const Formulario = () => {
                   (option) => option.id
                 );
                 setFieldValue("genres", selectedValues);
-                console.log("Selected Options:", selectedOptions);
-                console.log(values);
               }}
             />
             <ErrorMessage
               name="platforms"
               component="div"
-              className="field-error text-danger"
+              className="mt-1 text-sm text-red-600"
             />
           </div>
 
-          <div>
-            <label htmlFor="released"> Released</label>
+          <div className="mb-4">
+            <label
+              htmlFor="released"
+              className="block text-sm font-medium text-gray-700"
+            >
+              {" "}
+              Fecha de Lanzamiento
+            </label>
             <Field
-              className="form-control"
+              className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               name="released"
               placeholder="AAAA-MM-DD"
               type="text"
@@ -161,27 +192,37 @@ const Formulario = () => {
             <ErrorMessage
               name="released"
               component="div"
-              className="field-error text-danger"
+              className="mt-1 text-sm text-red-600"
             />
           </div>
 
-          <div>
-            <label htmlFor="price"> Price</label>
+          <div className="mb-4">
+            <label
+              htmlFor="price"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Precio
+            </label>
             <Field
-              className="form-control"
+              className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               name="price"
-              placeholder=""
+              placeholder="111.11"
               type="number"
             />
             <ErrorMessage
               name="price"
               component="div"
-              className="field-error text-danger"
+              className="mt-1 text-sm text-red-600"
             />
           </div>
-
-          <div>
-            <label htmlFor="genres"> Genres</label>
+          <div className="mb-4">
+            <label
+              htmlFor="genres"
+              className="block text-sm font-medium text-gray-700"
+            >
+              {" "}
+              Generos{" "}
+            </label>
             <Select
               id="genres"
               className="form-control"
@@ -193,14 +234,12 @@ const Formulario = () => {
                   (option) => option.id
                 );
                 setFieldValue("platforms", selectedValues);
-                console.log("Selected Options:", selectedOptions);
-                console.log(values);
               }}
             />
             <ErrorMessage
               name="genres"
               component="div"
-              className="field-error text-danger"
+              className="mt-1 text-sm text-red-600"
             />
           </div>
 
@@ -209,28 +248,37 @@ const Formulario = () => {
               <Field type="checkbox" name="physicalGame" />
               ¿Juego Fisico?
             </label>
-          
-          <ErrorMessage name=" physicalGame" component="div" />
-          </div> 
+
+            <ErrorMessage
+              name=" physicalGame"
+              component="div"
+              className="mt-1 text-sm text-red-600"
+            />
+          </div>
 
           {values.physicalGame && (
-      <div>
-        <label htmlFor="stock">Stock</label>
-        <Field
-          className="form-control"
-          name="stock"
-          placeholder=""
-          type="number"
-        />
-        <ErrorMessage
-          name="stock"
-          component="div"
-          className="field-error text-danger"
-        />
-      </div>
-    )}
-          
-            <button type="submit">Enviar</button>
+            <div className="mb-4">
+              <label
+                htmlFor="stock"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Stock
+              </label>
+              <Field
+                className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                name="stock"
+                placeholder=""
+                type="number"
+              />
+              <ErrorMessage
+                name="stock"
+                component="div"
+                className="mt-1 text-sm text-red-600"
+              />
+            </div>
+          )}
+
+          <button type="submit"> Crear Juego</button>
         </Form>
       )}
     </Formik>
