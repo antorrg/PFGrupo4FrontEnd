@@ -8,7 +8,7 @@ import App from "./App.jsx";
 import "./index.css";
 
 //axios.defaults.baseURL = "http://localhost:3001";
-axios.defaults.baseURL = "BACK_DEPLOY";
+axios.defaults.baseURL = BACK_DEPLOY;
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
