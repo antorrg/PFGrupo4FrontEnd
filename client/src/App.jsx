@@ -3,7 +3,6 @@ import { Routes, Route } from "react-router-dom";
 import { useEffect } from "react";
 import { getGames } from "./redux/actions";
 import { useDispatch, useSelector } from "react-redux";
-import { NextUIProvider } from "@nextui-org/react";
 // views ----------------------------------------
 import {
   Landing,
@@ -40,7 +39,6 @@ function App() {
   }, []);
 
   return (
-    <NextUIProvider>
       <div className="my-0 mx-auto flex flex-col items-center justify-between min-h-screen">
         <div className="bg-cover bg-center opacity-70 w-full h-screen absolute -z-10 top-0 left-0" style={backgroundImage}>
           <div className="bg-gradient-to-t from-white to-transparent w-full h-[50%] bottom-0 absolute"></div>
@@ -57,7 +55,6 @@ function App() {
         </Routes>
         <Footer />
       </div>
-    </NextUIProvider>
   );
 }
 
