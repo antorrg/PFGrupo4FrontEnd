@@ -24,12 +24,16 @@ const Formulario = () => {
     price: "",
     genres: [],
     physicalGame: false,
+    physicalGame: false,
   };
 
   const formSchema = Yup.object().shape({
     name: Yup.string()
       .required("Campo Requerido")
       .min(5, `Mínimo 5 caracteres`),
+    image: Yup.string()
+      .url("Ingresa una URL valida")
+      .required("URL Obligatoria"),
     image: Yup.string()
       .url("Ingresa una URL valida")
       .required("URL Obligatoria"),
@@ -41,7 +45,7 @@ const Formulario = () => {
         /^\d{4}\/\d{2}\/\d{2}$/,
         "Ingresa una fecha válida en formato AAAA/MM/DD"
       )
-      .required("Campo Requerido"),
+      .required("Este campo es requerido"),
     price: Yup.number()
       .test({
         name: "valid-number",
@@ -248,7 +252,6 @@ const Formulario = () => {
               <Field type="checkbox" name="physicalGame" />
               ¿Juego Fisico?
             </label>
-
             <ErrorMessage
               name=" physicalGame"
               component="div"
