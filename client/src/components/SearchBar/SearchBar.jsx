@@ -1,24 +1,12 @@
 import React, { useDebugValue } from "react";
-//import { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { updateFilterObj } from "../../redux/actions";
 
 export default function SearchBar(props) {
-  //const [searchTerm, setSearchTerm] = useState("");
-  //const filterObj = useSelector((state) => state.filterObj);
 
-  const { setSearchText } = props;
-
-  const dispatch = useDispatch();
+  const { setSearchText, searchText } = props;
 
   const onSearchByName = (event) => {
     event.preventDefault();
     setSearchText(event.target.value);
-    /*event.preventDefault();
-    const auxFilter = {
-      name: event.target.value
-    };
-    dispatch(updateFilterObj(auxFilter));*/
   }
 
   return (
@@ -41,7 +29,7 @@ export default function SearchBar(props) {
         type="text"
         // aria-label="Filter projects"
         placeholder="Buscar video Juego..."
-        //value={searchTerm}
+        value={searchText}
         onChange={(event) => onSearchByName(event)}
         //onChange={(event) => setSearchTerm(event.target.value)}
       />

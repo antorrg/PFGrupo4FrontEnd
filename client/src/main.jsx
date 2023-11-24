@@ -7,6 +7,7 @@ import axios from "axios";
 import App from "./App.jsx";
 import "./index.css";
 
+// axios.defaults.baseURL = "https://backendpf-4vdq.onrender.com";
 axios.defaults.baseURL = "http://localhost:3001";
 
 ReactDOM.createRoot(document.getElementById("root")).render(

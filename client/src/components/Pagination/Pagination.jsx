@@ -60,10 +60,6 @@ const Pagination = (props) => {
     //setNumPag(value);
     onPageChange(value);
   };
-  const handlerHome = () => {
-    //setNumPag(0);
-    onPageChange(0);
-  };
 
   return (
     totalItems <= 0 ? <div>No hay juegos que cumplan los filtros</div> :
@@ -75,8 +71,7 @@ const Pagination = (props) => {
             aria-label="Pagination"
           >
             {hasPrevPage && (
-              <a
-                href="#"
+              <button
                 className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
               >
                 <span className="sr-only">Previous</span>
@@ -85,15 +80,14 @@ const Pagination = (props) => {
                   className="h-5 w-5"
                   aria-hidden="true"
                 />
-              </a>
+              </button>
             )}
 
             
 
             {indexPagesArray.map((index) => (
-                <a
+                <button
                   id="1"
-                  href="#"
                   onClick={() => handleSelect(index.page)}
                   aria-current="page"
                   className={index.page === currentPage ?
@@ -103,15 +97,14 @@ const Pagination = (props) => {
                   }
                 >
                 {index.isEllipsis ? "..." : index.page+1}
-              </a>
+              </button>
             ))}
 
 
 
             
             {hasNextPage && (
-              <a
-                href="#"
+              <button
                 className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
               >
                 <span className="sr-only">Next</span>
@@ -120,7 +113,7 @@ const Pagination = (props) => {
                   className="h-5 w-5"
                   aria-hidden="true"
                 />
-              </a>
+              </button>
             )}
           </nav>
         </div>

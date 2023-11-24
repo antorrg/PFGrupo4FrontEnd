@@ -17,9 +17,7 @@ const Carousel = () => {
     autoplaySpeed: 1500,
     pauseOnHover: true,
   };
-  if (games.videogames) {
-    console.log(games.videogames[9]);
-  }
+
   useEffect(() => {
     const getGames = async () => {
       const { data } = await axios("/videogames?page=0&size=10");
