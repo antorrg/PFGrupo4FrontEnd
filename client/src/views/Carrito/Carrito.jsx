@@ -14,16 +14,17 @@ export default function Carrito() {
     getGames();
   }, []);
   return (
-    <div className="w-[90%]">
+    <div className="w-[90%] ">
       <h1 className="text-xl font-semibold mb-4">Shopping Cart</h1>
-      <div className="flex flex-col pb-16">
+      <div className="max-w-[600px] sm:mx-auto sm:mt-0 lg:w-full lg:flex gap-8 lg:max-w-7xl justify-between">  
+      <div className="flex flex-col pb-16 sm:w-[600px]">
         {games.videogames && games.videogames[4].image
           ? games.videogames.map((game) => {
               return (
-                <div className="w-ful h-[140px] py-4 flex gap-4 border-b-1">
+                <div className="w-full h-[140px] py-4 flex gap-4 border-b-1 sm:h-[270px] sm:py-8">
                   <div>
                     <img
-                      className="h-full w-[100px] object-cover"
+                      className="h-full w-[100px] object-cover sm:w-[200px]"
                       src={game.image}
                       alt={game.name}
                     />
@@ -66,7 +67,7 @@ export default function Carrito() {
             })
           : null}
       </div>
-      <div className="flex flex-col w-full border-t-1 justify-between items-center">
+      <div className="flex flex-col p-3 mb-4 w-full border-t-1 justify-between items-center sm:w-[600px] lg:w-[500px] bg-[#f7edff] h-fit lg:p-6 gap-4 rounded-2xl">
         <div className="flex justify-between w-full">
           <div>
             <h1 className="font-medium">Subtotal</h1>
@@ -85,6 +86,7 @@ export default function Carrito() {
             Continue Shopping...
           </span>
         </div>
+      </div>
       </div>
     </div>
   );
