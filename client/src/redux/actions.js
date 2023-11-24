@@ -8,6 +8,7 @@ export const GET_GENRES = "GET_GENRES";
 export const SEARCH_GAME = "SEARCH_GAME";
 export const SET_FILTER = "SET_FILTER";
 export const CHANGE_BG = "CHANGE_BG";
+export const GET_ALL_GAMES = "GET_ALL_GAMES";
 
 export const updateFilterObj = (filter) => {
   return (dispatch) => {
@@ -129,5 +130,19 @@ export const changeBg = (data) => {
   return {
     type: CHANGE_BG,
     payload: data,
+  };
+};
+
+export const getAllGames = () => {
+  return async function (dispatch) {
+    try {
+      const response = await axios.get("/games");
+      return dispatch({
+        type: GET_ALL_GAMES,
+        payload: response.data,
+      });
+    } catch (error) {
+      alert(error);
+    }
   };
 };
