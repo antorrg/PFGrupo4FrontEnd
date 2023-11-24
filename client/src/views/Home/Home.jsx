@@ -52,7 +52,9 @@ const Home = () => {
       <div className="p-4 w-[220px] h-auto bg-[#5825cc]">
         {/*<SearchBar />
         <br />*/}
-        <Filters onApplyFilters={onApplyFiltersHandlers}/>
+        <Filters
+        onApplyFilters={onApplyFiltersHandlers}
+        />
         {/* <div className={styles.filtros}></div>
         <div className={styles.filtros}></div>
         <div className={styles.filtros}></div>
