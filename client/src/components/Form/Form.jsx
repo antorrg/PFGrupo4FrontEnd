@@ -5,6 +5,8 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllGames, getGenres, getPlatforms } from "../../redux/actions";
 import Select from "react-select";
+import Swal from "sweetalert2";
+
 
 const Formulario = ({ props }) => {
   const dispatch = useDispatch();
@@ -88,9 +90,21 @@ const Formulario = ({ props }) => {
       onSubmit={async (values) => {
         try {
           await axios.post("/post", values);
-          alert("VideoGame Create ");
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Videojuego creado con exito !!",
+            showConfirmButton: false,
+            timer: 2000
+          });
         } catch (error) {
-          alert(error.message);
+          Swal.fire({
+            position: "top-end",
+            icon: "error",
+            title: `${error.message}`,
+            showConfirmButton: false,
+            timer: 1500
+          });
         }
       }}
     >
