@@ -25,7 +25,11 @@ export const getGames = (filtersObj) => {
     try {
       let filterString = `?page=${filtersObj.page}&size=6`;
       for (const key in filtersObj) {
-        if (key !== "page" && filtersObj[key] !== "" && filtersObj[key] !== -1) {
+        if (
+          key !== "page" &&
+          filtersObj[key] !== "" &&
+          filtersObj[key] !== -1
+        ) {
           filterString += "&" + key + "=" + filtersObj[key];
         }
       }
@@ -164,7 +168,11 @@ export const getAllGames = () => {
         payload: response.data,
       });
     } catch (error) {
-      alert(error);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: `${error.message}`,
+      });
     }
   };
 };
