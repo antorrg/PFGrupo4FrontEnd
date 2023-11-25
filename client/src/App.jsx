@@ -1,5 +1,5 @@
 // hooks ----------------------------------------
-import { Routes, Route } from "react-router-dom";
+import { Routes } from "react-router-dom";
 import { useEffect, Suspense } from "react";
 import { getGames } from "./redux/actions";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,6 +10,7 @@ import { renderRoutes, routes } from "./routes/index.jsx";
 import { Spinner } from "@nextui-org/react";
 // NEXT -----------------------------------------------
 import { NextUIProvider } from "@nextui-org/react";
+import { CartProvider } from "./context/contextCart";
 
 function App() {
   const dispatch = useDispatch();
@@ -34,6 +35,7 @@ function App() {
   }, []);
 
   return (
+    <CartProvider>
     <NextUIProvider>
       <Suspense
         fallback={
@@ -57,6 +59,7 @@ function App() {
         </div>
       </Suspense>
     </NextUIProvider>
+    </CartProvider>
   );
 }
 
