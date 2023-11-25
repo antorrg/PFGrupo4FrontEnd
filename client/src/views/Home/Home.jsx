@@ -16,12 +16,12 @@ const Home = () => {
     genres: "",
     minPrice: -1,
     maxPrice: -1,
-    name: ""
+    name: "",
   });
 
   const onApplyFiltersHandlers = (auxFilters) => {
     setFilters(auxFilters);
-  }
+  };
 
   const onPageChangeHandler = (pageNumber) => {
     /*const auxFilter  = {
@@ -30,7 +30,7 @@ const Home = () => {
     dispatch(updateFilterObj(auxFilter));*/
     //dispatch(getGames(filtersObj));
 
-    setFilters({...filters, page: pageNumber});
+    setFilters({ ...filters, page: pageNumber });
 
     /*dispatch(getGames({
       page: pageNumber,
@@ -40,21 +40,19 @@ const Home = () => {
       maxPrice: -1,
       name: ""
     }));*/
-  }
+  };
 
   useEffect(() => {
-    console.log("Actualio estado!!!")
+    console.log("Actualio estado!!!");
     dispatch(getGames(filters));
   }, [filters, dispatch]);
 
   return (
-    <div className="mt-4 flex items-start justify-center gap-8 w-[80%]">
+    <div className="mt-4 flex items-start justify-center gap-8 w-[80%] flex-1">
       <div className="p-4 w-[220px] h-auto bg-[#5825cc]">
         {/*<SearchBar />
         <br />*/}
-        <Filters
-        onApplyFilters={onApplyFiltersHandlers}
-        />
+        <Filters onApplyFilters={onApplyFiltersHandlers} />
         {/* <div className={styles.filtros}></div>
         <div className={styles.filtros}></div>
         <div className={styles.filtros}></div>
@@ -63,15 +61,15 @@ const Home = () => {
       <div className="flex-1 h-auto">
         {games.videogames ? (
           <>
-            <Cards
-              videogames={games.videogames}
-            />
+            <Cards videogames={games.videogames} />
             <Pagination
               PaginationData={games.PaginationData}
               onPageChange={onPageChangeHandler}
             />
           </>
-        ) : console.log("NO CARGO")}
+        ) : (
+          console.log("NO CARGO")
+        )}
       </div>
     </div>
   );
