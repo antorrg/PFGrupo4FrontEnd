@@ -1,9 +1,11 @@
 import { Route } from "react-router-dom";
 import { lazy } from "react";
 
-export const renderRoutes = () => {
+export const renderRoutes = (routes) => {
   return routes.map((route, index) => {
-    return <Route path={route.path} key={index} element={<route.element />} />;
+    return (
+      <Route path={route.path} key={index} element={<route.element />}></Route>
+    );
   });
 };
 
@@ -29,7 +31,7 @@ export const routes = [
     element: lazy(async () => await import("../views/Wishlist/Wishlist")),
   },
   {
-    path: "/admin",
+    path: "/admin/*",
     element: lazy(async () => await import("../views/Admin/Admin")),
   },
   {
