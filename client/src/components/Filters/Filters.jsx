@@ -1,6 +1,6 @@
 import style from "./Filters.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Select from "react-select";
 
 import { getPlatforms, getGenres } from "../../redux/actions";
@@ -16,13 +16,12 @@ export default function Filters(props) {
   const genres = useSelector((state) => state.genres);
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [selectedPlatforms, setSelectedPlatforms] = useState([]);
-  //const [priceOrder, setPriceOrder] = useState("none");
-  const [sortOrder, setSortOrder] = useState("none");
+  const [sortOrder, setSortOrder] = useState({ value: "none", label: "Sin orden" });
   const [searchText, setSearchText] = useState('');
-
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  //let selectedGenresRef = useRef();
-  //let selectedPlatformsRef = useRef();
+  
+  const selectedGenresRef = useRef(null);
+  const selectedPlatformsRef = useRef(null);
+  const selectedOrderRef = useRef(null);
 
   const [prices, setPrices] = useState({
     minPrice: "",
@@ -48,10 +47,13 @@ export default function Filters(props) {
     value: platform.name,
     label: platform.name,
   }));
-
-  const clearSelection = () => {
-    setSelectedOptions([]);
-  };
+  const orderOptions = [
+      { value: "none", label: "Sin orden" },
+      { value: "ASC_N", label: "Nombre ascendente" },
+      { value: "DESC_N", label: "Nombre descendente" },
+      { value: "ASC_P", label: "Precio ascendente" },
+      { value: "DESC_P", label: "Precio descendente" }
+  ];
 
   useEffect(() => {
     dispatch(getPlatforms());
@@ -66,22 +68,13 @@ export default function Filters(props) {
     setSelectedGenres(auxSelectedOptions);
   }
 
-  /*const minPriceHandler = (value) => {
-    //setMinPrice(value === "" ? -1 : +value);
-    setPrices({...prices, minPrice: value === "" ? -1 : +value});
+  const orderHandler = (auxSelectedOptions) => {
+    setSortOrder(auxSelectedOptions);
   }
-
-  const maxPriceHandler = (value) => {
-    //setMaxPrice(value === "" ? -1 : +value);
-    setPrices({...prices, maxPrice: value === "" ? -1 : +value});
-  }*/
 
   const handleChangePrice = (event) => {
     const property = event.target.name;
     const value = event.target.value;
-
-    console.log("property: " + property);
-    console.log("value: " + value);
 
     setPrices({...prices, [property]: value});
     valideInputFilters({...prices, [property]: value}, setErrorPrices, errorPrices);
@@ -108,13 +101,13 @@ export default function Filters(props) {
       minPrice: "",
       maxPrice: ""
     });
-    //setSelectedGenres([]);
-    //setIsMenuOpen(false);
-    //selectedGenresRef.select.clearValue();
-    //selectedPlatformsRef.select.clearValue();
+    selectedGenresRef.current.clearValue();
+    selectedPlatformsRef.current.clearValue();
+    selectedOrderRef.current.clearValue();
   };
 
   const applyFilters = () => {
+    //Aplicar filtros:
     onApplyFilters({
       page: 0,
       platforms: selectedPlatforms.map((platf) => {
@@ -125,7 +118,7 @@ export default function Filters(props) {
       }).join(","),
       minPrice: prices.minPrice,
       maxPrice: prices.maxPrice,
-      order: sortOrder,
+      order: sortOrder.value,
       name: searchText
     });
   };
@@ -133,67 +126,31 @@ export default function Filters(props) {
   return (
     <div>
       <SearchBar
-      //setSearchText={setSearchTextHandler}
       setSearchText={handlerInputChange}
-      //searchText={currentFilters.name}
       searchText={inputValue}
       />
       <br />
       <Select
-        /*ref={ref => {
-          selectedGenresRef = ref;
-        }}*/
         options={platformsOptions}
         isMulti
         onChange={(selectedOptions) => platformsHandler(selectedOptions)}
-        //onChange={(selectedOptions) => platformsHandler(selectedOptions)}
         placeholder="Plataformas..."
-        /*menuIsOpen={isMenuOpen}
-        onMenuOpen={() => setIsMenuOpen(true)}
-        onMenuClose={() => setIsMenuOpen(false)}*/
+        ref={selectedPlatformsRef}
       />
       <br />
       <Select
-        /*ref={ref => {
-          selectedPlatformsRef = ref;
-        }}*/
         options={genresOptions}
         isMulti
         onChange={(selectedOptions) => genresHandler(selectedOptions)}
         placeholder="Géneros..."
+        ref={selectedGenresRef}
       />
       <br />
-      {/*<Select
-        options={[
-          { value: "none", label: "none" },
-          { value: "ASC", label: "Ascendente" },
-          { value: "DESC", label: "Descendente" },
-        ]}
-        value={sortOrder}
-        onChange={(selectedOption) => setSortOrder(selectedOption.value)}
-        placeholder="Ordenar por nombre"
-      />
-      <br />*/}
-      {/* <Select
-        options={[
-          { value: "digital", label: "Digital" },
-          { value: "fisico", label: "Físico" },
-        ]}
-        value={format}
-        onChange={(selectedOption) => setFormat(selectedOption.value)}
-        placeholder="Formato..."
-      />
-      <br /> */}
       <Select
-        options={[
-          { value: "", label: "none" },
-          { value: "ASC_N", label: "Nombre ascendente" },
-          { value: "DESC_N", label: "Nombre descendente" },
-          { value: "ASC_P", label: "Precio ascendente" },
-          { value: "DESC_P", label: "Precio descendente" }
-        ]}
-        onChange={(selectedOption) => setSortOrder(selectedOption.value)}
+        options={orderOptions}
+        onChange={(selectedOption) => orderHandler(selectedOption)}
         placeholder="Ordenar..."
+        ref={selectedOrderRef}
       />
       <br />
       <div>
@@ -202,7 +159,6 @@ export default function Filters(props) {
           min="0"
           name="minPrice"
           value={prices.minPrice}
-          //onChange={(event) => minPriceHandler(event.target.value)}
           onChange={handleChangePrice}
           placeholder="Precio mínimo..."
         />
@@ -213,7 +169,6 @@ export default function Filters(props) {
             min="0"
             name="maxPrice"
             value={prices.maxPrice}
-            //onChange={(event) => maxPriceHandler(event.target.value)}
             onChange={handleChangePrice}
             placeholder="Precio máximo..."
           />
