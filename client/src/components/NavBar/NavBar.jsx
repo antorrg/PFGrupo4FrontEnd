@@ -1,10 +1,19 @@
 import { NavLink, Link } from "react-router-dom";
 import logo from "./logo.png";
+import { CartContext } from "../../context/contextCart";
+import { useContext } from "react";
 // import SearchBar from "../SearchBar/SearchBar";
 
 export default function NavBar() {
   const auth = true;
   const admin = true;
+
+  const { cart } = useContext(CartContext);
+
+  const quantity = cart.reduce((acc, curr) => {
+    return acc + curr.quantity
+  }, 0)
+
   return (
     <div className="p-2 w-[80%] h-[10vh] max-h-[100px] flex justify-between items-center">
       <Link to={"/"} className=" h-full font-bold cursor-pointer">
@@ -16,7 +25,7 @@ export default function NavBar() {
         </NavLink>
         {auth && (
           <Link to={"/carrito"} className="font-bold cursor-pointer">
-            carrito
+            carrito <span>{quantity}</span>
           </Link>
         )}
         {auth && (
