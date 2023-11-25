@@ -1,19 +1,25 @@
+import axios from "axios";
 import React, { useEffect } from "react";
 import * as Yup from "yup";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { getGenres, getPlatforms } from "../../redux/actions";
+import { getAllGames, getGenres, getPlatforms } from "../../redux/actions";
 import Select from "react-select";
-import axios from "axios";
+import Swal from "sweetalert2";
 
-const Formulario = () => {
+
+const Formulario = ({ props }) => {
   const dispatch = useDispatch();
   const platforms = useSelector((state) => state.platforms);
   const genres = useSelector((state) => state.genres);
+  const games = useSelector((state) => state.allGames);
+
+  const nameGames = games.map((game) => game.name);
 
   useEffect(() => {
     dispatch(getPlatforms());
     dispatch(getGenres());
+    dispatch(getAllGames());
   }, [dispatch]);
 
   const initialValues = {
@@ -24,16 +30,19 @@ const Formulario = () => {
     price: "",
     genres: [],
     physicalGame: false,
-    physicalGame: false,
   };
 
   const formSchema = Yup.object().shape({
     name: Yup.string()
       .required("Campo Requerido")
+      .test(
+        "Nombre Repetido",
+        "Este nombre ya esta siendo utilizado",
+        (value) => {
+          return !nameGames.includes(value);
+        }
+      )
       .min(5, `Mínimo 5 caracteres`),
-    image: Yup.string()
-      .url("Ingresa una URL valida")
-      .required("URL Obligatoria"),
     image: Yup.string()
       .url("Ingresa una URL valida")
       .required("URL Obligatoria"),
@@ -49,8 +58,8 @@ const Formulario = () => {
     price: Yup.number()
       .test({
         name: "valid-number",
-        message: "Formato Invalido Ej: 111.11",
-        test: (value) => /^(?!0\d)\d{1,3}(\.\d{0,2})?$/.test(value),
+        message: "Formato Invalido Ej: 11111.11",
+        test: (value) => /^[1-9]\d{0,4}(\.\d{0,2})?$/.test(value),
       })
       .required("Campo Requerido"),
     genres: Yup.array()
@@ -76,14 +85,26 @@ const Formulario = () => {
 
   return (
     <Formik
-      initialValues={initialValues}
+      initialValues={props ? props : initialValues}
       validationSchema={formSchema}
       onSubmit={async (values) => {
         try {
           await axios.post("/post", values);
-          alert("VideoGame Create ");
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Videojuego creado con exito !!",
+            showConfirmButton: false,
+            timer: 2000
+          });
         } catch (error) {
-          alert(error.message);
+          Swal.fire({
+            position: "top-end",
+            icon: "error",
+            title: `${error.message}`,
+            showConfirmButton: false,
+            timer: 1500
+          });
         }
       }}
     >
@@ -210,7 +231,8 @@ const Formulario = () => {
             <Field
               className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               name="price"
-              placeholder="111.11"
+              min="1"
+              placeholder="11111.11"
               type="number"
             />
             <ErrorMessage

@@ -9,6 +9,7 @@ export const GET_GENRES = "GET_GENRES";
 export const SEARCH_GAME = "SEARCH_GAME";
 export const SET_FILTER = "SET_FILTER";
 export const CHANGE_BG = "CHANGE_BG";
+export const GET_ALL_GAMES = "GET_ALL_GAMES";
 
 export const updateFilterObj = (filter) => {
   return (dispatch) => {
@@ -24,7 +25,11 @@ export const getGames = (filtersObj) => {
     try {
       let filterString = `?page=${filtersObj.page}&size=6`;
       for (const key in filtersObj) {
-        if (key !== "page" && filtersObj[key] !== "" && filtersObj[key] !== -1) {
+        if (
+          key !== "page" &&
+          filtersObj[key] !== "" &&
+          filtersObj[key] !== -1
+        ) {
           filterString += "&" + key + "=" + filtersObj[key];
         }
       }
@@ -151,5 +156,23 @@ export const changeBg = (data) => {
   return {
     type: CHANGE_BG,
     payload: data,
+  };
+};
+
+export const getAllGames = () => {
+  return async function (dispatch) {
+    try {
+      const response = await axios.get("/games");
+      return dispatch({
+        type: GET_ALL_GAMES,
+        payload: response.data,
+      });
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: `${error.message}`,
+      });
+    }
   };
 };
