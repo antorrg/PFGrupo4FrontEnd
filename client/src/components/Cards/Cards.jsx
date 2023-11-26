@@ -6,7 +6,7 @@ const Cards = (props) => {
   //const games = useSelector((state) => state.games);
   const { videogames } = props;
   return (
-    <div className="flex justify-center flex-wrap gap-4">
+    <div className="flex justify-start items-center flex-wrap gap-4">
       {videogames.map((element) => (
         <Card key={element.id} game={element} />
       ))}
