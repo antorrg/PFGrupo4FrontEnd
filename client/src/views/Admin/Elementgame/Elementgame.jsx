@@ -12,20 +12,20 @@ const ElementGame = ({ game }) => {
     price,
     physicalGame,
     description,
-    platforms,
-    genres,
+    platformsText,
+    genresText,
     released,
     stock,
   } = game;
+  
   const propsGame = {
-    name,
     image,
     price,
     physicalGame,
     description,
     stock,
-    platforms,
-    genres,
+    platformsText,
+    genresText,
     released,
   };
   const [form, setForm] = useState(false);
@@ -57,6 +57,7 @@ const ElementGame = ({ game }) => {
       <div className="flex-shrink-0">
         <h4 className="text-xl font-bold mb-2">{name}</h4>
         <h4 className="text-lg mb-2">{price}</h4>
+        <h5>{platformsText}</h5>
         {physicalGame ? (
           <h4 className="text-green-500"> Juego Fisico  Stock: {stock} </h4>
         ) : (
