@@ -6,6 +6,7 @@ import {
   GET_GENRES,
   SET_FILTER,
   CHANGE_BG,
+  GET_ALL_GAMES,
 } from "./actions";
 
 let initialState = {
@@ -23,6 +24,7 @@ let initialState = {
     name: "",
   },
   bgPage: "",
+  allGames: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -72,7 +74,11 @@ const reducer = (state = initialState, action) => {
       };
 
     case CHANGE_BG:
-      return { ...state, bgPage: action.payload}
+      return { ...state, bgPage: action.payload };
+
+    case GET_ALL_GAMES:
+      return { ...state, allGames: action.payload };
+
     default:
       return { ...state };
   }

@@ -1,4 +1,5 @@
 import axios from "axios";
+import Swal from "sweetalert2";
 
 export const GET_GAMES = "GET_GAMES";
 export const GET_DETAILS = "GET_DETAILS";
@@ -8,6 +9,7 @@ export const GET_GENRES = "GET_GENRES";
 export const SEARCH_GAME = "SEARCH_GAME";
 export const SET_FILTER = "SET_FILTER";
 export const CHANGE_BG = "CHANGE_BG";
+export const GET_ALL_GAMES = "GET_ALL_GAMES";
 
 export const updateFilterObj = (filter) => {
   return (dispatch) => {
@@ -34,13 +36,18 @@ export const getGames = (filtersObj) => {
       //filterString = filterString.substring(0, filterString.length - 1);
       // console.log("filterString: " + filterString);
       const { data } = await axios(`/videogames${filterString}`);
-      //console.log(JSON.stringify(data));
+      // console.log(JSON.stringify(data.videogames[0].name));
       return dispatch({
         type: GET_GAMES,
         payload: data,
       });
     } catch (error) {
-      alert(error);
+      // alert(error);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: `${error.message}`,
+      });
     }
   };
 };
@@ -72,7 +79,12 @@ export const getDetails = (id) => {
         payload: response.data,
       });
     } catch (error) {
-      alert(error);
+      // alert(error);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: `${error.message}`,
+      });
     }
   };
 };
@@ -92,7 +104,12 @@ export const getPlatforms = () => {
         payload: response.data,
       });
     } catch (error) {
-      alert(error);
+      // alert(error);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: `${error.message}`,
+      });
     }
   };
 };
@@ -106,7 +123,12 @@ export const getGenres = () => {
         payload: response.data,
       });
     } catch (error) {
-      alert(error);
+      // alert(error);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: `${error.message}`,
+      });
     }
   };
 };
@@ -120,7 +142,12 @@ export const searchGame = (name) => {
         payload: response.data,
       });
     } catch (error) {
-      alert(error);
+      // alert(error);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: `${error.message}`,
+      });
     }
   };
 };
@@ -129,5 +156,23 @@ export const changeBg = (data) => {
   return {
     type: CHANGE_BG,
     payload: data,
+  };
+};
+
+export const getAllGames = () => {
+  return async function (dispatch) {
+    try {
+      const response = await axios.get("/games");
+      return dispatch({
+        type: GET_ALL_GAMES,
+        payload: response.data,
+      });
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: `${error.message}`,
+      });
+    }
   };
 };

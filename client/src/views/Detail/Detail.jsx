@@ -13,6 +13,7 @@ function Detail() {
     dispatch(getDetails(id));
     return () => {
       dispatch(clearDetails());
+      dispatch(changeBg(""));
     };
   }, [dispatch, id]);
 
@@ -42,7 +43,7 @@ function Detail() {
             <img
               src={detailGame?.image}
               alt={detailGame?.name}
-              className="w-full"
+              className="w-full sm:w-[400px]"
             />
             <div className="flex w-full items-center p-2 pb-0">
               {detailGame.Genres?.map((genre) => {

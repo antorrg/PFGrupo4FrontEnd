@@ -1,27 +1,43 @@
+import style from "./Filters.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Select from "react-select";
 
 import { getPlatforms, getGenres } from "../../redux/actions";
-import { updateFilterObj } from "../../redux/actions";
-import { getGames } from "../../redux/actions";
 import SearchBar from "../../components/SearchBar/SearchBar";
+import valideInputFilters from "../../utils/valideInputFilters";
 
 export default function Filters(props) {
 
   const { onApplyFilters } = props
 
   const dispatch = useDispatch();
-  //const filtersObj = useSelector((state) => state.filtersObj);
   const platforms = useSelector((state) => state.platforms);
   const genres = useSelector((state) => state.genres);
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [selectedPlatforms, setSelectedPlatforms] = useState([]);
-  const [priceFilter, setPriceFilter] = useState("all");
-  const [minPrice, setMinPrice] = useState("");
-  const [maxPrice, setMaxPrice] = useState("");
-  const [sortOrder, setSortOrder] = useState("asc");
+  const [sortOrder, setSortOrder] = useState({ value: "none", label: "Sin orden" });
   const [searchText, setSearchText] = useState('');
+  
+  const selectedGenresRef = useRef(null);
+  const selectedPlatformsRef = useRef(null);
+  const selectedOrderRef = useRef(null);
+
+  const [prices, setPrices] = useState({
+    minPrice: "",
+    maxPrice: ""
+  });
+
+  const [errorPrices, setErrorPrices] = useState({
+    prices: ""
+  });
+
+  const [inputValue, setInputValue] = useState('');
+
+  const handlerInputChange = (value) => {
+    setInputValue(value);
+    setSearchTextHandler(value);
+  }
 
   const platformsOptions = platforms.map((platform) => ({
     value: platform.name,
@@ -31,10 +47,13 @@ export default function Filters(props) {
     value: platform.name,
     label: platform.name,
   }));
-
-  const clearSelection = () => {
-    setSelectedOptions([]);
-  };
+  const orderOptions = [
+      { value: "none", label: "Sin orden" },
+      { value: "ASC_N", label: "Nombre ascendente" },
+      { value: "DESC_N", label: "Nombre descendente" },
+      { value: "ASC_P", label: "Precio ascendente" },
+      { value: "DESC_P", label: "Precio descendente" }
+  ];
 
   useEffect(() => {
     dispatch(getPlatforms());
@@ -43,50 +62,22 @@ export default function Filters(props) {
 
   const platformsHandler = (auxSelectedOptions) => {
     setSelectedPlatforms(auxSelectedOptions);
-    //console.log("auxSelectedOptions: " + JSON.stringify(auxSelectedOptions));
-    /*const auxFilter  = {
-      page: 0,
-      platforms: auxSelectedOptions.map((platf) => {
-        return platf.value;
-      }).join(",")
-    }
-
-    dispatch(updateFilterObj(auxFilter));*/
   }
 
   const genresHandler = (auxSelectedOptions) => {
     setSelectedGenres(auxSelectedOptions);
-    //console.log("auxSelectedOptions: " + JSON.stringify(auxSelectedOptions));
-    /*const auxFilter  = {
-      page: 0,
-      genres: auxSelectedOptions.map((genre) => {
-        return genre.value;
-      }).join(",")
-    }
-
-    dispatch(updateFilterObj(auxFilter));*/
   }
 
-  const minPriceHandler = (value) => {
-    setMinPrice(value === "" ? -1 : +value);
-    //console.log("auxSelectedOptions: " + JSON.stringify(auxSelectedOptions));
-    /*const auxFilter  = {
-      page: 0,
-      minPrice: value === "" ? -1 : +value
-    }
-
-    dispatch(updateFilterObj(auxFilter));*/
+  const orderHandler = (auxSelectedOptions) => {
+    setSortOrder(auxSelectedOptions);
   }
 
-  const maxPriceHandler = (value) => {
-    setMaxPrice(value === "" ? -1 : +value);
-    //console.log("auxSelectedOptions: " + JSON.stringify(auxSelectedOptions));
-    /*const auxFilter  = {
-      page: 0,
-      maxPrice: value === "" ? -1 : +value
-    }
+  const handleChangePrice = (event) => {
+    const property = event.target.name;
+    const value = event.target.value;
 
-    dispatch(updateFilterObj(auxFilter));*/
+    setPrices({...prices, [property]: value});
+    valideInputFilters({...prices, [property]: value}, setErrorPrices, errorPrices);
   }
 
   const setSearchTextHandler = (auxText) => {
@@ -101,19 +92,22 @@ export default function Filters(props) {
       genres: "",
       minPrice: -1,
       maxPrice: -1,
+      order: "none",
       name: ""
     });
-    /*dispatch(getGames({
-      page: 0,
-      platforms: "",
-      genres: "",
-      minPrice: -1,
-      maxPrice: -1,
-      name: ""
-    }));*/
+
+    setInputValue("");
+    setPrices({
+      minPrice: "",
+      maxPrice: ""
+    });
+    selectedGenresRef.current.clearValue();
+    selectedPlatformsRef.current.clearValue();
+    selectedOrderRef.current.clearValue();
   };
 
   const applyFilters = () => {
+    //Aplicar filtros:
     onApplyFilters({
       page: 0,
       platforms: selectedPlatforms.map((platf) => {
@@ -122,44 +116,26 @@ export default function Filters(props) {
       genres: selectedGenres.map((genre) => {
         return genre.value;
       }).join(","),
-      minPrice: minPrice,
-      maxPrice: maxPrice,
+      minPrice: prices.minPrice,
+      maxPrice: prices.maxPrice,
+      order: sortOrder.value,
       name: searchText
     });
-    //dispatch(getGames(filtersObj));
-
-    //console.log("selectedPlatforms: " + JSON.stringify(selectedPlatforms));
-    /*const auxFilter  = {
-      page: 0,
-      platforms: selectedPlatforms.map((platf) => {
-        return platf.value;
-      }).join(","),
-      genres: selectedGenres.map((genre) => {
-        return genre.value;
-      }).join(","),
-      minPrice: minPrice === "" ? -1 : +minPrice,
-      maxPrice: maxPrice === "" ? -1 : +maxPrice
-    }*/
-    
-    /*dispatch(getGames({
-      page: 0,
-      platforms: "",
-      genres: "",
-      minPrice: -1,
-      maxPrice: -1,
-      name: ""
-    }));*/
   };
 
   return (
     <div>
-      <SearchBar setSearchText={setSearchTextHandler}/>
+      <SearchBar
+      setSearchText={handlerInputChange}
+      searchText={inputValue}
+      />
       <br />
       <Select
         options={platformsOptions}
         isMulti
         onChange={(selectedOptions) => platformsHandler(selectedOptions)}
         placeholder="Plataformas..."
+        ref={selectedPlatformsRef}
       />
       <br />
       <Select
@@ -167,56 +143,39 @@ export default function Filters(props) {
         isMulti
         onChange={(selectedOptions) => genresHandler(selectedOptions)}
         placeholder="Géneros..."
+        ref={selectedGenresRef}
       />
       <br />
       <Select
-        options={[
-          { value: "asc", label: "Ascendente" },
-          { value: "desc", label: "Descendente" },
-        ]}
-        value={sortOrder}
-        onChange={(selectedOption) => setSortOrder(selectedOption.value)}
-        placeholder="Ordenar por nombre"
-      />
-      <br />
-      {/* <Select
-        options={[
-          { value: "digital", label: "Digital" },
-          { value: "fisico", label: "Físico" },
-        ]}
-        value={format}
-        onChange={(selectedOption) => setFormat(selectedOption.value)}
-        placeholder="Formato..."
-      />
-      <br /> */}
-      <Select
-        options={[
-          { value: "all", label: "Todos" },
-          { value: "less", label: "Menor precio" },
-          { value: "greater", label: "Mayor precio" },
-        ]}
-        onChange={(selectedOption) => setPriceFilter(selectedOption.value)}
-        placeholder="Precio..."
+        options={orderOptions}
+        onChange={(selectedOption) => orderHandler(selectedOption)}
+        placeholder="Ordenar..."
+        ref={selectedOrderRef}
       />
       <br />
       <div>
         <input
           type="number"
-          //value={minPrice}
-          onChange={(event) => minPriceHandler(event.target.value)}
+          min="0"
+          name="minPrice"
+          value={prices.minPrice}
+          onChange={handleChangePrice}
           placeholder="Precio mínimo..."
         />
         <div>
           <br />
           <input
             type="number"
-            //value={maxPrice}
-            onChange={(event) => maxPriceHandler(event.target.value)}
+            min="0"
+            name="maxPrice"
+            value={prices.maxPrice}
+            onChange={handleChangePrice}
             placeholder="Precio máximo..."
           />
         </div>
+        <span className={style.error}>{errorPrices.prices}</span>
       </div>
-
+      <br/>
       <button onClick={applyFilters}>Aplicar Filtros </button>
       <br />
       <button onClick={resetFilters}>Restablecer Filtros</button>
