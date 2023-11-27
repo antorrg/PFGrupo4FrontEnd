@@ -1,7 +1,7 @@
 import ElementGame from "../Elementgame/Elementgame";
 
 const ListGames = ({ videogames }) => {
-  console.log(videogames);
+
   return (
     <div>
       <ul>

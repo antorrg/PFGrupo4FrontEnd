@@ -4,6 +4,7 @@ import Pagination from "../../../components/Pagination/Pagination";
 import { useSelector, useDispatch } from "react-redux";
 import { getGames } from "../../../redux/actions";
 import { useState, useEffect } from "react";
+import GamesTable from "../Elementgame/GamesTable";
 
 const AdminHome = () => {
   const dispatch = useDispatch();
@@ -39,7 +40,8 @@ const AdminHome = () => {
       <div className="flex-1 h-auto">
         {games.videogames ? (
           <>
-            <ListGames videogames={games.videogames} />
+            {/* <ListGames videogames={games.videogames} /> */}
+            <GamesTable/>
             <Pagination
               PaginationData={games.PaginationData}
               onPageChange={onPageChangeHandler}
