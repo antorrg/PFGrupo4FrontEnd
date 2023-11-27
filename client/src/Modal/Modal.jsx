@@ -8,17 +8,19 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 
-const ModalComponent = ({ textButton, title, body, buttons }) => {
+const ModalComponent = ({ textButton, title, body, buttons, openButton}) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  console.log(buttons);
+
   return (
     <>
-      <Button
-        onPress={onOpen}
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
-      >
-        {textButton}
-      </Button>
+      {openButton?
+        <button onClick={onOpen} className="flex">
+          {openButton}
+        </button>:
+        <Button onPress={onOpen}>
+          {textButton}
+        </Button>
+      }
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
           {(onClose) => (
