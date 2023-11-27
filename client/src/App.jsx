@@ -5,6 +5,7 @@ import { getGames } from "./redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { changeBg } from "./redux/actions";
 // views ----------------------------------------
+import axios from'axios';
 import {
   Landing,
   Home,
@@ -16,6 +17,7 @@ import {
   NavBar,
   Create,
 } from "./views/index";
+axios.defaults.baseURL = "http://localhost:3001";
 
 function App() {
   const dispatch = useDispatch();
