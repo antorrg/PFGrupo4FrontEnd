@@ -13,14 +13,8 @@ const user = {
 };
 
 const navigation = [
-  { name: "Juegos", href: "/admin", current: true },
-  { name: "Ingresar Juego", href: "/admin/create", current: false },
-];
-
-const userNavigation = [
-  { name: "Perfil", href: "#" },
-  { name: "Configuración", href: "#" },
-  { name: "Cerrar sesión", href: "#" },
+  { name: "Juegos", href: "/perfil/", current: true },
+  { name: "Ingresar Juego", href: "/perfil/create", current: false },
 ];
 
 function classNames(...classes) {
@@ -196,7 +190,7 @@ export default function Admin() {
         </Disclosure>
       </div>
       <Routes>
-      <Route path="/" element={<AdminHome />} />
+        <Route path="/" element={<AdminHome />} />
         <Route path="/create" element={<Create />} />
       </Routes>
     </>

@@ -17,6 +17,7 @@ const ElementGame = ({ game }) => {
     released,
     stock,
   } = game;
+
   const propsGame = {
     name,
     image,
@@ -28,7 +29,7 @@ const ElementGame = ({ game }) => {
     genres,
     released,
   };
-  const [form, setForm] = useState(false);
+  // const [form, setForm] = useState(false);
 
   const handlerDelete = () => {
     try {
@@ -49,33 +50,28 @@ const ElementGame = ({ game }) => {
     }
   };
 
-  const handlePortal = () => {
-    setForm(!form);
-  };
+  // const handlePortal = () => {
+  //   setForm(!form);
+  // };
+
   return (
     <div className="border p-4 my-4 flex items-center">
       <div className="flex-shrink-0">
         <h4 className="text-xl font-bold mb-2">{name}</h4>
         <h4 className="text-lg mb-2">{price}</h4>
         {physicalGame ? (
-          <h4 className="text-green-500"> Juego Fisico  Stock: {stock} </h4>
+          <h4 className="text-green-500"> Juego Fisico Stock: {stock} </h4>
         ) : (
           <h4 className="text-blue-500"> Juego Digital </h4>
         )}
       </div>
 
       <div className="ml-auto flex items-center">
-        {form && (
-          <Modal>
-            <Formulario props={propsGame} handlePortal={handlePortal} id={id} />
-          </Modal>
-        )}
-        <button
-          onClick={handlePortal}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
-        >
-          Editar Juego
-        </button>
+        <Modal
+          textButton="Editar Juego"
+          title="Actualizar Juego"
+          body={<Formulario props={propsGame} id={id} />}
+        />
         <button
           onClick={handlerDelete}
           className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
