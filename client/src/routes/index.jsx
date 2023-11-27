@@ -31,7 +31,7 @@ export const routes = [
     element: lazy(async () => await import("../views/Wishlist/Wishlist")),
   },
   {
-    path: "/admin/*",
+    path: "/perfil/*",
     element: lazy(async () => await import("../views/Admin/Admin")),
   },
   {
