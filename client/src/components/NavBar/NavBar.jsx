@@ -49,13 +49,13 @@ export default function NavBar() {
       access: "all",
     },
     {
-      element: "List Games",
-      to: "/perfil/create",
+      element: "Lista de Juegos",
+      to: "/perfil/",
       access: "admin",
     },
     {
-      element: "Create Game",
-      to: "/perfil/",
+      element: "Ingresar Juego",
+      to: "/perfil/create",
       access: "admin",
     },
   ];
@@ -90,7 +90,7 @@ export default function NavBar() {
       />
       <NavbarBrand>
         <Link to={"/"} className="cursor-pointer">
-          <img src={logo} alt="logo" className="h-[50px] w-auto" />
+          <img src={logo} alt="logo" className="h-[70px] w-auto" />
         </Link>
       </NavbarBrand>
       <NavbarContent justify="end" className="hidden sm:flex gap-10 sm:mr-8">

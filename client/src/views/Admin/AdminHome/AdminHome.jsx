@@ -8,7 +8,7 @@ import { useState, useEffect } from "react";
 const AdminHome = () => {
   const dispatch = useDispatch();
   const games = useSelector((state) => state.games);
-  console.log(games)
+
   const [filters, setFilters] = useState({
     page: 0,
     platforms: "",
@@ -52,6 +52,5 @@ const AdminHome = () => {
     </div>
   );
 };
-
 
 export default AdminHome;
