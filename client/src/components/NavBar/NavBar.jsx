@@ -16,6 +16,7 @@ import {
   NavbarMenu,
   NavbarMenuToggle,
   NavbarMenuItem,
+  Badge,
 } from "@nextui-org/react";
 // import SearchBar from "../SearchBar/SearchBar";
 
@@ -26,9 +27,9 @@ export default function NavBar() {
 
   const { cart } = useContext(CartContext);
 
-  const quantity = cart.reduce((acc, curr) => {
-    return acc + curr.quantity;
-  }, 0);
+  // const quantity = cart.reduce((acc, curr) => {
+  //   return acc + curr.quantity;
+  // }, 0);
 
   const menuItems = [
     {
@@ -54,17 +55,35 @@ export default function NavBar() {
       position="static"
       height="5rem"
       maxWidth="2xl"
-      onMenuOpenChange={setIsMenuOpen}
-    >
+      onMenuOpenChange={setIsMenuOpen}>
       <NavbarBrand>
-        <Link to={"/"} className="cursor-pointer">
-          <img src={logo} alt="logo" className="h-[50px] w-auto" />
+        <Link
+          to={"/"}
+          className="cursor-pointer">
+          <img
+            src={logo}
+            alt="logo"
+            className="h-[50px] w-auto"
+          />
         </Link>
       </NavbarBrand>
-      <NavbarContent justify="end" className="hidden sm:flex gap-8">
+      <NavbarContent
+        justify="end"
+        className="hidden sm:flex gap-8">
         <NavbarItem>
-          <Link to="/carrito">
-            Carrito<span>{quantity}</span>
+          <Link
+            to="/carrito"
+            className="flex gap-2 cursor-pointer">
+            Carrito
+            {cart.length > 0 ? (
+              <Badge
+                content={cart.length}
+                color="danger"
+                shape="circle"
+                placement="top-right"></Badge>
+            ) : (
+              ""
+            )}
           </Link>
         </NavbarItem>
         <NavbarItem>
@@ -80,7 +99,11 @@ export default function NavBar() {
         )}
         {auth === false && (
           <NavbarItem>
-            <Button as={Link} color="primary" href="#" variant="flat">
+            <Button
+              as={Link}
+              color="primary"
+              href="#"
+              variant="flat">
               Sign Up
             </Button>
           </NavbarItem>
@@ -97,7 +120,9 @@ export default function NavBar() {
                 className="transition-transform"
               />
             </DropdownTrigger>
-            <DropdownMenu aria-label="Profile Actions" variant="flat">
+            <DropdownMenu
+              aria-label="Profile Actions"
+              variant="flat">
               <DropdownItem key="new">
                 <Link to="/perfil/wishlist">Favoritos</Link>
               </DropdownItem>
@@ -107,7 +132,10 @@ export default function NavBar() {
               <DropdownItem key="edit">
                 <Link to="/perfil/settings">Configuración</Link>
               </DropdownItem>
-              <DropdownItem key="delete" className="text-danger" color="danger">
+              <DropdownItem
+                key="delete"
+                className="text-danger"
+                color="danger">
                 <Link to="/">Cerrar sesión</Link>
               </DropdownItem>
             </DropdownMenu>
@@ -122,17 +150,10 @@ export default function NavBar() {
         {menuItems.map((item, index) => (
           <NavbarMenuItem key={`${item}-${index}`}>
             <Link
-              color={
-                index === 2
-                  ? "primary"
-                  : index === menuItems.length - 1
-                  ? "danger"
-                  : "foreground"
-              }
+              color={index === 2 ? "primary" : index === menuItems.length - 1 ? "danger" : "foreground"}
               className="w-full"
               to={item.to}
-              size="lg"
-            >
+              size="lg">
               {item.element}
             </Link>
           </NavbarMenuItem>
