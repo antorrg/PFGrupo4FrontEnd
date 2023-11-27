@@ -44,7 +44,6 @@ const Formulario = ({ props, handlePortal, id }) => {
         }
       )
       .min(5, `Mínimo 5 caracteres`),
-    
     image: Yup.mixed()
       .required("La imagen es obligatoria")
       .test("fileFormat", "Formato de archivo no válido", (value) => {
@@ -265,7 +264,6 @@ const Formulario = ({ props, handlePortal, id }) => {
                   className="mt-1 text-sm text-red-600"
                 />
               </div>
-
               <div className="mb-4">
                 <label
                   htmlFor="price"
@@ -313,7 +311,6 @@ const Formulario = ({ props, handlePortal, id }) => {
                   className="mt-1 text-sm text-red-600"
                 />
               </div>
-
               <div>
                 <label>
                   <Field type="checkbox" name="physicalGame" />
