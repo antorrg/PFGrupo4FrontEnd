@@ -3,6 +3,7 @@ import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Routes, Route, Link } from "react-router-dom";
 import Create from "./Create/Create";
+import AdminHome from "./AdminHome/AdminHome";
 
 const user = {
   name: "Tom Cook",
@@ -195,6 +196,7 @@ export default function Admin() {
         </Disclosure>
       </div>
       <Routes>
+      <Route path="/" element={<AdminHome />} />
         <Route path="/create" element={<Create />} />
       </Routes>
     </>
