@@ -1,4 +1,7 @@
 import { Link } from "react-router-dom";
+import LogoutButton from "../Auth0/LogoutButton";
+import LoginButton from "../Auth0/LoginButton";
+import { useAuth0 } from "@auth0/auth0-react";
 import { useState, useContext } from "react";
 import logo from "./logo.png";
 import { CartContext } from "../../context/contextCart";
@@ -27,9 +30,13 @@ import {
 
 export default function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const auth = true;
+  //const auth = true;
   const admin = true;
 
+  const {user, isAuthenticated}= useAuth0();
+  console.log(isAuthenticated)
+  console.log(user)
+  
   const { cart } = useContext(CartContext);
 
   const perfilItems = [
@@ -126,18 +133,33 @@ export default function NavBar() {
             <HeartIcon className="w-8 hover:text-orange-400" />
           </Link>
         </NavbarItem> */}
-        {auth === false && (
+        {isAuthenticated=== false && (
           <NavbarItem className="hidden lg:flex">
             <Link href="#">Login</Link>
           </NavbarItem>
         )}
-        {auth === false && (
+        {isAuthenticated === false && (
           <NavbarItem>
             <Button as={Link} color="primary" href="#" variant="flat">
               Sign Up
             </Button>
           </NavbarItem>
         )}
+        <div>
+          {!isAuthenticated? <LoginButton/> :<LogoutButton/>}
+        
+        
+        </div>
+
+        
+        <div>
+  {isAuthenticated ? (
+    <>
+      <h4>Bienvenido: {user.given_name ? user.given_name : user.nickname}</h4>
+      <img src={user.picture} alt="User Avatar" />
+    </>
+  ) : null}
+</div>
       </NavbarContent>
       <Dropdown>
         <DropdownTrigger>

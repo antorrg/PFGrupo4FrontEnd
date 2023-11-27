@@ -5,16 +5,15 @@ import { getGames } from "./redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { changeBg } from "./redux/actions";
 // views ----------------------------------------
+import { CartProvider } from "./context/contextCart";
+import { NextUIProvider, Spinner } from "@nextui-org/react";
+import { renderRoutes, routes } from "./routes";
+
 import {
-  Landing,
-  Home,
-  Detail,
-  Carrito,
-  Wishlist,
-  NotFound,
+ 
   Footer,
   NavBar,
-  Create,
+
 } from "./views/index";
 
 function App() {
