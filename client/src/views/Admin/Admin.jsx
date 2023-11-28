@@ -13,7 +13,9 @@ const user = {
 };
 
 const navigation = [
-  { name: "Juegos", href: "/perfil/", current: true },
+  { name: "Pedidos", href: "/perfil/orders", current: false },
+  { name: "Configuración", href: "/perfil/settings", current: false },
+  { name: "Juegos", href: "/perfil/", current: false },
   { name: "Ingresar Juego", href: "/perfil/create", current: false },
 ];
 

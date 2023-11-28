@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import LogoutButton from "../Auth0/LogoutButton";
 import LoginButton from "../Auth0/LoginButton";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -25,13 +25,13 @@ import {
   NavbarMenuToggle,
   NavbarMenuItem,
   DropdownSection,
+  Link
 } from "@nextui-org/react";
 // import SearchBar from "../SearchBar/SearchBar";
 
 export default function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  //const auth = true;
-  const admin = "1";
+  const admin = "0";
 
   const { user, isAuthenticated } = useAuth0();
 
@@ -89,15 +89,16 @@ export default function NavBar() {
         className="sm:hidden"
       />
       <NavbarBrand>
-        <Link to={"/"} className="cursor-pointer">
+        <Link href={"/"} className="cursor-pointer">
           <img src={logo} alt="logo" className="h-[70px] w-auto" />
         </Link>
       </NavbarBrand>
       <NavbarContent justify="end" className="hidden sm:flex gap-10 sm:mr-8">
         {navItems.map((item, index) => (
           <NavbarItem key={`${item}-${index}`}>
-            <Link to={item.to}>
+            <Link href={item.to}>
               {<item.icon className="w-8 hover:text-orange-400" />}
+              {(item.element === "Carrito" && cart.length > 0) && <p className="absolute -top-1 -right-3 bg-red-300 rounded-full w-5 h-5 flex items-center justify-center text-[12px] font-semibold">{cart.reduce((sum, item) => sum + item.quantity, 0)}</p>}
             </Link>
           </NavbarItem>
         ))}
@@ -127,20 +128,20 @@ export default function NavBar() {
           </DropdownTrigger>
           <DropdownMenu aria-label="Profile Actions" variant="flat">
             <DropdownSection>
-              {isAuthenticated &&
+              {
                 perfilItems.map((item) => (
-                  <DropdownItem key={item.element}>
-                    <Link to={item.to}>{item.element}</Link>
+                  item.access === "all" && <DropdownItem key={item.element}>
+                    <Link href={item.to}>{item.element}</Link>
                   </DropdownItem>
                 ))}
             </DropdownSection>
-            {admin === "1" && (
+            {admin === "0" && (
               <DropdownSection title="Admin zone" className="border-t">
                 {perfilItems.map(
                   (item) =>
                     item.access === "admin" && (
                       <DropdownItem key={item.element}>
-                        <Link to={item.to}>{item.element}</Link>
+                        <Link href={item.to}>{item.element}</Link>
                       </DropdownItem>
                     )
                 )}
@@ -161,7 +162,7 @@ export default function NavBar() {
                   : "foreground"
               }
               className="w-full"
-              to={item.to}
+              href={item.to}
               size="lg"
             >
               {item.element}

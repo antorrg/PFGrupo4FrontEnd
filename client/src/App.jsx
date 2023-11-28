@@ -1,5 +1,5 @@
 // hooks ----------------------------------------
-import { Routes } from "react-router-dom";
+import { Routes, useNavigate } from "react-router-dom";
 import { useEffect, Suspense } from "react";
 import { getGames } from "./redux/actions";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,6 +17,7 @@ import {
 } from "./views/index";
 
 function App() {
+  const navigate = useNavigate()
   const dispatch = useDispatch();
 
   const bgPage = useSelector((state) => state.bgPage);
@@ -40,7 +41,7 @@ function App() {
 
   return (
     <CartProvider>
-    <NextUIProvider>
+    <NextUIProvider navigate={navigate}>
       <Suspense
         fallback={
           <Spinner
