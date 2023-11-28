@@ -220,12 +220,19 @@ const Formulario = ({ props, id }) => {
                   id="image"
                   name="image"
                   className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                  onChange={(event) => {
-                    const file = event.currentTarget.files[0];
-                    console.log(file);
-                    console.log(file);
-                    if (file) {
-                      setFieldValue("image", file);
+                  onChange={async (event) => {
+                    const image = event.currentTarget.files[0];
+                    const formData = new FormData();
+                    formData.append("file", image);
+                    formData.append("upload_preset", "dynh9dt8");
+
+                    if (image) {
+                      const response = await axios.post(
+                        "https://api.cloudinary.com/v1_1/duy9efu8j/image/upload",
+                        formData
+                      );
+                      setFieldValue("image", response.data.url);
+                      console.log(initialValues);
                     } else {
                       setFieldValue("image", undefined);
                     }

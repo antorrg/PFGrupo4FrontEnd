@@ -33,7 +33,7 @@ const statusColorMap = {
   vacation: "warning",
 };
 
-const GamesTable = ({videogames}) => {
+const GamesTable = ({ videogames }) => {
   const handlerDelete = (id) => {
     try {
       axios.delete(`/games/${id}`);
@@ -62,44 +62,49 @@ const GamesTable = ({videogames}) => {
       </TableHeader>
       <TableBody>
         {videogames.map((game) => {
+<<<<<<< HEAD
           console.log(game)
           console.log(game.physicalGame)
+=======
+>>>>>>> 64ec90a0563c43acec31ef85fe130a49db5b9789
           return (
             <TableRow key="1">
               <TableCell>
                 <User
-                  avatarProps={{radius: "lg", src: game.image}}
+                  avatarProps={{ radius: "lg", src: game.image }}
                   description={game.name}
                   name={game.name}
-                  />
-              </TableCell>  
+                />
+              </TableCell>
               <TableCell>
-                {game.physicalGame?
-                game.stock:
-                "Digital"
-                }
-              </TableCell>     
-              <TableCell>{game.price}</TableCell>
+                {game.physicalGame ? game.stock : "Digital"}
+              </TableCell>
+              <TableCell>${game.price}</TableCell>
               <TableCell>
                 <div className="relative flex items-center gap-2">
-                  <Tooltip content="Detalle">
+                  <Tooltip content="Editar">
                     <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
                       <Modal
                         textButton="Editar Juego"
                         title="Actualizar Juego"
-                        body={<Formulario props={game} id={game.id}/>}
-                        openButton={<EyeIcon className="text-black w-4"/>}
-                        />
+                        body={<Formulario props={game} id={game.id} />}
+                        openButton={
+                          <PencilSquareIcon className="text-black w-4" />
+                        }
+                      />
                     </span>
                   </Tooltip>
-                  <Tooltip content="Editar">
+                  <Tooltip content="Detalle">
                     <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                      <PencilSquareIcon className="text-black w-4"/>
+                      <EyeIcon className="text-black w-4" />
                     </span>
                   </Tooltip>
                   <Tooltip color="danger" content="Eliminar">
-                    <span className="text-lg text-danger cursor-pointer active:opacity-50" onClick={() => handlerDelete(game.id)}>
-                      <TrashIcon className="text-black w-4"/>
+                    <span
+                      className="text-lg text-danger cursor-pointer active:opacity-50"
+                      onClick={() => handlerDelete(game.id)}
+                    >
+                      <TrashIcon className="text-black w-4" />
                     </span>
                   </Tooltip>
                 </div>
