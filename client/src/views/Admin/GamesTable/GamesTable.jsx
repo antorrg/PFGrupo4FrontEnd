@@ -62,11 +62,6 @@ const GamesTable = ({ videogames }) => {
       </TableHeader>
       <TableBody>
         {videogames.map((game) => {
-<<<<<<< HEAD
-          console.log(game)
-          console.log(game.physicalGame)
-=======
->>>>>>> 64ec90a0563c43acec31ef85fe130a49db5b9789
           return (
             <TableRow key="1">
               <TableCell>
