@@ -8,7 +8,7 @@ import Select from "react-select";
 import Swal from "sweetalert2";
 import { Button } from "@nextui-org/react";
 
-const Formulario = ({ props , id }) => {
+const Formulario = ({ props, id }) => {
   const dispatch = useDispatch();
   const platforms = useSelector((state) => state.platforms);
   const genres = useSelector((state) => state.genres);
@@ -44,8 +44,7 @@ const Formulario = ({ props , id }) => {
       )
       .min(5, `Mínimo 5 caracteres`),
 
-    image: Yup.mixed()
-      .required("La imagen es obligatoria"),
+    image: Yup.mixed().required("La imagen es obligatoria"),
     platforms: Yup.array()
       .min(1, "Selecciona al menos una plataforma")
       .required("Campo Requerido"),
@@ -84,8 +83,7 @@ const Formulario = ({ props , id }) => {
 
   let platformsDefault = [];
   let genresDefault = [];
-  if(props) {
-
+  if (props) {
     let gen = props.genresText.split(",");
 
     for (let i = 0; i < gen.length; i++) {
@@ -109,12 +107,12 @@ const Formulario = ({ props , id }) => {
 
   const handleImageChange = async (event, setFieldValue) => {
     const image = event.currentTarget.files[0];
-  
+
     if (image) {
       const formData = new FormData();
       formData.append("file", image);
       formData.append("upload_preset", "dynh9dt8");
-  
+
       try {
         const response = await axios.post(
           "https://api.cloudinary.com/v1_1/duy9efu8j/image/upload",
@@ -128,7 +126,6 @@ const Formulario = ({ props , id }) => {
           timer: 2000,
         });
         setFieldValue("image", response.data.url);
-        
       } catch (error) {
         console.error("Error uploading image:", error.message);
         // Puedes manejar el error aquí, por ejemplo, mostrar un mensaje al usuario.
@@ -142,8 +139,8 @@ const Formulario = ({ props , id }) => {
       initialValues={props ? props : initialValues}
       validationSchema={formSchema}
       onSubmit={async (values) => {
-        console.log(values)
-        
+        console.log(values);
+
         if (!props) {
           try {
             await axios.post("/post", values);
@@ -183,9 +180,7 @@ const Formulario = ({ props , id }) => {
             });
           }
         }
-      }
-    
-    }
+      }}
     >
       {({ values, setFieldValue }) => (
         // <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
@@ -238,28 +233,31 @@ const Formulario = ({ props , id }) => {
                   className="mt-1 text-sm text-red-600"
                 />
               </div>
-
-              <div className="mb-4">
-                <label
-                  htmlFor="image"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  {" "}
-                  Imagen{" "}
-                </label>
-                <input
-                  type="file"
-                  id="image"
-                  name="image"
-                  className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                  onChange={(event) => handleImageChange(event, setFieldValue,values)}
-                />
-                <ErrorMessage
-                  name="image"
-                  component="div"
-                  className="mt-1 text-sm text-red-600"
-                />
-              </div>
+              {!props && 
+                <div className="mb-4">
+                  <label
+                    htmlFor="image"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    {" "}
+                    Imagen{" "}
+                  </label>
+                  <input
+                    type="file"
+                    id="image"
+                    name="image"
+                    className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    onChange={(event) =>
+                      handleImageChange(event, setFieldValue, values)
+                    }
+                  />
+                  <ErrorMessage
+                    name="image"
+                    component="div"
+                    className="mt-1 text-sm text-red-600"
+                  />
+                </div>
+              }
 
               <div className="mb-4">
                 <label
@@ -268,7 +266,7 @@ const Formulario = ({ props , id }) => {
                 >
                   Plataformas
                 </label>
-                {props  && platformsDefault ? (
+                {props && platformsDefault ? (
                   <Select
                     defaultValue={platformsDefault}
                     id="platforms"
@@ -281,7 +279,6 @@ const Formulario = ({ props , id }) => {
                         (option) => option.id
                       );
                       setFieldValue("platforms", selectedValues);
-                      
                     }}
                   />
                 ) : (
