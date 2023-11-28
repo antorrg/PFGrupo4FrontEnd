@@ -8,20 +8,26 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 
-const ModalComponent = ({ textButton, title, body, buttons, openButton}) => {
+import React from "react";
+
+const ModalComponent = ({ textButton, title, body, buttons, openButton }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [scrollBehavior, setScrollBehavior] = React.useState("inside");
 
   return (
     <>
-      {openButton?
+      {openButton ? (
         <button onClick={onOpen} className="flex">
           {openButton}
-        </button>:
-        <Button onPress={onOpen}>
-          {textButton}
-        </Button>
-      }
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+        </button>
+      ) : (
+        <Button onPress={onOpen}>{textButton}</Button>
+      )}
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        scrollBehavior={scrollBehavior}
+      >
         <ModalContent>
           {(onClose) => (
             <>
