@@ -105,44 +105,43 @@ const Formulario = ({ props, id }) => {
     }
   }
 
-  const handleImageChange = async (event, setFieldValue) => {
-    const image = event.currentTarget.files[0];
-
-    if (image) {
-      const formData = new FormData();
-      formData.append("file", image);
-      formData.append("upload_preset", "dynh9dt8");
-
-      try {
-        const response = await axios.post(
-          "https://api.cloudinary.com/v1_1/duy9efu8j/image/upload",
-          formData
-        );
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "Imagen cargada con exito",
-          showConfirmButton: false,
-          timer: 2000,
-        });
-        setFieldValue("image", response.data.url);
-      } catch (error) {
-        console.error("Error uploading image:", error.message);
-        // Puedes manejar el error aquí, por ejemplo, mostrar un mensaje al usuario.
-      }
-    } else {
-      setFieldValue("image", undefined);
-    }
-  };
   return (
     <Formik
       initialValues={props ? props : initialValues}
       validationSchema={formSchema}
       onSubmit={async (values) => {
-        console.log(values);
-
-        if (!props) {
+       
+        if (values.image) {
+          const formData = new FormData();
+          formData.append("file", values.image);
+          formData.append("upload_preset", "dynh9dt8");
+    
           try {
+            const response = await axios.post(
+              "https://api.cloudinary.com/v1_1/duy9efu8j/image/upload",
+              formData
+            );
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: "Imagen cargada con éxito",
+              showConfirmButton: false,
+              timer: 2000,
+            });
+            values.image = response.data.url;
+          } catch (error) {
+            Swal.fire({
+              position: "top-end",
+              icon: "error",
+              title: `${error.message}`,
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            return; 
+          }
+        }
+        if (!props) {
+          try { 
             await axios.post("/post", values);
             Swal.fire({
               position: "center",
@@ -247,9 +246,7 @@ const Formulario = ({ props, id }) => {
                     id="image"
                     name="image"
                     className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                    onChange={(event) =>
-                      handleImageChange(event, setFieldValue, values)
-                    }
+                    
                   />
                   <ErrorMessage
                     name="image"
