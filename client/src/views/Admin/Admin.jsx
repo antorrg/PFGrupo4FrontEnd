@@ -13,14 +13,8 @@ const user = {
 };
 
 const navigation = [
-  { name: "Juegos", href: "/admin", current: true },
-  { name: "Ingresar Juego", href: "/admin/create", current: false },
-];
-
-const userNavigation = [
-  { name: "Perfil", href: "#" },
-  { name: "Configuración", href: "#" },
-  { name: "Cerrar sesión", href: "#" },
+  { name: "Juegos", href: "/perfil/", current: true },
+  { name: "Ingresar Juego", href: "/perfil/create", current: false },
 ];
 
 function classNames(...classes) {
@@ -30,8 +24,8 @@ function classNames(...classes) {
 export default function Admin() {
   return (
     <>
-      <div className="min-h-full min-w-full flex-1">
-        <Disclosure as="nav" className="bg-[#1F0A4D]">
+      <div className="min-h-full min-w-full flex-1 flex flex-col items-center">
+        <Disclosure as="nav" className="bg-[#1F0A4D] w-full">
           {({ open }) => (
             <>
               <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -194,11 +188,11 @@ export default function Admin() {
             </>
           )}
         </Disclosure>
-      </div>
-      <Routes>
-      <Route path="/" element={<AdminHome />} />
-        <Route path="/create" element={<Create />} />
+        <Routes>
+          <Route path="/" element={<AdminHome/>} />
+          <Route path="/create" element={<Create />} />
       </Routes>
+      </div>
     </>
   );
 }

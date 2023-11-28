@@ -6,9 +6,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllGames, getGenres, getPlatforms } from "../../redux/actions";
 import Select from "react-select";
 import Swal from "sweetalert2";
+import { Button } from "@nextui-org/react";
 
-const Formulario = ({ props, handlePortal, id }) => {
-  
+const Formulario = ({ props, id }) => {
   const dispatch = useDispatch();
   const platforms = useSelector((state) => state.platforms);
   const genres = useSelector((state) => state.genres);
@@ -79,14 +79,13 @@ const Formulario = ({ props, handlePortal, id }) => {
     label: platform.name,
     id: platform.id,
   }));
-
   const genresOptions = genres.map((genre) => ({
     value: genre.name,
     label: genre.name,
     id: genre.id,
   }));
 
-  if (props) {
+  
     let gen = props.genresText.split(",");
     let genresDefault = [];
 
@@ -108,7 +107,8 @@ const Formulario = ({ props, handlePortal, id }) => {
       );
       platformsDefault.push(platFilt[0]);
     }
-  }
+  
+
   return (
     <Formik
       initialValues={props ? props : initialValues}
@@ -156,13 +156,13 @@ const Formulario = ({ props, handlePortal, id }) => {
       }}
     >
       {({ values, setFieldValue }) => (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
+        // <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
+        <div>
           <div className="w-full max-w-md">
             <Form
               encType="multipart/form-data"
               className="mx-auto p-6 border rounded-md bg-white shadow-md"
             >
-              <button onClick={handlePortal}>x</button>
               {!props && (
                 <div className="mb-4">
                   <label
@@ -223,6 +223,7 @@ const Formulario = ({ props, handlePortal, id }) => {
                   onChange={(event) => {
                     const file = event.currentTarget.files[0];
                     console.log(file);
+                    console.log(file);
                     if (file) {
                       setFieldValue("image", file);
                     } else {
@@ -270,7 +271,7 @@ const Formulario = ({ props, handlePortal, id }) => {
                       const selectedValues = selectedOptions.map(
                         (option) => option.id
                       );
-                      setFieldValue("genres", selectedValues);
+                      setFieldValue("platforms", selectedValues);
                     }}
                   />
                 )}
@@ -301,7 +302,6 @@ const Formulario = ({ props, handlePortal, id }) => {
                   className="mt-1 text-sm text-red-600"
                 />
               </div>
-
               <div className="mb-4">
                 <label
                   htmlFor="price"
@@ -342,7 +342,7 @@ const Formulario = ({ props, handlePortal, id }) => {
                       const selectedValues = selectedOptions.map(
                         (option) => option.id
                       );
-                      setFieldValue("platforms", selectedValues);
+                      setFieldValue("genres", selectedValues);
                     }}
                   />
                 ) : (
@@ -356,7 +356,7 @@ const Formulario = ({ props, handlePortal, id }) => {
                       const selectedValues = selectedOptions.map(
                         (option) => option.id
                       );
-                      setFieldValue("platforms", selectedValues);
+                      setFieldValue("genres", selectedValues);
                     }}
                   />
                 )}
@@ -366,8 +366,7 @@ const Formulario = ({ props, handlePortal, id }) => {
                   className="mt-1 text-sm text-red-600"
                 />
               </div>
-
-              <div>
+              <div className="mb-4">
                 <label>
                   <Field type="checkbox" name="physicalGame" />
                   ¿Juego Fisico?
@@ -402,9 +401,15 @@ const Formulario = ({ props, handlePortal, id }) => {
               )}
 
               {props ? (
-                <button type="submit"> Editar Juego</button>
+                <Button type="submit" color="primary">
+                  {" "}
+                  Editar Juego
+                </Button>
               ) : (
-                <button type="submit"> Crear Juego</button>
+                <Button type="submit" color="primary">
+                  {" "}
+                  Crear Juego
+                </Button>
               )}
             </Form>
           </div>
