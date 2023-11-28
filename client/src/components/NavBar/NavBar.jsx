@@ -24,27 +24,20 @@ import {
   NavbarMenu,
   NavbarMenuToggle,
   NavbarMenuItem,
-  Badge,
+  DropdownSection,
 } from "@nextui-org/react";
 // import SearchBar from "../SearchBar/SearchBar";
 
 export default function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   //const auth = true;
-  const admin = true;
+  const admin = "1";
 
-  const {user, isAuthenticated}= useAuth0();
-  console.log(isAuthenticated)
-  console.log(user)
-  
+  const { user, isAuthenticated } = useAuth0();
+
   const { cart } = useContext(CartContext);
 
   const perfilItems = [
-    {
-      element: "Wishlist",
-      to: "/wishlist",
-      access: "all",
-    },
     {
       element: "Pedidos",
       to: "/perfil/orders",
@@ -108,96 +101,54 @@ export default function NavBar() {
             </Link>
           </NavbarItem>
         ))}
-        {/* <NavbarItem>
-          <Link to="/home">
-            <HomeIcon className="w-8 hover:text-orange-400" />
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link to="/carrito" className="flex gap-2 cursor-pointer">
-            <ShoppingCartIcon className="w-8 hover:text-orange-400" />
-            {cart.length > 0 ? (
-              <Badge
-                content={cart.length}
-                color="danger"
-                shape="circle"
-                placement="top-right"
-              ></Badge>
-            ) : (
-              ""
-            )}
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link to="/wishlist">
-            <HeartIcon className="w-8 hover:text-orange-400" />
-          </Link>
-        </NavbarItem> */}
-        {isAuthenticated=== false && (
-          <NavbarItem className="hidden lg:flex">
-            <Link href="#">Login</Link>
-          </NavbarItem>
-        )}
-        {isAuthenticated === false && (
+        {!isAuthenticated ? (
           <NavbarItem>
-            <Button as={Link} color="primary" href="#" variant="flat">
-              Sign Up
-            </Button>
+            <LoginButton />
+          </NavbarItem>
+        ) : (
+          <NavbarItem>
+            <LogoutButton />
           </NavbarItem>
         )}
-        <div>
-          {!isAuthenticated? <LoginButton/> :<LogoutButton/>}
-        
-        
-        </div>
-
-        
-        <div>
-  {isAuthenticated ? (
-    <>
-      <h4>Bienvenido: {user.given_name ? user.given_name : user.nickname}</h4>
-      <img src={user.picture} alt="User Avatar" />
-    </>
-  ) : null}
-</div>
       </NavbarContent>
-      <Dropdown>
-        <DropdownTrigger>
-          <User
-            as="button"
-            avatarProps={{
-              isBordered: true,
-              src: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
-            }}
-            className="transition-transform"
-            name="Carl Johnsonn"
-            description="Product Designer"
-          />
-        </DropdownTrigger>
-        <DropdownMenu aria-label="Profile Actions" variant="flat">
-          {perfilItems.map((item, index) =>
-            admin === true ? (
-              <DropdownItem key={`${item}-${index}`}>
-                <Link to={item.to}>{item.element}</Link>
-              </DropdownItem>
-            ) : item.access === "all" ? (
-              <DropdownItem key={`${item}-${index}`}>
-                <Link to={item.to}>{item.element}</Link>
-              </DropdownItem>
-            ) : null
-          )}
-
-          {/* <DropdownItem key="copy">
-                <Link to="/perfil/orders">Pedidos</Link>
-              </DropdownItem>
-              <DropdownItem key="edit">
-                <Link to="/perfil/settings">Configuración</Link>
-              </DropdownItem>
-              <DropdownItem key="delete" className="text-danger" color="danger">
-                <Link to="/">Cerrar sesión</Link>
-              </DropdownItem> */}
-        </DropdownMenu>
-      </Dropdown>
+      {isAuthenticated && (
+        <Dropdown backdrop="blur">
+          <DropdownTrigger>
+            <User
+              as="button"
+              avatarProps={{
+                isBordered: true,
+                src: user.picture,
+              }}
+              className="transition-transform"
+              name={user.given_name}
+              description={user.nickname && user.nickname}
+            />
+          </DropdownTrigger>
+          <DropdownMenu aria-label="Profile Actions" variant="flat">
+            <DropdownSection>
+              {isAuthenticated &&
+                perfilItems.map((item) => (
+                  <DropdownItem key={item.element}>
+                    <Link to={item.to}>{item.element}</Link>
+                  </DropdownItem>
+                ))}
+            </DropdownSection>
+            {admin === "1" && (
+              <DropdownSection title="Admin zone" className="border-t">
+                {perfilItems.map(
+                  (item) =>
+                    item.access === "admin" && (
+                      <DropdownItem key={item.element}>
+                        <Link to={item.to}>{item.element}</Link>
+                      </DropdownItem>
+                    )
+                )}
+              </DropdownSection>
+            )}
+          </DropdownMenu>
+        </Dropdown>
+      )}
       <NavbarMenu className="mr-4">
         {navItems.map((item, index) => (
           <NavbarMenuItem key={`${item}-${index}-Menu`}>
