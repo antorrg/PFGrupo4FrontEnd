@@ -31,13 +31,18 @@ import {
 
 export default function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const admin = "0";
+  const admin = "1";
 
   const { user, isAuthenticated } = useAuth0();
 
   const { cart } = useContext(CartContext);
 
   const perfilItems = [
+    {
+      element: "Wishlist",
+      to: "/wishlist",
+      access: "all",
+    },
     {
       element: "Pedidos",
       to: "/perfil/orders",
