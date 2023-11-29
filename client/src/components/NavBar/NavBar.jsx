@@ -1,4 +1,7 @@
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
+import LogoutButton from "../Auth0/LogoutButton";
+import LoginButton from "../Auth0/LoginButton";
+import { useAuth0 } from "@auth0/auth0-react";
 import { useState, useContext } from "react";
 import logo from "./logo.png";
 import { CartContext } from "../../context/contextCart";
@@ -21,14 +24,16 @@ import {
   NavbarMenu,
   NavbarMenuToggle,
   NavbarMenuItem,
-  Badge,
+  DropdownSection,
+  Link
 } from "@nextui-org/react";
 // import SearchBar from "../SearchBar/SearchBar";
 
 export default function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const auth = true;
-  const admin = true;
+  const admin = "1";
+
+  const { user, isAuthenticated } = useAuth0();
 
   const { cart } = useContext(CartContext);
 
@@ -49,13 +54,13 @@ export default function NavBar() {
       access: "all",
     },
     {
-      element: "List Games",
-      to: "/perfil/create",
+      element: "Lista de Juegos",
+      to: "/perfil/",
       access: "admin",
     },
     {
-      element: "Create Game",
-      to: "/perfil/",
+      element: "Ingresar Juego",
+      to: "/perfil/create",
       access: "admin",
     },
   ];
@@ -89,93 +94,67 @@ export default function NavBar() {
         className="sm:hidden"
       />
       <NavbarBrand>
-        <Link to={"/"} className="cursor-pointer">
-          <img src={logo} alt="logo" className="h-[50px] w-auto" />
+        <Link href={"/"} className="cursor-pointer">
+          <img src={logo} alt="logo" className="h-[70px] w-auto" />
         </Link>
       </NavbarBrand>
       <NavbarContent justify="end" className="hidden sm:flex gap-10 sm:mr-8">
         {navItems.map((item, index) => (
           <NavbarItem key={`${item}-${index}`}>
-            <Link to={item.to}>
+            <Link href={item.to}>
               {<item.icon className="w-8 hover:text-orange-400" />}
+              {(item.element === "Carrito" && cart.length > 0) && <p className="absolute -top-1 -right-3 bg-red-300 rounded-full w-5 h-5 flex items-center justify-center text-[12px] font-semibold">{cart.reduce((sum, item) => sum + item.quantity, 0)}</p>}
             </Link>
           </NavbarItem>
         ))}
-        {/* <NavbarItem>
-          <Link to="/home">
-            <HomeIcon className="w-8 hover:text-orange-400" />
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link to="/carrito" className="flex gap-2 cursor-pointer">
-            <ShoppingCartIcon className="w-8 hover:text-orange-400" />
-            {cart.length > 0 ? (
-              <Badge
-                content={cart.length}
-                color="danger"
-                shape="circle"
-                placement="top-right"
-              ></Badge>
-            ) : (
-              ""
-            )}
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link to="/wishlist">
-            <HeartIcon className="w-8 hover:text-orange-400" />
-          </Link>
-        </NavbarItem> */}
-        {auth === false && (
-          <NavbarItem className="hidden lg:flex">
-            <Link href="#">Login</Link>
-          </NavbarItem>
-        )}
-        {auth === false && (
+        {!isAuthenticated ? (
           <NavbarItem>
-            <Button as={Link} color="primary" href="#" variant="flat">
-              Sign Up
-            </Button>
+            <LoginButton />
+          </NavbarItem>
+        ) : (
+          <NavbarItem>
+            <LogoutButton />
           </NavbarItem>
         )}
       </NavbarContent>
-      <Dropdown>
-        <DropdownTrigger>
-          <User
-            as="button"
-            avatarProps={{
-              isBordered: true,
-              src: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
-            }}
-            className="transition-transform"
-            name="Carl Johnsonn"
-            description="Product Designer"
-          />
-        </DropdownTrigger>
-        <DropdownMenu aria-label="Profile Actions" variant="flat">
-          {perfilItems.map((item, index) =>
-            admin === true ? (
-              <DropdownItem key={`${item}-${index}`}>
-                <Link to={item.to}>{item.element}</Link>
-              </DropdownItem>
-            ) : item.access === "all" ? (
-              <DropdownItem key={`${item}-${index}`}>
-                <Link to={item.to}>{item.element}</Link>
-              </DropdownItem>
-            ) : null
-          )}
-
-          {/* <DropdownItem key="copy">
-                <Link to="/perfil/orders">Pedidos</Link>
-              </DropdownItem>
-              <DropdownItem key="edit">
-                <Link to="/perfil/settings">Configuración</Link>
-              </DropdownItem>
-              <DropdownItem key="delete" className="text-danger" color="danger">
-                <Link to="/">Cerrar sesión</Link>
-              </DropdownItem> */}
-        </DropdownMenu>
-      </Dropdown>
+      {isAuthenticated && (
+        <Dropdown backdrop="blur">
+          <DropdownTrigger>
+            <User
+              as="button"
+              avatarProps={{
+                isBordered: true,
+                src: user.picture,
+              }}
+              className="transition-transform"
+              name={user.given_name}
+              description={user.nickname && user.nickname}
+            />
+          </DropdownTrigger>
+          <DropdownMenu aria-label="Profile Actions" variant="flat">
+            <DropdownSection>
+              {
+                perfilItems.map((item) => (
+                  item.access === "all" && <DropdownItem key={item.element}>
+                    <Link href={item.to}>{item.element}</Link>
+                  </DropdownItem>
+                ))}
+            </DropdownSection>
+            {admin === "0" && (
+              <DropdownSection title="Admin zone" className="border-t">
+                {perfilItems.map(
+                  (item) =>
+                    item.access === "admin" && (
+                      <DropdownItem key={item.element}>
+                        <Link href={item.to}>{item.element}</Link>
+                      </DropdownItem>
+                    )
+                )}
+              </DropdownSection>
+            )}
+          </DropdownMenu>
+        </Dropdown>
+      )}
       <NavbarMenu className="mr-4">
         {navItems.map((item, index) => (
           <NavbarMenuItem key={`${item}-${index}-Menu`}>
@@ -188,7 +167,7 @@ export default function NavBar() {
                   : "foreground"
               }
               className="w-full"
-              to={item.to}
+              href={item.to}
               size="lg"
             >
               {item.element}

@@ -1,18 +1,23 @@
 // hooks ----------------------------------------
-import { Routes } from "react-router-dom";
+import { Routes, useNavigate } from "react-router-dom";
 import { useEffect, Suspense } from "react";
 import { getGames } from "./redux/actions";
 import { useDispatch, useSelector } from "react-redux";
-// components ----------------------------------------
-import Footer from "./components/Footer/Footer";
-import NavBar from "./components/NavBar/NavBar";
-import { renderRoutes, routes } from "./routes/index.jsx";
-import { Spinner } from "@nextui-org/react";
-// NEXT -----------------------------------------------
-import { NextUIProvider } from "@nextui-org/react";
+import { changeBg } from "./redux/actions";
+// views ----------------------------------------
 import { CartProvider } from "./context/contextCart";
+import { NextUIProvider, Spinner } from "@nextui-org/react";
+import { renderRoutes, routes } from "./routes";
+
+import {
+ 
+  Footer,
+  NavBar,
+
+} from "./views/index";
 
 function App() {
+  const navigate = useNavigate()
   const dispatch = useDispatch();
 
   const bgPage = useSelector((state) => state.bgPage);
@@ -36,7 +41,7 @@ function App() {
 
   return (
     <CartProvider>
-    <NextUIProvider>
+    <NextUIProvider navigate={navigate}>
       <Suspense
         fallback={
           <Spinner
