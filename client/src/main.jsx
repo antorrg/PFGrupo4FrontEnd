@@ -13,7 +13,7 @@ import { Auth0Provider } from "@auth0/auth0-react";
 
 
 //axios.defaults.baseURL = "http://localhost:3001";
-axios.defaults.baseURL = "https://backendpf-4vdq.onrender.com";  
+axios.defaults.baseURL = URL;  
 
 
 ReactDOM.createRoot(document.getElementById("root")).render(
