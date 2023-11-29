@@ -54,16 +54,16 @@ const GamesTable = ({ videogames }) => {
   };
 
   return (
-    <Table>
+    <Table aria-label="games table admin">
       <TableHeader>
         {columns.map((column) => {
           return <TableColumn>{column.name}</TableColumn>;
         })}
       </TableHeader>
       <TableBody>
-        {videogames.map((game) => {
+        {videogames.map((game, index) => {
           return (
-            <TableRow key="1">
+            <TableRow key={`${game}-row-${index}`}>
               <TableCell>
                 <User
                   avatarProps={{ radius: "lg", src: game.image }}

@@ -24,13 +24,28 @@ const Formulario = ({ props, id }) => {
 
   const initialValues = {
     name: "",
-    image: null,
+    image: undefined,
     platforms: [],
     released: "",
     price: "",
     genres: [],
     physicalGame: false,
   };
+
+  let valuesEdit = {};
+  if (props) {
+    const { name, image, platforms, released, price, genres, physicalGame } =
+      props;
+    valuesEdit = {
+      name,
+      image,
+      platforms,
+      released,
+      price,
+      genres,
+      physicalGame,
+    };
+  }
 
   const formSchema = Yup.object().shape({
     name: Yup.string()
@@ -44,7 +59,7 @@ const Formulario = ({ props, id }) => {
       )
       .min(5, `Mínimo 5 caracteres`),
 
-    image: Yup.mixed().required("La imagen es obligatoria"),
+    // image: Yup.mixed().required("La imagen es obligatoria"),
     platforms: Yup.array()
       .min(1, "Selecciona al menos una plataforma")
       .required("Campo Requerido"),
@@ -107,15 +122,15 @@ const Formulario = ({ props, id }) => {
 
   return (
     <Formik
-      initialValues={props ? props : initialValues}
+      initialValues={props ? valuesEdit : initialValues}
       validationSchema={formSchema}
       onSubmit={async (values) => {
-       
+        console.log("first");
         if (values.image) {
           const formData = new FormData();
           formData.append("file", values.image);
           formData.append("upload_preset", "dynh9dt8");
-    
+
           try {
             const response = await axios.post(
               "https://api.cloudinary.com/v1_1/duy9efu8j/image/upload",
@@ -137,11 +152,11 @@ const Formulario = ({ props, id }) => {
               showConfirmButton: false,
               timer: 1500,
             });
-            return; 
+            return;
           }
         }
         if (!props) {
-          try { 
+          try {
             await axios.post("/post", values);
             Swal.fire({
               position: "center",
@@ -232,7 +247,7 @@ const Formulario = ({ props, id }) => {
                   className="mt-1 text-sm text-red-600"
                 />
               </div>
-              {!props && 
+              {!props && (
                 <div className="mb-4">
                   <label
                     htmlFor="image"
@@ -246,7 +261,6 @@ const Formulario = ({ props, id }) => {
                     id="image"
                     name="image"
                     className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                    
                   />
                   <ErrorMessage
                     name="image"
@@ -254,7 +268,7 @@ const Formulario = ({ props, id }) => {
                     className="mt-1 text-sm text-red-600"
                   />
                 </div>
-              }
+              )}
 
               <div className="mb-4">
                 <label

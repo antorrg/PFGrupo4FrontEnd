@@ -2,6 +2,7 @@
 import LogoutButton from "../Auth0/LogoutButton";
 import LoginButton from "../Auth0/LoginButton";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useSelector } from "react-redux";
 import { useState, useContext } from "react";
 import logo from "./logo.png";
 import { CartContext } from "../../context/contextCart";
@@ -25,13 +26,14 @@ import {
   NavbarMenuToggle,
   NavbarMenuItem,
   DropdownSection,
-  Link
+  Link,
 } from "@nextui-org/react";
 // import SearchBar from "../SearchBar/SearchBar";
 
 export default function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const admin = "1";
+  const userInfo = useSelector((state) => state.loginUser);
+  const admin = "0";
 
   const { user, isAuthenticated } = useAuth0();
 
@@ -103,7 +105,11 @@ export default function NavBar() {
           <NavbarItem key={`${item}-${index}`}>
             <Link href={item.to}>
               {<item.icon className="w-8 hover:text-orange-400" />}
-              {(item.element === "Carrito" && cart.length > 0) && <p className="absolute -top-1 -right-3 bg-red-300 rounded-full w-5 h-5 flex items-center justify-center text-[12px] font-semibold">{cart.reduce((sum, item) => sum + item.quantity, 0)}</p>}
+              {item.element === "Carrito" && cart.length > 0 && (
+                <p className="absolute -top-1 -right-3 bg-red-300 rounded-full w-5 h-5 flex items-center justify-center text-[12px] font-semibold">
+                  {cart.reduce((sum, item) => sum + item.quantity, 0)}
+                </p>
+              )}
             </Link>
           </NavbarItem>
         ))}
@@ -124,23 +130,25 @@ export default function NavBar() {
               as="button"
               avatarProps={{
                 isBordered: true,
-                src: user.picture,
+                src: userInfo.picture,
               }}
               className="transition-transform"
-              name={user.given_name}
-              description={user.nickname && user.nickname}
+              name={userInfo.given_name}
+              description={userInfo.nickname && userInfo.nickname}
             />
           </DropdownTrigger>
           <DropdownMenu aria-label="Profile Actions" variant="flat">
             <DropdownSection>
-              {
-                perfilItems.map((item) => (
-                  item.access === "all" && <DropdownItem key={item.element}>
-                    <Link href={item.to}>{item.element}</Link>
-                  </DropdownItem>
-                ))}
+              {perfilItems.map(
+                (item) =>
+                  item.access === "all" && (
+                    <DropdownItem key={item.element}>
+                      <Link href={item.to}>{item.element}</Link>
+                    </DropdownItem>
+                  )
+              )}
             </DropdownSection>
-            {admin === "0" && (
+            {userInfo.role === "0" && (
               <DropdownSection title="Admin zone" className="border-t">
                 {perfilItems.map(
                   (item) =>
