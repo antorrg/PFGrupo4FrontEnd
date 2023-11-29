@@ -17,8 +17,8 @@ axios.defaults.baseURL = URL;
 
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <Auth0Provider  domain="dev-mg7v1nvcxu1guo4c.us.auth0.com";
-    clientId="h8Z6AFVMUx0SPRYIyJHJTHF1ZoD7dXlJ";
+  <Auth0Provider  domain="dev-mg7v1nvcxu1guo4c.us.auth0.com"
+    clientId="h8Z6AFVMUx0SPRYIyJHJTHF1ZoD7dXlJ"
     authorizationParams={{redirect_uri: window.location.origin
     }}>
   <Provider store={store}>
