@@ -7,6 +7,8 @@ import {
   SET_FILTER,
   CHANGE_BG,
   GET_ALL_GAMES,
+  LOG,
+  CLEAN_LOG,
 } from "./actions";
 
 let initialState = {
@@ -15,6 +17,7 @@ let initialState = {
   detailGame: [],
   platforms: [],
   genres: [],
+  loginUser: [],
   filtersObj: {
     page: 0,
     platforms: "",
@@ -78,6 +81,17 @@ const reducer = (state = initialState, action) => {
 
     case GET_ALL_GAMES:
       return { ...state, allGames: action.payload };
+
+      case LOG:
+        return{
+            ...state,
+            loginUser:action.payload,
+        }
+        case CLEAN_LOG:
+            return{
+                ...state,
+                loginUser: [],
+            }
 
     default:
       return { ...state };
