@@ -10,6 +10,8 @@ export const SEARCH_GAME = "SEARCH_GAME";
 export const SET_FILTER = "SET_FILTER";
 export const CHANGE_BG = "CHANGE_BG";
 export const GET_ALL_GAMES = "GET_ALL_GAMES";
+export const LOG='LOG';
+export const CLEAN_LOG='CLEAN_LOG'
 
 export const updateFilterObj = (filter) => {
   return (dispatch) => {
@@ -176,3 +178,15 @@ export const getAllGames = () => {
     }
   };
 };
+export const login= (userData)=>{
+  return {
+      type: LOG,
+      payload:userData,
+  }
+ }
+ export const limpiarLogin =(payload)=>{
+  return {
+      type:CLEAN_LOG,
+      payload,
+  }
+ }
