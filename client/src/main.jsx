@@ -1,4 +1,3 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
 import store from "./redux/store";
 import { BrowserRouter } from "react-router-dom";
@@ -21,7 +20,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     authorizationParams={{ redirect_uri: window.location.origin }}
   >
     <Provider store={store}>
-      <BrowserRouter>
         <App />
       </BrowserRouter>
     </Provider>
