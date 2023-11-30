@@ -35,6 +35,10 @@ export const routes = [
     element: lazy(async () => await import("../views/Admin/Admin")),
   },
   {
+    path: "/checkout/*",
+    element: lazy(async () => await import("../views/Checkout/Checkout")),
+  },
+  {
     path: "*",
     element: lazy(async () => await import("../views/NotFound/NotFound")),
   },
