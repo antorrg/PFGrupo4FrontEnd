@@ -69,7 +69,7 @@ function App() {
             />
           }
         >
-          <div className="my-0 mx-auto flex flex-col items-center justify-between min-h-screen">
+          <div className="my-0 mx-auto flex flex-col items-center justify-between min-h-screen dark:bg-[#1F0A4D]">
             <div
               className="bg-cover bg-center opacity-70 w-full h-screen absolute -z-10 top-0 left-0"
               style={backgroundImage}

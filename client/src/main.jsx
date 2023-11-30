@@ -20,6 +20,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     authorizationParams={{ redirect_uri: window.location.origin }}
   >
     <Provider store={store}>
+    <BrowserRouter>
         <App />
       </BrowserRouter>
     </Provider>

@@ -1,6 +1,7 @@
 // import { Link } from "react-router-dom";
 import LogoutButton from "../Auth0/LogoutButton";
 import LoginButton from "../Auth0/LoginButton";
+import DarkModeButton from "./DarkModeButton";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useSelector } from "react-redux";
 import { useState, useContext } from "react";
@@ -139,7 +140,12 @@ export default function NavBar() {
             />
           </DropdownTrigger>
           <DropdownMenu aria-label="Profile Actions" variant="flat">
-            <DropdownSection aria-label="roll client">
+            <DropdownSection aria-label="Dark Mode">
+              <DropdownItem key="Dark mode button"  className="cursor-default" isReadOnly endContent={<DarkModeButton/>}>
+               <p className="text-base text-primary">Tema</p>
+              </DropdownItem>
+            </DropdownSection>
+            <DropdownSection aria-label="roll client" className="border-t">
               {perfilItems.map(
                 item => {
                   return item.access === "all" &&(
