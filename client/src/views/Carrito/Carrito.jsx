@@ -2,6 +2,7 @@ import { Button } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { FaPlus, FaMinus } from "react-icons/fa";
+import PaymentTest from "./PaymentTest";
 
 export default function Carrito() {
   const [games, setGames] = useState({});
@@ -85,6 +86,9 @@ export default function Carrito() {
             Continue Shopping...
           </span>
         </div>
+      </div>
+      <div>
+        <PaymentTest />
       </div>
     </div>
   );
