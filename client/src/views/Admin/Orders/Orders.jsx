@@ -1,5 +1,7 @@
 const Orders = () => {
-  return <div className="bg-red-300 flex-1 min-w-full"></div>;
+  return <div className="flex-1 min-w-full min-h-full">
+    
+  </div>;
 };
 
 export default Orders;
