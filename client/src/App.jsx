@@ -1,13 +1,14 @@
 // hooks ----------------------------------------
-import { Routes } from "react-router-dom";
+import { Routes, useNavigate } from "react-router-dom";
 import { useEffect, Suspense } from "react";
-import { getGames } from "./redux/actions";
 import { useDispatch, useSelector } from "react-redux";
-import { changeBg } from "./redux/actions";
+import { useAuth0 } from "@auth0/auth0-react";
+import { changeBg, getGames, login, limpiarLogin } from "./redux/actions";
 // views ----------------------------------------
 import { CartProvider } from "./context/contextCart";
 import { NextUIProvider, Spinner } from "@nextui-org/react";
 import { renderRoutes, routes } from "./routes";
+import userLog from './components/Auth0/Send';
 
 import {
  
@@ -17,7 +18,11 @@ import {
 } from "./views/index";
 
 function App() {
+  const navigate = useNavigate()
   const dispatch = useDispatch();
+  const { user, isAuthenticated } = useAuth0();
+  console.log(isAuthenticated);
+  console.log(user);
 
   const bgPage = useSelector((state) => state.bgPage);
   console.log(bgPage);
@@ -37,10 +42,33 @@ function App() {
       })
     );
   }, []);
+  //-----------------------------------------------------
+  //    Estas funciones son para enviar datos al reducer
+
+  useEffect(() => {
+    const fetchUserLog = async () => {
+      if (isAuthenticated) {
+        try {
+          const result = await userLog(user);
+          dispatch(login(result));
+        } catch (error) {
+          // Maneja el error según tus necesidades
+          console.error('Error al obtener información del usuario:', error);
+        } 
+      }
+      else {
+        dispatch(limpiarLogin());
+      }
+    };
+
+    fetchUserLog();
+  }, [isAuthenticated, user, dispatch]);
+
+
 
   return (
     <CartProvider>
-    <NextUIProvider>
+    <NextUIProvider navigate={navigate}>
       <Suspense
         fallback={
           <Spinner
