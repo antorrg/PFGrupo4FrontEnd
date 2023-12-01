@@ -7,7 +7,7 @@ import { getPlatforms, getGenres } from "../../redux/actions";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import valideInputFilters from "../../utils/valideInputFilters";
 
-import {Accordion, AccordionItem, Button} from "@nextui-org/react";
+import {Accordion, AccordionItem, Button, CheckboxGroup, Checkbox, Input} from "@nextui-org/react";
 
 export default function Filters(props) {
 
@@ -62,13 +62,6 @@ export default function Filters(props) {
     dispatch(getGenres());
   }, [dispatch]);
 
-  const platformsHandler = (auxSelectedOptions) => {
-    setSelectedPlatforms(auxSelectedOptions);
-  }
-
-  const genresHandler = (auxSelectedOptions) => {
-    setSelectedGenres(auxSelectedOptions);
-  }
 
   const orderHandler = (auxSelectedOptions) => {
     setSortOrder(auxSelectedOptions);
@@ -112,12 +105,8 @@ export default function Filters(props) {
     //Aplicar filtros:
     onApplyFilters({
       page: 0,
-      platforms: selectedPlatforms.map((platf) => {
-        return platf.value;
-      }).join(","),
-      genres: selectedGenres.map((genre) => {
-        return genre.value;
-      }).join(","),
+      platforms: selectedPlatforms,
+      genres: selectedGenres,
       minPrice: prices.minPrice,
       maxPrice: prices.maxPrice,
       order: sortOrder.value,
@@ -134,38 +123,40 @@ export default function Filters(props) {
           searchText={inputValue}
         />
       </AccordionItem>
-      {/* <br /> */}
       <AccordionItem key="2" aria-label="Plataformas" title="Plataformas">
-        <Select
-          options={platformsOptions}
-          isMulti
-          onChange={(selectedOptions) => platformsHandler(selectedOptions)}
-          placeholder="Plataformas..."
-          ref={selectedPlatformsRef}
-      />
+      <CheckboxGroup
+      onValueChange={setSelectedPlatforms}
+      defaultValue={selectedPlatforms}
+    >
+      {
+        platforms.map(platform => {
+          return <Checkbox value={platform.name} key={platform.name}>{platform.name}</Checkbox>
+        })
+      }
+    </CheckboxGroup>
       </AccordionItem>
-      {/* <br /> */}
       <AccordionItem key="3" aria-label="Generos" title="Géneros">
-        <Select
-          options={genresOptions}
-          isMulti
-          onChange={(selectedOptions) => genresHandler(selectedOptions)}
-          placeholder="Géneros..."
-          ref={selectedGenresRef}
-        />
+              <CheckboxGroup
+      onValueChange={setSelectedGenres}
+      defaultValue={selectedGenres}
+    >
+      {
+        genres.map(genre => {
+          return <Checkbox value={genre.name} key={genre.name}>{genre.name}</Checkbox>
+        })
+      }
+    </CheckboxGroup>
       </AccordionItem>
-      {/* <br /> */}
-      <AccordionItem key="4" aria-label="Ordenamiento" title="Ordenar">
+      {/* <AccordionItem key="4" aria-label="Ordenamiento" title="Ordenar">
         <Select
           options={orderOptions}
           onChange={(selectedOption) => orderHandler(selectedOption)}
           placeholder="Ordenar..."
           ref={selectedOrderRef}
         />
-      </AccordionItem>
-      {/* <br /> */}
+      </AccordionItem> */}
       <AccordionItem key="5" aria-label="Precios" title="Precios">
-      <div>
+      {/* <div>
         <input
           type="number"
           min="0"
@@ -186,10 +177,53 @@ export default function Filters(props) {
           />
         </div>
         <span className={style.error}>{errorPrices.prices}</span>
+      </div> */}
+            <div className="flex justify-between w-full items-center">
+        <Input
+          size="sm"
+          type="number"
+          min="0"
+          radius="none"
+          name="minPrice"
+          className="flex-1"
+          value={prices.minPrice}
+          onChange={handleChangePrice}
+          label="Min"
+          startContent={
+            <div className="pointer-events-none flex items-center">
+              <span className="text-default-400 text-small">$</span>
+            </div>
+          }
+
+        />
+        <p className="w-[10%] text-2xl text-white flex justify-center">-</p>
+        <Input
+          size="sm"
+          type="number"
+          min="0"
+          radius="none"
+          name="maxPrice"
+          className="flex-1"
+          value={prices.maxPrice}
+          onChange={handleChangePrice}
+          label="Max"
+          startContent={
+            <div className="pointer-events-none flex items-center">
+              <span className="text-default-400 text-small">$</span>
+            </div>
+          }
+        />
+        <span className={style.error}>{errorPrices.prices}</span>
       </div>
       </AccordionItem>
       {/* <br/> */}
     </Accordion>
+    <Select
+          options={orderOptions}
+          onChange={(selectedOption) => orderHandler(selectedOption)}
+          placeholder="Ordenar..."
+          ref={selectedOrderRef}
+        />
       <div className="flex justify-between w-full mt-4">
       <Button size="sm" variant="shadow" onClick={applyFilters} className="bg-accent">Aplicar</Button>
       <Button size="sm" variant="light" onClick={resetFilters} className="text-accent">Restablecer</Button>
