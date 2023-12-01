@@ -7,6 +7,8 @@ import { getPlatforms, getGenres } from "../../redux/actions";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import valideInputFilters from "../../utils/valideInputFilters";
 
+import {Accordion, AccordionItem, Button} from "@nextui-org/react";
+
 export default function Filters(props) {
 
   const { onApplyFilters } = props
@@ -124,35 +126,45 @@ export default function Filters(props) {
   };
 
   return (
-    <div>
-      <SearchBar
-      setSearchText={handlerInputChange}
-      searchText={inputValue}
+    <div className="">
+      <Accordion selectionMode="multiple">
+      <AccordionItem key="1" aria-label="search bar" title="Busqueda">
+        <SearchBar
+          setSearchText={handlerInputChange}
+          searchText={inputValue}
+        />
+      </AccordionItem>
+      {/* <br /> */}
+      <AccordionItem key="2" aria-label="Plataformas" title="Plataformas">
+        <Select
+          options={platformsOptions}
+          isMulti
+          onChange={(selectedOptions) => platformsHandler(selectedOptions)}
+          placeholder="Plataformas..."
+          ref={selectedPlatformsRef}
       />
-      <br />
-      <Select
-        options={platformsOptions}
-        isMulti
-        onChange={(selectedOptions) => platformsHandler(selectedOptions)}
-        placeholder="Plataformas..."
-        ref={selectedPlatformsRef}
-      />
-      <br />
-      <Select
-        options={genresOptions}
-        isMulti
-        onChange={(selectedOptions) => genresHandler(selectedOptions)}
-        placeholder="Géneros..."
-        ref={selectedGenresRef}
-      />
-      <br />
-      <Select
-        options={orderOptions}
-        onChange={(selectedOption) => orderHandler(selectedOption)}
-        placeholder="Ordenar..."
-        ref={selectedOrderRef}
-      />
-      <br />
+      </AccordionItem>
+      {/* <br /> */}
+      <AccordionItem key="3" aria-label="Generos" title="Géneros">
+        <Select
+          options={genresOptions}
+          isMulti
+          onChange={(selectedOptions) => genresHandler(selectedOptions)}
+          placeholder="Géneros..."
+          ref={selectedGenresRef}
+        />
+      </AccordionItem>
+      {/* <br /> */}
+      <AccordionItem key="4" aria-label="Ordenamiento" title="Ordenar">
+        <Select
+          options={orderOptions}
+          onChange={(selectedOption) => orderHandler(selectedOption)}
+          placeholder="Ordenar..."
+          ref={selectedOrderRef}
+        />
+      </AccordionItem>
+      {/* <br /> */}
+      <AccordionItem key="5" aria-label="Precios" title="Precios">
       <div>
         <input
           type="number"
@@ -175,10 +187,13 @@ export default function Filters(props) {
         </div>
         <span className={style.error}>{errorPrices.prices}</span>
       </div>
-      <br/>
-      <button onClick={applyFilters}>Aplicar Filtros </button>
-      <br />
-      <button onClick={resetFilters}>Restablecer Filtros</button>
+      </AccordionItem>
+      {/* <br/> */}
+    </Accordion>
+      <div className="flex justify-between w-full mt-4">
+      <Button size="sm" variant="shadow" onClick={applyFilters} className="bg-accent">Aplicar</Button>
+      <Button size="sm" variant="light" onClick={resetFilters} className="text-accent">Restablecer</Button>
+      </div>
     </div>
   );
 }
