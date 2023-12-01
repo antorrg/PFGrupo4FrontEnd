@@ -19,6 +19,7 @@ import {
   TrashIcon,
   PencilSquareIcon,
 } from "@heroicons/react/24/outline";
+import { useState } from "react";
 
 const columns = [
   { name: "GAME" },
@@ -34,15 +35,21 @@ const statusColorMap = {
 };
 
 const GamesTable = ({ videogames }) => {
-  const handlerDelete = (id) => {
+
+
+ 
+  const handlerDelete =async (id, game) => {
     try {
-      axios.delete(`/games/${id}`);
+      const {data} = await axios.delete(`delete/games/${id}`)
+      console.log(data);
+      console.log()
       Swal.fire({
         position: "center",
         icon: "success",
-        title: "Videojuego eliminado con exito !!",
-        showConfirmButton: false,
-        timer: 2000,
+        title: `${game.name}`,
+        text: `${data.message}`,
+        showConfirmButton: true,
+        
       });
     } catch (error) {
       Swal.fire({
@@ -62,6 +69,7 @@ const GamesTable = ({ videogames }) => {
       </TableHeader>
       <TableBody>
         {videogames.map((game) => {
+          console.log(game)
           return (
             <TableRow key="1">
               <TableCell>
@@ -79,10 +87,12 @@ const GamesTable = ({ videogames }) => {
                 <div className="relative flex items-center gap-2">
                   <Tooltip content="Editar">
                     <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                      <Modal
+                    <Modal
                         textButton="Editar Juego"
                         title="Actualizar Juego"
-                        body={<Formulario props={game} id={game.id} />}
+                        body={({ onClose }) => (
+                          <Formulario props={game} id={game.id} onClose={onClose} />
+                        )}
                         openButton={
                           <PencilSquareIcon className="text-black w-4" />
                         }
@@ -97,7 +107,7 @@ const GamesTable = ({ videogames }) => {
                   <Tooltip color="danger" content="Eliminar">
                     <span
                       className="text-lg text-danger cursor-pointer active:opacity-50"
-                      onClick={() => handlerDelete(game.id)}
+                      onClick={() => handlerDelete(game.id, game)}
                     >
                       <TrashIcon className="text-black w-4" />
                     </span>
