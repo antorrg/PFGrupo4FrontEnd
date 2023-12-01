@@ -1,17 +1,31 @@
-import React from "react";
 import { Switch } from "@nextui-org/react";
 import { MoonIcon, SunIcon } from "@heroicons/react/24/outline";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const DarkModeButton = () => {
-  const [isSelected, setIsSelected] = useState(true);
-  console.log(isSelected);
+  const [isSelected, setIsSelected] = useState(false);
+
   const handlerClick = () => {
-    document.documentElement.classList.toggle("dark");
+    if (localStorage.theme === 'dark') {
+      localStorage.theme = 'light'
+      document.documentElement.classList.remove('dark')
+    } else {
+      localStorage.theme = 'dark'
+      document.documentElement.classList.add('dark')
+    }
   };
+
+  useEffect(() => {
+    if(localStorage.theme === "dark"){
+      setIsSelected(true)
+    } else {
+      setIsSelected(false)
+    }
+  },[])
+
   return (
     <Switch
-      //   defaultSelected
+      isSelected={isSelected}
       className="cursor-pointer"
       onValueChange={setIsSelected}
       onClick={handlerClick}
