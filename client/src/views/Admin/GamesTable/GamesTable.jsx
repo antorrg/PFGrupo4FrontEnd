@@ -54,7 +54,7 @@ const GamesTable = ({ videogames }) => {
   };
 
   return (
-    <Table aria-label="games table admin">
+    <Table aria-label="games admin table">
       <TableHeader>
         {columns.map((column) => {
           return <TableColumn>{column.name}</TableColumn>;

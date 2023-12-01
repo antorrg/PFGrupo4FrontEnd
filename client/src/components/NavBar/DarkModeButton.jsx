@@ -1,20 +1,17 @@
-import React from 'react'
-import {Switch} from "@nextui-org/react";
-import {
-    MoonIcon,
-    SunIcon,
-  } from "@heroicons/react/24/outline";
-  import { useState } from "react";
+import React from "react";
+import { Switch } from "@nextui-org/react";
+import { MoonIcon, SunIcon } from "@heroicons/react/24/outline";
+import { useState } from "react";
 
 const DarkModeButton = () => {
-    const [isSelected, setIsSelected] = useState(true)
-    console.log(isSelected)
-    const handlerClick = () => {
-        document.documentElement.classList.toggle("dark")
-    }
+  const [isSelected, setIsSelected] = useState(true);
+  console.log(isSelected);
+  const handlerClick = () => {
+    document.documentElement.classList.toggle("dark");
+  };
   return (
     <Switch
-    //   defaultSelected
+      //   defaultSelected
       className="cursor-pointer"
       onValueChange={setIsSelected}
       onClick={handlerClick}
@@ -22,9 +19,8 @@ const DarkModeButton = () => {
       color="primary"
       startContent={<SunIcon />}
       endContent={<MoonIcon />}
-    >
-    </Switch>
-  )
-}
+    ></Switch>
+  );
+};
 
-export default DarkModeButton
+export default DarkModeButton;

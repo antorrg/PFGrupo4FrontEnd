@@ -10,9 +10,9 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#1F0A4D',
-        secondary: '#1F0A4D',
-        accent: '#FFFFFF',
+        primary: "#1F0A4D",
+        secondary: "#5825CC",
+        accent: "#FB923C",
         // Agrega tus colores personalizados con nombres significativos aquí
       },
     },

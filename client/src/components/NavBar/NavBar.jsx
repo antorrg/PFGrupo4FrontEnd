@@ -89,9 +89,10 @@ export default function NavBar() {
   return (
     <Navbar
       position="static"
-      height="4rem"
+      height="5rem"
       maxWidth="2xl"
       onMenuOpenChange={setIsMenuOpen}
+      className="dark:bg-primary"
     >
       <NavbarMenuToggle
         aria-label={isMenuOpen ? "Close menu" : "Open menu"}
@@ -106,7 +107,9 @@ export default function NavBar() {
         {navItems.map((item, index) => (
           <NavbarItem key={`${item}-${index}`}>
             <Link href={item.to}>
-              {<item.icon className="w-7 hover:text-orange-400" />}
+              {
+                <item.icon className="w-7 hover:text-orange-400 dark:text-secondary dark:hover:text-orange-400" />
+              }
               {item.element === "Carrito" && cart.length > 0 && (
                 <p className="absolute -top-1 -right-3 bg-red-300 rounded-full w-5 h-5 flex items-center justify-center text-[12px] font-semibold">
                   {cart.reduce((sum, item) => sum + item.quantity, 0)}
@@ -141,38 +144,51 @@ export default function NavBar() {
           </DropdownTrigger>
           <DropdownMenu aria-label="Profile Actions" variant="flat">
             <DropdownSection aria-label="Dark Mode">
-              <DropdownItem key="Dark mode button"  className="cursor-default" isReadOnly endContent={<DarkModeButton/>}>
-               <p className="text-base text-primary">Tema</p>
+              <DropdownItem
+                key="Dark mode button"
+                className="cursor-default"
+                isReadOnly
+                endContent={<DarkModeButton />}
+              >
+                <p className="text-base text-primary dark:text-white">Tema</p>
               </DropdownItem>
             </DropdownSection>
             <DropdownSection aria-label="roll client" className="border-t">
-              {perfilItems.map(
-                item => {
-                  return item.access === "all" &&(
+              {perfilItems.map((item) => {
+                return (
+                  item.access === "all" && (
                     <DropdownItem key={item.element}>
-                      {
-                        item.element !== "Salir"?
-                          <Link href={item.to}>{item.element}</Link>:
-                        <LogoutButton element={item.element} to={item.to}/>
-                      }
-                  </DropdownItem>
+                      {item.element !== "Salir" ? (
+                        <Link href={item.to} className="dark:text-white">
+                          {item.element}
+                        </Link>
+                      ) : (
+                        <LogoutButton element={item.element} to={item.to} />
+                      )}
+                    </DropdownItem>
                   )
-                  })}
+                );
+              })}
             </DropdownSection>
             {
-            // userInfo.role === "0" &&
-            (
-              <DropdownSection title="Admin zone" className="border-t" aria-label="roll admin">
+              // userInfo.role === "0" &&
+              <DropdownSection
+                title="Admin zone"
+                className="border-t"
+                aria-label="roll admin"
+              >
                 {perfilItems.map(
-                  (item) => (
+                  (item) =>
                     item.access === "admin" && (
                       <DropdownItem key={item.element}>
-                        <Link href={item.to}>{item.element}</Link>
+                        <Link href={item.to} className="dark:text-white">
+                          {item.element}
+                        </Link>
                       </DropdownItem>
                     )
-                ))}
+                )}
               </DropdownSection>
-            )}
+            }
           </DropdownMenu>
         </Dropdown>
       )}
