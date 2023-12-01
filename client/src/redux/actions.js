@@ -9,6 +9,9 @@ export const GET_GENRES = "GET_GENRES";
 export const SEARCH_GAME = "SEARCH_GAME";
 export const SET_FILTER = "SET_FILTER";
 export const CHANGE_BG = "CHANGE_BG";
+export const GET_ALL_GAMES = "GET_ALL_GAMES";
+export const LOG='LOG';
+export const CLEAN_LOG='CLEAN_LOG'
 
 export const updateFilterObj = (filter) => {
   return (dispatch) => {
@@ -24,7 +27,11 @@ export const getGames = (filtersObj) => {
     try {
       let filterString = `?page=${filtersObj.page}&size=6`;
       for (const key in filtersObj) {
-        if (key !== "page" && filtersObj[key] !== "" && filtersObj[key] !== -1) {
+        if (
+          key !== "page" &&
+          filtersObj[key] !== "" &&
+          filtersObj[key] !== -1
+        ) {
           filterString += "&" + key + "=" + filtersObj[key];
         }
       }
@@ -153,3 +160,33 @@ export const changeBg = (data) => {
     payload: data,
   };
 };
+
+export const getAllGames = () => {
+  return async function (dispatch) {
+    try {
+      const response = await axios.get("/games");
+      return dispatch({
+        type: GET_ALL_GAMES,
+        payload: response.data,
+      });
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: `${error.message}`,
+      });
+    }
+  };
+};
+export const login= (userData)=>{
+  return {
+      type: LOG,
+      payload:userData,
+  }
+ }
+ export const limpiarLogin =(payload)=>{
+  return {
+      type:CLEAN_LOG,
+      payload,
+  }
+ }
