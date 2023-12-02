@@ -32,14 +32,14 @@ const ModalComponent = ({ textButton, title, body, buttons, openButton }) => {
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">{title}</ModalHeader>
-              <ModalBody>{body}</ModalBody>
+              <ModalBody>{body({ onClose })}</ModalBody>
               {buttons === undefined ? null : (
                 <ModalFooter>
-                  <Button color="danger" variant="light" onPress={onClose}>
-                    Cerrar
-                  </Button>
                   <Button color="primary" onPress={onClose}>
                     Enviar
+                  </Button>
+                  <Button color="danger" variant="light" onPress={onClose}>
+                    Cerrar
                   </Button>
                 </ModalFooter>
               )}
