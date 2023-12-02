@@ -6,15 +6,84 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllGames, getGenres, getPlatforms } from "../../redux/actions";
 import Select from "react-select";
 import Swal from "sweetalert2";
-import { Button } from "@nextui-org/react";
+import { Button, select } from "@nextui-org/react";
 
-const Formulario = ({ props, id }) => {
+const Formulario = ({ props, onClose }) => {
   const dispatch = useDispatch();
   const platforms = useSelector((state) => state.platforms);
   const genres = useSelector((state) => state.genres);
   const games = useSelector((state) => state.allGames);
 
-  const nameGames = games.map((game) => game.name);
+  let nameGames = games.map((game) => game.name);
+
+  const platformsOptions = platforms.map((platform) => ({
+    value: platform.name,
+    label: platform.name,
+    id: platform.id,
+  }));
+  const genresOptions = genres.map((genre) => ({
+    value: genre.name,
+    label: genre.name,
+    id: genre.id,
+  }));
+
+  if (props) {
+    nameGames = nameGames.filter((game) => game !== props.name);
+  }
+
+  let platformsDefault = [];
+  let genresDefault = [];
+  if (props) {
+    let gen = props.Genres;
+
+    for (let i = 0; i < gen.length; i++) {
+      const element = gen[i];
+      let genFilt = genresOptions.filter(
+        (obj) => obj.value.trim() === element.trim()
+      );
+      genresDefault.push(genFilt[0]);
+    }
+
+    let plat = props.Platforms;
+
+    for (let i = 0; i < plat.length; i++) {
+      const element = plat[i];
+      let platFilt = platformsOptions.filter(
+        (obj) => obj.value.trim() === element.trim()
+      );
+      platformsDefault.push(platFilt[0]);
+    }
+  }
+  let valuesEdit = {};
+  if (props) {
+    let {
+      name,
+      image,
+      platforms,
+      released,
+      price,
+      genres,
+      physicalGame,
+      enable,
+      stock,
+    } = props;
+
+    const selectedPlatforms = platformsDefault.map((option) => option.id);
+    const selectedGenres = genresDefault.map((option) => option.id);
+    platforms = selectedPlatforms;
+    genres = selectedGenres;
+    valuesEdit = {
+      name,
+      image,
+      platforms,
+      released,
+      price,
+      genres,
+      physicalGame,
+      enable,
+      stock,
+    };
+  }
 
   useEffect(() => {
     dispatch(getPlatforms());
@@ -55,6 +124,7 @@ const Formulario = ({ props, id }) => {
       )
       .required("Este campo es requerido"),
     price: Yup.number()
+      .min(0, "El precio no puede ser negativo")
       .test({
         name: "valid-number",
         message: "Formato Invalido Ej: 11111.11",
@@ -65,124 +135,102 @@ const Formulario = ({ props, id }) => {
       .min(1, "Selecciona al menos una plataforma")
       .required("Campo Requerido"),
     physicalGame: Yup.bool(),
-    stock: Yup.number().min(1, `Mínimo  1 caracteres`),
-    description: Yup.string()
-      .min(5, `Mínimo 5 caracteres`)
-      .required("Campo Requerido"),
+    stock: Yup.number().min(0, "El stock no puede ser negativo"),
+    description: Yup.string().min(5, `Mínimo 5 caracteres`),
   });
-  const platformsOptions = platforms.map((platform) => ({
-    value: platform.name,
-    label: platform.name,
-    id: platform.id,
-  }));
-  const genresOptions = genres.map((genre) => ({
-    value: genre.name,
-    label: genre.name,
-    id: genre.id,
-  }));
 
-  let platformsDefault = [];
-  let genresDefault = [];
-  if (props) {
-    let gen = props.genresText.split(",");
+  const handleImageChange = async (event, setFieldValue) => {
+    const image = event.currentTarget.files[0];
 
-    for (let i = 0; i < gen.length; i++) {
-      const element = gen[i];
-      let genFilt = genresOptions.filter(
-        (obj) => obj.value.trim() === element.trim()
-      );
-      genresDefault.push(genFilt[0]);
+    if (image) {
+      const formData = new FormData();
+      formData.append("file", image);
+      formData.append("upload_preset", "dynh9dt8");
+
+      try {
+        const response = await axios.post(
+          "https://api.cloudinary.com/v1_1/duy9efu8j/image/upload",
+          formData
+        );
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Imagen cargada con exito",
+          showConfirmButton: false,
+          timer: 2000,
+        });
+        setFieldValue("image", response.data.url);
+      } catch (error) {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: error.message,
+          showConfirmButton: false,
+          timer: 2000,
+        });
+      }
     }
+  };
 
-    let plat = props.platformsText.split(",");
-
-    for (let i = 0; i < plat.length; i++) {
-      const element = plat[i];
-      let platFilt = platformsOptions.filter(
-        (obj) => obj.value.trim() === element.trim()
-      );
-      platformsDefault.push(platFilt[0]);
+  const createVideogames = async (values) => {
+    try {
+      await axios.post("/post", values);
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Videojuego creado con exito !!",
+        showConfirmButton: false,
+        timer: 2000,
+      });
+    } catch (error) {
+      Swal.fire({
+        position: "top-end",
+        icon: "error",
+        title: `${error.message}`,
+        showConfirmButton: false,
+        timer: 1500,
+      });
     }
-  }
+  };
+
+  const editVideogames = async (values, props) => {
+    try {
+      if (!values.physicalGame) {
+        values = { ...values, stock: 0 };
+      }
+      const { data } = await axios.put(`/put/games/${props.id}`, values);
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: " El videojuego se ha actualizado  !!",
+        showConfirmButton: false,
+        timer: 2000,
+      });
+      onClose();
+    } catch (error) {
+      Swal.fire({
+        position: "top-end",
+        icon: "error",
+        title: `${error.message}`,
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
+  };
 
   return (
     <Formik
-      initialValues={props ? props : initialValues}
+      initialValues={props ? valuesEdit : initialValues}
       validationSchema={formSchema}
       onSubmit={async (values) => {
-       
-        if (values.image) {
-          const formData = new FormData();
-          formData.append("file", values.image);
-          formData.append("upload_preset", "dynh9dt8");
-    
-          try {
-            const response = await axios.post(
-              "https://api.cloudinary.com/v1_1/duy9efu8j/image/upload",
-              formData
-            );
-            Swal.fire({
-              position: "center",
-              icon: "success",
-              title: "Imagen cargada con éxito",
-              showConfirmButton: false,
-              timer: 2000,
-            });
-            values.image = response.data.url;
-          } catch (error) {
-            Swal.fire({
-              position: "top-end",
-              icon: "error",
-              title: `${error.message}`,
-              showConfirmButton: false,
-              timer: 1500,
-            });
-            return; 
-          }
-        }
         if (!props) {
-          try { 
-            await axios.post("/post", values);
-            Swal.fire({
-              position: "center",
-              icon: "success",
-              title: "Videojuego creado con exito !!",
-              showConfirmButton: false,
-              timer: 2000,
-            });
-          } catch (error) {
-            Swal.fire({
-              position: "top-end",
-              icon: "error",
-              title: `${error.message}`,
-              showConfirmButton: false,
-              timer: 1500,
-            });
-          }
+          createVideogames(values);
         } else {
-          try {
-            await axios.put(`/games/${id}`, values);
-            Swal.fire({
-              position: "center",
-              icon: "success",
-              title: " El videojuego se ha actualizado  !!",
-              showConfirmButton: false,
-              timer: 2000,
-            });
-          } catch (error) {
-            Swal.fire({
-              position: "top-end",
-              icon: "error",
-              title: `${error.message}`,
-              showConfirmButton: false,
-              timer: 1500,
-            });
-          }
+          await editVideogames(values, props);
         }
       }}
     >
       {({ values, setFieldValue }) => (
-        // <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
         <div>
           <div className="w-full max-w-md">
             <Form
@@ -232,29 +280,34 @@ const Formulario = ({ props, id }) => {
                   className="mt-1 text-sm text-red-600"
                 />
               </div>
-              {!props && 
-                <div className="mb-4">
-                  <label
-                    htmlFor="image"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    {" "}
-                    Imagen{" "}
-                  </label>
-                  <input
-                    type="file"
-                    id="image"
-                    name="image"
-                    className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                    
-                  />
-                  <ErrorMessage
-                    name="image"
-                    component="div"
-                    className="mt-1 text-sm text-red-600"
-                  />
+
+              <div className="mb-4">
+                <label
+                  htmlFor="image"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  {" "}
+                  Imagen{" "}
+                </label>
+                <input
+                  type="file"
+                  id="image"
+                  name="image"
+                  className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  onChange={(event) =>
+                    handleImageChange(event, setFieldValue, values)
+                  }
+                />
+                <div>
+                  <img className="rounded-xl" src={values.image} alt="" />
                 </div>
-              }
+
+                <ErrorMessage
+                  name="image"
+                  component="div"
+                  className="mt-1 text-sm text-red-600"
+                />
+              </div>
 
               <div className="mb-4">
                 <label
@@ -263,36 +316,22 @@ const Formulario = ({ props, id }) => {
                 >
                   Plataformas
                 </label>
-                {props && platformsDefault ? (
-                  <Select
-                    defaultValue={platformsDefault}
-                    id="platforms"
-                    className="form-control"
-                    name="platforms"
-                    options={platformsOptions}
-                    isMulti
-                    onChange={(selectedOptions) => {
-                      const selectedValues = selectedOptions.map(
-                        (option) => option.id
-                      );
-                      setFieldValue("platforms", selectedValues);
-                    }}
-                  />
-                ) : (
-                  <Select
-                    id="platforms"
-                    className="form-control"
-                    name="platforms"
-                    options={platformsOptions}
-                    isMulti
-                    onChange={(selectedOptions) => {
-                      const selectedValues = selectedOptions.map(
-                        (option) => option.id
-                      );
-                      setFieldValue("platforms", selectedValues);
-                    }}
-                  />
-                )}
+
+                <Select
+                  defaultValue={platformsDefault}
+                  id="platforms"
+                  className="form-control"
+                  name="platforms"
+                  options={platformsOptions}
+                  isMulti
+                  onChange={(selectedOptions) => {
+                    const selectedValues = selectedOptions.map(
+                      (option) => option.id
+                    );
+                    setFieldValue("platforms", selectedValues);
+                  }}
+                />
+
                 <ErrorMessage
                   name="platforms"
                   component="div"
@@ -332,7 +371,7 @@ const Formulario = ({ props, id }) => {
                   name="price"
                   min="1"
                   placeholder="11111.11"
-                  type="number"
+                  type="text"
                 />
                 <ErrorMessage
                   name="price"
@@ -348,42 +387,29 @@ const Formulario = ({ props, id }) => {
                   {" "}
                   Generos{" "}
                 </label>
-                {props ? (
-                  <Select
-                    defaultValue={genresDefault}
-                    id="genres"
-                    className="form-control"
-                    name="genres"
-                    options={genresOptions}
-                    isMulti
-                    onChange={(selectedOptions) => {
-                      const selectedValues = selectedOptions.map(
-                        (option) => option.id
-                      );
-                      setFieldValue("genres", selectedValues);
-                    }}
-                  />
-                ) : (
-                  <Select
-                    id="genres"
-                    className="form-control"
-                    name="genres"
-                    options={genresOptions}
-                    isMulti
-                    onChange={(selectedOptions) => {
-                      const selectedValues = selectedOptions.map(
-                        (option) => option.id
-                      );
-                      setFieldValue("genres", selectedValues);
-                    }}
-                  />
-                )}
+
+                <Select
+                  defaultValue={genresDefault}
+                  id="genres"
+                  className="form-control"
+                  name="genres"
+                  options={genresOptions}
+                  isMulti
+                  onChange={(selectedOptions) => {
+                    const selectedValues = selectedOptions.map(
+                      (option) => option.id
+                    );
+                    setFieldValue("genres", selectedValues);
+                  }}
+                />
+
                 <ErrorMessage
                   name="genres"
                   component="div"
                   className="mt-1 text-sm text-red-600"
                 />
               </div>
+
               <div className="mb-4">
                 <label>
                   <Field type="checkbox" name="physicalGame" />
@@ -407,6 +433,7 @@ const Formulario = ({ props, id }) => {
                   <Field
                     className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                     name="stock"
+                    value={values.stock}
                     placeholder=""
                     type="number"
                   />
