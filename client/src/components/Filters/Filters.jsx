@@ -14,9 +14,11 @@ export default function Filters(props) {
   const { onApplyFilters } = props
 
   const platforms = useSelector((state) => state.platforms);
+  const [heightPlatforms, setHeightPlatforms] = useState("h-[250px]")
   const [selectedPlatforms, setSelectedPlatforms] = useState([]);
 
   const genres = useSelector((state) => state.genres);
+  const [heightGenres, setHeightGenres] = useState("h-[250px]")
   const [selectedGenres, setSelectedGenres] = useState([]);
   
   const [sortOrder, setSortOrder] = useState({ value: "none", label: "Sin orden" });
@@ -118,15 +120,10 @@ export default function Filters(props) {
           radius="none"
           name="minPrice"
           className="flex-1"
+          color="primary"
           value={prices.minPrice}
           onChange={handleChangePrice}
           label="Min"
-          startContent={
-            <div className="pointer-events-none flex items-center">
-              <span className="text-default-400 text-small">$</span>
-            </div>
-          }
-
         />
         <p className="w-[10%] text-2xl text-white flex justify-center">-</p>
         <Input
@@ -136,6 +133,7 @@ export default function Filters(props) {
           radius="none"
           name="maxPrice"
           className="flex-1"
+          color="primary"
           value={prices.maxPrice}
           onChange={handleChangePrice}
           label="Max"
@@ -154,11 +152,11 @@ export default function Filters(props) {
           searchText={inputValue}
         />
       </AccordionItem>
-      <AccordionItem key="3" aria-label="Plataforma" title="Plataforma">
+      <AccordionItem key="3" aria-label="Plataforma" title="Plataforma" colo>
           <CheckboxGroup
           onValueChange={setSelectedPlatforms}
           defaultValue={selectedPlatforms}
-          className=" overflow-hidden"
+          className={`overflow-hidden ${heightPlatforms}`}
           >
           {
             platforms.map(platform => {
@@ -166,13 +164,13 @@ export default function Filters(props) {
             })
           }
           </CheckboxGroup>
-          <button className="mt-2 text-accent" onClick={() =>{}}>"Ver mas"</button>
+          <button className="mt-2 text-accent" onClick={() =>{heightPlatforms === "h-[250px]"? setHeightPlatforms("h-fit"): setHeightPlatforms("h-[250px]")}}>{heightPlatforms === "h-[250px]"?"Ver mas": "Ver menos"}</button>
       </AccordionItem>
       <AccordionItem key="4" aria-label="Genero" title="Género">
               <CheckboxGroup
       onValueChange={setSelectedGenres}
       defaultValue={selectedGenres}
-      className="overflow-hidden"
+      className={`overflow-hidden ${heightGenres}`}
     >
       {
         genres.map(genre => {
@@ -180,16 +178,8 @@ export default function Filters(props) {
         })
       }
     </CheckboxGroup>
-    <button className="mt-2 text-accent" onClick={() => {}}>"Ver mas"</button>
+    <button className="mt-2 text-accent" onClick={() =>{heightGenres === "h-[250px]"? setHeightGenres("h-fit"): setHeightGenres("h-[250px]")}}>{heightGenres === "h-[250px]"?"Ver mas": "Ver menos"}</button>
       </AccordionItem>
-      {/* <AccordionItem key="4" aria-label="Ordenamiento" title="Ordenar">
-        <Select
-          options={orderOptions}
-          onChange={(selectedOption) => orderHandler(selectedOption)}
-          placeholder="Ordenar..."
-          ref={selectedOrderRef}
-        />
-      </AccordionItem> */}
     </Accordion>
     <Select
       options={orderOptions}
