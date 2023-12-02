@@ -2,7 +2,7 @@ import { Button } from "@nextui-org/react";
 import { CartContext } from "../../context/contextCart";
 import { useContext } from "react";
 import { FaPlus, FaMinus } from "react-icons/fa";
-
+// import PaymentTest from "./PaymentTest";
 import { RemoveFromCartIcon } from "../../icono/icono";
 
 
@@ -125,7 +125,7 @@ const Carrito = () => {
         </div>
       </div>
       <div>
-        <PaymentTest />
+        {/* <PaymentTest /> */}
       </div>
     </div>
   );
