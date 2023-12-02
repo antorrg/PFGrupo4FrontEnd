@@ -8,12 +8,12 @@ export default function Admin() {
   return (
     <>
       <div className="min-h-full min-w-full flex-1 flex flex-col items-center">
-        <PerfilNavbar/>
+        <PerfilNavbar />
         <Routes>
-          <Route path="/" element={<AdminHome/>} />
-          <Route path="/orders" element={<Orders/>} />
+          <Route path="/" element={<AdminHome />} />
+          <Route path="/orders" element={<Orders />} />
           <Route path="/create" element={<Create />} />
-      </Routes>
+        </Routes>
       </div>
     </>
   );
