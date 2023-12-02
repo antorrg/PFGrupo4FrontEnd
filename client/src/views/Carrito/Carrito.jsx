@@ -2,7 +2,9 @@ import { Button } from "@nextui-org/react";
 import { CartContext } from "../../context/contextCart";
 import { useContext } from "react";
 import { FaPlus, FaMinus } from "react-icons/fa";
+
 import { RemoveFromCartIcon } from "../../icono/icono";
+
 
 const CartItem = ({ image, price, name, quantity, addToCart, removeItem, removeIdCart }) => {
   const subTotal = quantity * price;
@@ -121,6 +123,9 @@ const Carrito = () => {
           <p className="mr-2">ó</p>
           <span className="text-violet-400 cursor-pointer">Continuar Comprando...</span>
         </div>
+      </div>
+      <div>
+        <PaymentTest />
       </div>
     </div>
   );
