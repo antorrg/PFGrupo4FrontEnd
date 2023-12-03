@@ -8,8 +8,30 @@ export default {
     "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        primary: "#1F0A4D",
+        secondary: "#5825CC",
+        accent: "#FB923C",
+        // Agrega tus colores personalizados con nombres significativos aquí
+      },
+    },
   },
   darkMode: "class",
-  plugins: [nextui()],
+  plugins: [
+    nextui({
+      themes: {
+        dark: {
+          colors: {
+            foreground: "#ECEDEE",
+            primary: {
+              foreground: "#ECEDEE",
+              DEFAULT: "#1F0A4D",
+            },
+            focus: "#BEF264",
+          },
+        },
+      },
+    }),
+  ],
 };

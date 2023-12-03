@@ -1,12 +1,21 @@
 import { Button } from "@nextui-org/react";
 import { CartContext } from "../../context/contextCart";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FaPlus, FaMinus } from "react-icons/fa";
-
+// import PaymentTest from "./PaymentTest";
 import { RemoveFromCartIcon } from "../../icono/icono";
+import { useAuth0 } from "@auth0/auth0-react";
+import { useSelector } from "react-redux";
 
-
-const CartItem = ({ image, price, name, quantity, addToCart, removeItem, removeIdCart }) => {
+const CartItem = ({
+  image,
+  price,
+  name,
+  quantity,
+  addToCart,
+  removeItem,
+  removeIdCart,
+}) => {
   const subTotal = quantity * price;
 
   return (
@@ -36,7 +45,8 @@ const CartItem = ({ image, price, name, quantity, addToCart, removeItem, removeI
                     isIconOnly
                     size="sm"
                     color="primary"
-                    variant="light">
+                    variant="light"
+                  >
                     <FaPlus />
                   </Button>
                   <Button
@@ -44,7 +54,8 @@ const CartItem = ({ image, price, name, quantity, addToCart, removeItem, removeI
                     isIconOnly
                     size="sm"
                     color="primary"
-                    variant="light">
+                    variant="light"
+                  >
                     <FaMinus />
                   </Button>
                 </div>
@@ -56,7 +67,8 @@ const CartItem = ({ image, price, name, quantity, addToCart, removeItem, removeI
                 size="sm"
                 variant="light"
                 color="danger"
-                onClick={removeIdCart}>
+                onClick={removeIdCart}
+              >
                 <RemoveFromCartIcon />
               </Button>
             </div>
@@ -68,13 +80,30 @@ const CartItem = ({ image, price, name, quantity, addToCart, removeItem, removeI
 };
 
 const Carrito = () => {
-  const { cart, removeItem, addToCart, removeIdCart, clearCart } = useContext(CartContext);
+  const cartRedux = useSelector((state) => state.cart);
+  const { isAuthenticated } = useAuth0();
+  const { cart, removeItem, addToCart, removeIdCart, clearCart } =
+    useContext(CartContext);
+  // const [cartInfo, setCartInfo] = useState({});
+  const total = cart.reduce(
+    (acc, el) => acc + Number(el.price) * el.quantity,
+    0
+  );
 
-  const total = cart.reduce((acc, el) => acc + Number(el.price) * el.quantity, 0);
+  console.log(cartRedux);
+  useEffect(() => {
+    if (isAuthenticated) {
+    } else {
+    }
+  }, []);
 
   return (
     <div>
-      {!cart.length ? <h1 className="text-xl font-semibold mb-4">Carrito de Compra Vacio</h1> : <h1 className="text-xl font-semibold mb-4">Carrito de Compra</h1>}
+      {!cart.length ? (
+        <h1 className="text-xl font-semibold mb-4">Carrito de Compra Vacio</h1>
+      ) : (
+        <h1 className="text-xl font-semibold mb-4">Carrito de Compra</h1>
+      )}
       <ul>
         {cart.map((game) => (
           <CartItem
@@ -90,7 +119,8 @@ const Carrito = () => {
           radius="sm"
           color="error"
           className="text-white py-3 w-full mt-4"
-          onClick={clearCart}>
+          onClick={clearCart}
+        >
           Vaciar Carrito
         </Button>
       </ul>
@@ -98,7 +128,8 @@ const Carrito = () => {
         radius="sm"
         color="error"
         className="text-danger py-3 w-full mt-4"
-        onClick={clearCart}>
+        onClick={clearCart}
+      >
         Vaciar Carrito <RemoveFromCartIcon />
       </Button>
       <div className="flex flex-col p-3 mb-4 w-full border-t-1 justify-between items-center sm:w-[600px] lg:w-[500px] bg-[#f7edff] h-fit lg:p-6 gap-4 rounded-2xl">
@@ -113,20 +144,17 @@ const Carrito = () => {
             <h1 className="font-medium">${total.toFixed(2)}</h1>
           </div>
         </div>
-        <Button
-          radius="sm"
-          color="primary"
-          className="text-white py-5 w-full">
+        <Button radius="sm" color="primary" className="text-white py-5 w-full">
           <p className="text-base">Comprar</p>
         </Button>
         <div className="h-[50px] flex items-center justify-center">
           <p className="mr-2">ó</p>
-          <span className="text-violet-400 cursor-pointer">Continuar Comprando...</span>
+          <span className="text-violet-400 cursor-pointer">
+            Continuar Comprando...
+          </span>
         </div>
       </div>
-      <div>
-        <PaymentTest />
-      </div>
+      <div>{/* <PaymentTest /> */}</div>
     </div>
   );
 };
