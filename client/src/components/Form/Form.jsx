@@ -54,7 +54,7 @@ const Formulario = ({ props, onClose }) => {
       platformsDefault.push(platFilt[0]);
     }
   }
-  let valuesEdit = {};
+  // let valuesEdit = {};
   if (props) {
     let {
       name,

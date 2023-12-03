@@ -8,7 +8,7 @@ const navigation = [
   { name: "Pedidos", href: "/perfil/orders", current: false, access: "all" },
   {
     name: "Configuración",
-    href: "/perfil/settings",
+    href: "/perfil/",
     current: false,
     access: "all",
   },

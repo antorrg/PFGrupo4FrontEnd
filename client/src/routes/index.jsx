@@ -32,7 +32,7 @@ export const routes = [
   },
   {
     path: "/perfil/*",
-    element: lazy(async () => await import("../views/Admin/Admin")),
+    element: lazy(async () => await import("../views/Perfil/Perfil.jsx")),
   },
   {
     path: "/checkout/*",

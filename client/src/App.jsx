@@ -10,7 +10,8 @@ import { NextUIProvider, Spinner } from "@nextui-org/react";
 import { renderRoutes, routes } from "./routes";
 import userLog from "./components/Auth0/Send";
 
-import { Footer, NavBar } from "./views/index";
+import NavBar from "./components/NavBar/NavBar";
+import Footer from "./components/Footer/Footer";
 
 function App() {
   const navigate = useNavigate();
@@ -35,10 +36,14 @@ function App() {
         name: "",
       })
     );
-    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      document.documentElement.classList.add('dark')
+    if (
+      localStorage.theme === "dark" ||
+      (!("theme" in localStorage) &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches)
+    ) {
+      document.documentElement.classList.add("dark");
     } else {
-      document.documentElement.classList.remove('dark')
+      document.documentElement.classList.remove("dark");
     }
   }, []);
   //-----------------------------------------------------

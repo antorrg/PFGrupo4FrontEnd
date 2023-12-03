@@ -1,5 +1,4 @@
-import Formulario from "../../../components/Form/Form";
-import AdminHome from "../AdminHome/AdminHome";
+import Formulario from "../../../../components/Form/Form";
 const Create = () => {
   return (
     <>
@@ -12,7 +11,8 @@ const Create = () => {
       </header>
       <main>
         <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
-          <Formulario />{ /* volver a poner el formulario despues de provar*/}
+          <Formulario />
+          {/* volver a poner el formulario despues de provar*/}
         </div>
       </main>
     </>

@@ -1,7 +1,7 @@
 import axios from "axios";
-import Modal from "../../../Modal/Modal";
+import Modal from "../../../../Modal/Modal";
 import Swal from "sweetalert2";
-import Formulario from "../../../components/Form/Form";
+import Formulario from "../../../../components/Form/Form";
 import {
   Table,
   TableHeader,
@@ -38,8 +38,6 @@ const GamesTable = ({ videogames }) => {
   const handlerDelete = async (id, game) => {
     try {
       const { data } = await axios.delete(`delete/games/${id}`);
-      console.log(data);
-      console.log();
       Swal.fire({
         position: "center",
         icon: "success",
@@ -64,7 +62,7 @@ const GamesTable = ({ videogames }) => {
         })}
       </TableHeader>
       <TableBody>
-        {videogames.map((game) => {
+        {videogames.map((game, index) => {
           console.log(game);
           return (
             <TableRow key={`${game}-row-${index}`}>

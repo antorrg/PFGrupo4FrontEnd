@@ -3,7 +3,7 @@ import Pagination from "../../../components/Pagination/Pagination";
 import { useSelector, useDispatch } from "react-redux";
 import { getGames } from "../../../redux/actions";
 import { useState, useEffect } from "react";
-import GamesTable from "../GamesTable/GamesTable";
+import GamesTable from "./GamesTable/GamesTable";
 
 const AdminHome = () => {
   const dispatch = useDispatch();
@@ -38,7 +38,7 @@ const AdminHome = () => {
       <div className="flex-1 h-auto">
         {games.videogames ? (
           <>
-            <GamesTable videogames={games.videogames}/>
+            <GamesTable videogames={games.videogames} />
             <Pagination
               PaginationData={games.PaginationData}
               onPageChange={onPageChangeHandler}
