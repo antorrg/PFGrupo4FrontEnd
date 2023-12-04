@@ -20,7 +20,7 @@ const CartItem = ({
   const subTotal = quantity * price;
 
   return (
-    <div className="w-[90%] ">
+    <div className="w-[90%]">
       <div className="max-w-[600px] sm:mx-auto sm:mt-0 lg:w-full lg:flex gap-8 lg:max-w-7xl justify-between">
         <div className="flex flex-col pb-16 sm:w-[600px]">
           <div className="w-full h-[140px] py-4 flex gap-4 border-b-1 sm:h-[270px] sm:py-8">

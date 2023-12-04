@@ -28,9 +28,9 @@ const Breadcrum = () => {
       }
     });
   return (
-    <div className="max-w-[1536px] flex items-center w-full">
+    <div className="max-w-[1536px] flex items-center w-full px-5 sm:px-20">
       {currentLocation === "/home" || currentLocation === "/" ? null : (
-        <Breadcrumbs className="w-full ml-[1.5rem] pb-2 self-start">
+        <Breadcrumbs className="w-full pb-2 self-start">
           {locations.map((items, index) => (
             <BreadcrumbItem
               key={index}

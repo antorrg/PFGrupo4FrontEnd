@@ -103,6 +103,10 @@ export default function NavBar() {
       position="static"
       height="5rem"
       maxWidth="2xl"
+      classNames={{
+        base: "px-5 sm:px-20",
+        wrapper: "p-0"
+      }}
       onMenuOpenChange={setIsMenuOpen}
       className="dark:bg-primary"
     >
@@ -110,12 +114,12 @@ export default function NavBar() {
         aria-label={isMenuOpen ? "Close menu" : "Open menu"}
         className="sm:hidden"
       />
-      <NavbarBrand>
+      <NavbarBrand className="justify-end sm:justify-start">
         <Link href={"/"} className="cursor-pointer">
           <img src={logo} alt="logo" className="h-[60px] w-auto" />
         </Link>
       </NavbarBrand>
-      <NavbarContent justify="end" className="hidden sm:flex gap-10">
+      <NavbarContent justify="end" className="hidden sm:flex gap-10 ">
         {navItems.map((item, index) => (
           <NavbarItem key={`${item}-${index}`}>
             <Link href={item.to} className="flex">
