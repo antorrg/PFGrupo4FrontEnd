@@ -127,7 +127,11 @@ export default function Filters(props) {
         selectionMode="multiple"
         defaultExpandedKeys={["1", "2", "3", "4"]}
       >
-        <AccordionItem key="1" aria-label="Precio" title="Precio">
+        <AccordionItem
+          key="1"
+          aria-label="Precio"
+          title={<p className="text-white">Precio</p>}
+        >
           <div className="flex justify-between w-full items-center">
             <Input
               size="sm"
@@ -136,7 +140,6 @@ export default function Filters(props) {
               radius="none"
               name="minPrice"
               className="flex-1"
-              color="primary"
               value={prices.minPrice}
               onChange={handleChangePrice}
               label="Min"
@@ -148,27 +151,29 @@ export default function Filters(props) {
               min="0"
               radius="none"
               name="maxPrice"
-              className="flex-1"
-              color="primary"
+              className="flex-1 bg"
               value={prices.maxPrice}
               onChange={handleChangePrice}
               label="Max"
-              startContent={
-                <div className="pointer-events-none flex items-center">
-                  <span className="text-default-400 text-small">$</span>
-                </div>
-              }
             />
             <span className={style.error}>{errorPrices.prices}</span>
           </div>
         </AccordionItem>
-        <AccordionItem key="2" aria-label="search bar" title="Busqueda">
+        <AccordionItem
+          key="2"
+          aria-label="search bar"
+          title={<p className="text-white">Busqueda</p>}
+        >
           <SearchBar
             setSearchText={handlerInputChange}
             searchText={inputValue}
           />
         </AccordionItem>
-        <AccordionItem key="3" aria-label="Plataforma" title="Plataforma" colo>
+        <AccordionItem
+          key="3"
+          aria-label="Plataforma"
+          title={<p className="text-white">Plataforma</p>}
+        >
           <CheckboxGroup
             onValueChange={setSelectedPlatforms}
             defaultValue={selectedPlatforms}
@@ -176,8 +181,15 @@ export default function Filters(props) {
           >
             {platforms.map((platform) => {
               return (
-                <Checkbox value={platform.name} key={platform.name}>
-                  {platform.name}
+                <Checkbox
+                  value={platform.name}
+                  key={platform.name}
+                  radius="none"
+                  className={{
+                    base: "#1F0A4D",
+                  }}
+                >
+                  <p className="text-white/80">{platform.name}</p>
                 </Checkbox>
               );
             })}
@@ -193,7 +205,11 @@ export default function Filters(props) {
             {heightPlatforms === "h-[250px]" ? "Ver mas" : "Ver menos"}
           </button>
         </AccordionItem>
-        <AccordionItem key="4" aria-label="Genero" title="Género">
+        <AccordionItem
+          key="4"
+          aria-label="Genero"
+          title={<p className="text-white">Genero</p>}
+        >
           <CheckboxGroup
             onValueChange={setSelectedGenres}
             defaultValue={selectedGenres}
@@ -201,8 +217,8 @@ export default function Filters(props) {
           >
             {genres.map((genre) => {
               return (
-                <Checkbox value={genre.name} key={genre.name}>
-                  {genre.name}
+                <Checkbox value={genre.name} key={genre.name} radius="none">
+                  <p className="text-white">{genre.name}</p>
                 </Checkbox>
               );
             })}
@@ -228,6 +244,7 @@ export default function Filters(props) {
       <div className="flex justify-between w-full mt-4">
         <Button
           size="sm"
+          // color="primary"
           variant="shadow"
           onClick={applyFilters}
           className="bg-accent"

@@ -6,6 +6,7 @@ import { FaPlus, FaMinus } from "react-icons/fa";
 import { RemoveFromCartIcon } from "../../icono/icono";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useSelector } from "react-redux";
+import axios from "axios";
 
 const CartItem = ({
   image,
@@ -84,16 +85,29 @@ const Carrito = () => {
   const { isAuthenticated } = useAuth0();
   const { cart, removeItem, addToCart, removeIdCart, clearCart } =
     useContext(CartContext);
-  // const [cartInfo, setCartInfo] = useState({});
   const total = cart.reduce(
     (acc, el) => acc + Number(el.price) * el.quantity,
     0
   );
 
-  console.log(cartRedux);
+  const getCartData = async () => {
+    const itemsId = cartRedux
+      .map((e) => {
+        return e.id;
+      })
+      .join("%");
+    if (cartRedux.length > 0) {
+      const data = await axios.get(`/getDataShoppingCart?cartItems=${itemsId}`);
+    } else {
+      return;
+    }
+  };
+
   useEffect(() => {
     if (isAuthenticated) {
+      getCartData();
     } else {
+      // cart = useContext(CartContext).cart;
     }
   }, []);
 

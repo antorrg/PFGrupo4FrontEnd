@@ -1,41 +1,53 @@
-import React from 'react'
-import {Breadcrumbs, BreadcrumbItem} from "@nextui-org/react";
-import { useLocation} from "react-router-dom";
+import React from "react";
+import { Breadcrumbs, BreadcrumbItem } from "@nextui-org/react";
+import { useLocation } from "react-router-dom";
+import { HomeIcon } from "@heroicons/react/24/solid";
 
 const Breadcrum = () => {
-    let url = "/";
-    const currentlocation = useLocation().pathname
-    const locations = useLocation().pathname.split("/").map(e => {
-        if(url !== "/"){
-            url = url + "/" + e
-        } else {
-            url = url + e
-        }
+  let url = "/";
+  const currentLocation = useLocation().pathname;
+  const locations = useLocation()
+    .pathname.split("/")
+    .map((e) => {
+      if (url !== "/") {
+        url = url + "/" + e;
+      } else {
+        url = url + e;
+      }
 
-        if(e === ""){
-            return {
-                name: "Home",
-                path: "/home",
-            }
-        } else {
-            return {
-                name: e,
-                path: url,
-            }
-        }
-    })
+      if (e === "" && url === "/") {
+        return {
+          name: "Home",
+          path: "/home",
+        };
+      } else {
+        return {
+          name: e,
+          path: url,
+        };
+      }
+    });
   return (
-  <>
-  {
-        currentlocation === "/home"|| currentlocation === "/"?
-        null:
-        <Breadcrumbs className="w-full ml-[10%] pb-2 self-start">
-    {locations.map(items => {
-      return <BreadcrumbItem href={items.path}>{items.name}</BreadcrumbItem>
-    })}
-    </Breadcrumbs>
-    }
-  </> )
-}
+    <div className="max-w-[1536px] flex items-center w-full">
+      {currentLocation === "/home" || currentLocation === "/" ? null : (
+        <Breadcrumbs className="w-full ml-[1.5rem] pb-2 self-start">
+          {locations.map((items, index) => (
+            <BreadcrumbItem
+              key={index}
+              href={items.path}
+              isDisabled={items.name === "detail"}
+            >
+              {items.name === "Home" ? (
+                <HomeIcon className="w-6 text-accent" />
+              ) : (
+                <p className="text-white/80 hover:text-accent">{items.name}</p>
+              )}
+            </BreadcrumbItem>
+          ))}
+        </Breadcrumbs>
+      )}
+    </div>
+  );
+};
 
-export default Breadcrum
+export default Breadcrum;
