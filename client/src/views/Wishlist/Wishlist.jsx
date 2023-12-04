@@ -2,7 +2,7 @@ import React from 'react'
 
 const Wishlist = () => {
   return (
-    <div>
+    <div className='flex-1 flex items-center'>
       <p>Wishlist</p>
     </div>
   )

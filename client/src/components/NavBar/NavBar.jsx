@@ -11,6 +11,11 @@ import {
   HeartIcon,
   HomeIcon,
   ShoppingCartIcon,
+  UserIcon,
+  CurrencyDollarIcon,
+  Cog6ToothIcon,
+  BuildingStorefrontIcon,
+  PlusIcon
 } from "@heroicons/react/24/outline";
 import {
   Navbar,
@@ -41,33 +46,40 @@ export default function NavBar() {
       element: "Wishlist",
       to: "/wishlist",
       access: "all",
+      icon: HeartIcon,
     },
     {
       element: "Pedidos",
       to: "/perfil/orders",
       access: "all",
+      icon: CurrencyDollarIcon,
     },
     {
       element: "Configuración",
       to: "/perfil/settings",
       access: "all",
+      icon: Cog6ToothIcon,
     },
     {
       element: "Salir",
       to: "/",
       access: "all",
+      icon: UserIcon,
     },
     {
       element: "Lista de Juegos",
       to: "/perfil/games",
       access: "admin",
+      icon: BuildingStorefrontIcon,
     },
     {
       element: "Ingresar Juego",
       to: "/perfil/create",
       access: "admin",
+      icon: PlusIcon,
     },
   ];
+
   const navItems = [
     {
       element: "Home",
@@ -106,9 +118,9 @@ export default function NavBar() {
       <NavbarContent justify="end" className="hidden sm:flex gap-10">
         {navItems.map((item, index) => (
           <NavbarItem key={`${item}-${index}`}>
-            <Link href={item.to}>
+            <Link href={item.to} className="flex">
               {
-                <item.icon className="w-7 hover:text-orange-400 dark:text-secondary dark:hover:text-orange-400" />
+                <item.icon className="w-7 hover:text-accent dark:text-secondary dark:hover:text-orange-400" />
               }
               {item.element === "Carrito" && cart.length > 0 && (
                 <p className="absolute -top-1 -right-3 bg-red-300 rounded-full w-5 h-5 flex items-center justify-center text-[12px] font-semibold">
@@ -118,19 +130,15 @@ export default function NavBar() {
             </Link>
           </NavbarItem>
         ))}
-        {!isAuthenticated ? (
+        {!isAuthenticated && (
           <NavbarItem>
             <LoginButton />
-          </NavbarItem>
-        ) : (
-          <NavbarItem>
-            <LogoutButton />
           </NavbarItem>
         )}
       </NavbarContent>
       {isAuthenticated && (
         <Dropdown backdrop="blur">
-          <DropdownTrigger>
+          <DropdownTrigger className="ml-6">
             <User
               as="button"
               avatarProps={{
@@ -153,11 +161,11 @@ export default function NavBar() {
                 <p className="text-base text-primary dark:text-white">Tema</p>
               </DropdownItem>
             </DropdownSection>
-            <DropdownSection aria-label="roll client" className="border-t">
+            <DropdownSection aria-label="client role" className="border-t">
               {perfilItems.map((item) => {
                 return (
                   item.access === "all" && (
-                    <DropdownItem key={item.element}>
+                    <DropdownItem key={item.element} startContent={<item.icon className="w-5"/>}>
                       {item.element !== "Salir" ? (
                         <Link href={item.to} className="dark:text-white">
                           {item.element}
@@ -180,7 +188,7 @@ export default function NavBar() {
                 {perfilItems.map(
                   (item) =>
                     item.access === "admin" && (
-                      <DropdownItem key={item.element}>
+                      <DropdownItem key={item.element} startContent={<item.icon className="w-5"/>}>
                         <Link href={item.to} className="dark:text-white">
                           {item.element}
                         </Link>
