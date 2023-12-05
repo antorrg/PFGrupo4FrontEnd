@@ -5,7 +5,12 @@ import axios from "axios";
 //require ('dotenv').config();
 //const { MERCADOPAGO_PUBLIC_KEY }=process.env;
 
-const PaymentTest = () => {
+const PaymentTest = (props) => {
+
+    const { userID, arrayItems } = props;
+
+    console.log("userID: " + userID);
+    console.log("arrayItems: " + JSON.stringify(arrayItems));
 
     const [preferenceId, setPreferenceId] = useState(0);
     //const [initPoint, setInitPoint] = useState("");
@@ -14,15 +19,15 @@ const PaymentTest = () => {
     //initMercadoPago("TEST-76e9585a-c443-4c78-b373-c42b602a48d8");
     initMercadoPago("TEST-20bf0407-c11b-4eeb-ba3b-f7241af6c545", { locale: 'es-AR' });
 
-    const onInitPayment = () => {
+    /*const onInitPayment = () => {
         window.location.href = initPoint;
-    }
+    }*/
 
     const createPreference = async () => {
         try {
             const response = await axios.post("http://localhost:3001/post/createParchuseOrder", {
-                userID: "634829e8-cb56-4d71-9668-21fc95fa8789",
-                items: [
+                userID: userID,//"634829e8-cb56-4d71-9668-21fc95fa8789",
+                items: arrayItems/*[
                     {
                         id: "1234654",
                         title: "Mario B",
@@ -30,7 +35,7 @@ const PaymentTest = () => {
                         quantity: 2,
                         currency_id: "USD"
                     }
-                    /*{
+                    {
                         title: "Call of Duty",
                         unit_price: 500,
                         quantity: 2
@@ -63,8 +68,8 @@ const PaymentTest = () => {
                         unit_price: 650,
                         quantity: 1,
                         //currency_id: "COP"
-                    }*/
-                ]
+                    }
+                ]*/
             });
             //return response.data.body.id;
             if(response.data.body.id) {
@@ -73,7 +78,7 @@ const PaymentTest = () => {
                 //setInitPoint(response.data.body.init_point);
             }
         } catch (error) {
-            console.log(error);
+            window.alert(error.message);
         }
     };
 
@@ -84,7 +89,7 @@ const PaymentTest = () => {
             ConsultarEstadoDeTransaccion();
         }, 3000);*/
 
-        return () => clearTimeout(waitTime);
+        //return () => clearTimeout(waitTime);
       }, []);
 
     return (
