@@ -6,16 +6,18 @@ const enviarInfoAlServer = async (userData) => {
 
 
   const email = userData.email;
-  const nickname = userData.nickname;
+  const password = userData.password ?? null;
+  const nickname = userData.nickname ?? null;
   const given_name = userData.given_name ?? null;
-  const picture = userData.picture;
-  const sub = userData.sub;
+  const picture = userData.picture ?? null;
+  const sub = userData.sub ?? null;
 
   try {
 
-    const response = await axios.post("http://localhost:3001/post/user", {
+    const response = await axios.post("/post/user", {
 
       email,
+      password,
       nickname,
       given_name,
       picture,
@@ -25,11 +27,10 @@ const enviarInfoAlServer = async (userData) => {
     if (response.status === 201) {
 
       console.log("response", response);
-      // Accede al encabezado Authorization para obtener el token
+      // Accede al body para obtener el token
       const token = response.data.token;
 
       console.log("Token recibido:", token);
-      // if (response.data) {
       console.log(response.data);
       const user = { ...response.data, token };
       console.log(user);
