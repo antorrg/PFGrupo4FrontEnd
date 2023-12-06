@@ -1,3 +1,4 @@
+
 // import { Link } from "react-router-dom";
 import LogoutButton from "../Auth0/LogoutButton";
 import LoginButton from "../Auth0/LoginButton";
@@ -6,6 +7,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useSelector } from "react-redux";
 import { useState, useContext } from "react";
 import logo from "./logo.png";
+import FormularioLogin from "../Form/FormRegister";
+import Modal from "../../Modal/Modal";
 import { CartContext } from "../../context/contextCart";
 import {
   HeartIcon,
@@ -28,12 +31,14 @@ import {
   DropdownSection,
   Link,
 } from "@nextui-org/react";
-// import SearchBar from "../SearchBar/SearchBar";
+import { useSelector } from "react-redux";
 
 export default function NavBar() {
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const userInfo = useSelector((state) => state.loginUser);
   const { isAuthenticated } = useAuth0();
+
   const { cart } = useContext(CartContext);
 
   const perfilItems = [
@@ -85,7 +90,8 @@ export default function NavBar() {
       to: "/carrito",
     },
   ];
-
+  const url =
+    "https://res.cloudinary.com/dmhxl1rpc/image/upload/c_scale,w_250/v1701669223/gameworld/avatar_gamer.jpg";
   return (
     <Navbar
       position="static"
@@ -107,6 +113,7 @@ export default function NavBar() {
         {navItems.map((item, index) => (
           <NavbarItem key={`${item}-${index}`}>
             <Link href={item.to}>
+
               {
                 <item.icon className="w-7 hover:text-orange-400 dark:text-secondary dark:hover:text-orange-400" />
               }
@@ -118,23 +125,32 @@ export default function NavBar() {
             </Link>
           </NavbarItem>
         ))}
-        {!isAuthenticated ? (
-          <NavbarItem>
-            <LoginButton />
-          </NavbarItem>
+        {!isAuthenticated && !isAuthenticatedLocal ? (
+          <>
+            <Modal
+              textButton="Ingresar/Registrarse"
+              title="Ingrese su Email y Passsword"
+              body={
+                <FormularioLogin
+                  setIsAuthenticatedLocal={setIsAuthenticatedLocal}
+                />
+              }
+            />
+          </>
         ) : (
           <NavbarItem>
             <LogoutButton />
           </NavbarItem>
         )}
       </NavbarContent>
-      {isAuthenticated && (
+      {(isAuthenticated || isAuthenticatedLocal) && (
         <Dropdown backdrop="blur">
           <DropdownTrigger>
             <User
               as="button"
               avatarProps={{
                 isBordered: true,
+
                 src: userInfo.picture,
               }}
               className="transition-transform"
@@ -169,6 +185,7 @@ export default function NavBar() {
                   )
                 );
               })}
+
             </DropdownSection>
             {
               // userInfo.role === "0" &&
