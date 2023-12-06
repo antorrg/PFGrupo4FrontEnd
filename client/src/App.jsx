@@ -8,24 +8,19 @@ import { changeBg, getGames, login, limpiarLogin } from "./redux/actions";
 import { CartProvider } from "./context/contextCart";
 import { NextUIProvider, Spinner } from "@nextui-org/react";
 import { renderRoutes, routes } from "./routes";
-import userLog from './components/Auth0/Send';
+import userLog from "./components/Auth0/Send";
 
-import {
- 
-  Footer,
-  NavBar,
-
-} from "./views/index";
+import NavBar from "./components/NavBar/NavBar";
+import Footer from "./components/Footer/Footer";
 
 function App() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user, isAuthenticated } = useAuth0();
-  console.log(isAuthenticated);
-  console.log(user);
+  // console.log(isAuthenticated);
+  // console.log(user);
 
   const bgPage = useSelector((state) => state.bgPage);
-  console.log(bgPage);
   const backgroundImage = {
     backgroundImage: `url(${bgPage})`,
   };
@@ -41,6 +36,15 @@ function App() {
         name: "",
       })
     );
+    if (
+      localStorage.theme === "dark" ||
+      (!("theme" in localStorage) &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches)
+    ) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
   }, []);
   //-----------------------------------------------------
   //    Estas funciones son para enviar datos al reducer
@@ -53,10 +57,9 @@ function App() {
           dispatch(login(result));
         } catch (error) {
           // Maneja el error según tus necesidades
-          console.error('Error al obtener información del usuario:', error);
-        } 
-      }
-      else {
+          console.error("Error al obtener información del usuario:", error);
+        }
+      } else {
         dispatch(limpiarLogin());
       }
     };
@@ -64,33 +67,31 @@ function App() {
     fetchUserLog();
   }, [isAuthenticated, user, dispatch]);
 
-
-
   return (
     <CartProvider>
-    <NextUIProvider navigate={navigate}>
-      <Suspense
-        fallback={
-          <Spinner
-            color="secondary"
-            size="lg"
-            className="absolute top-[50%] left-[50%]"
-          />
-        }
-      >
-        <div className="my-0 mx-auto flex flex-col items-center justify-between min-h-screen">
-          <div
-            className="bg-cover bg-center opacity-70 w-full h-screen absolute -z-10 top-0 left-0"
-            style={backgroundImage}
-          >
-            <div className="bg-gradient-to-t from-white to-transparent w-full h-[50%] bottom-0 absolute"></div>
+      <NextUIProvider navigate={navigate}>
+        <Suspense
+          fallback={
+            <Spinner
+              color="secondary"
+              size="lg"
+              className="absolute top-[50%] left-[50%]"
+            />
+          }
+        >
+          <div className="my-0 mx-auto flex flex-col items-center justify-between min-h-screen dark:bg-primary">
+            <div
+              className="bg-cover bg-center opacity-70 w-full h-screen absolute -z-10 top-0 left-0"
+              style={backgroundImage}
+            >
+              <div className="bg-gradient-to-t from-white to-transparent w-full h-[50%] bottom-0 absolute"></div>
+            </div>
+            <NavBar />
+            <Routes>{renderRoutes(routes)}</Routes>
+            <Footer />
           </div>
-          <NavBar />
-          <Routes>{renderRoutes(routes)}</Routes>
-          <Footer />
-        </div>
-      </Suspense>
-    </NextUIProvider>
+        </Suspense>
+      </NextUIProvider>
     </CartProvider>
   );
 }
