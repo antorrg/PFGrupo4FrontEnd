@@ -24,6 +24,20 @@ export default function Filters(props) {
   const [selectedPlatforms, setSelectedPlatforms] = useState([]);
   const [heightPlatforms, setHeightPlatforms] = useState("h-[250px]");
 
+  const handlerChangePlatforms = (event) => {
+    const currentFilter = event.target.name;
+    //Aplicar filtros:
+    onApplyFilters({
+      page: 0,
+      platforms: selectedPlatforms,
+      genres: selectedGenres,
+      minPrice: prices.minPrice,
+      maxPrice: prices.maxPrice,
+      order: sortOrder.value,
+      name: searchText,
+    });
+  };
+
   const genres = useSelector((state) => state.genres);
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [heightGenres, setHeightGenres] = useState("h-[250px]");
@@ -170,7 +184,11 @@ export default function Filters(props) {
         </AccordionItem>
         <AccordionItem key="3" aria-label="Plataforma" title="Plataforma" colo>
           <CheckboxGroup
-            onValueChange={setSelectedPlatforms}
+            name="Platforms"
+            onValueChange={(platforms) => {
+              setSelectedPlatforms(platforms);
+              handlerChangePlatforms(event);
+            }}
             defaultValue={selectedPlatforms}
             className={`overflow-hidden ${heightPlatforms}`}
           >
