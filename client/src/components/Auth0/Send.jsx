@@ -1,17 +1,23 @@
 import axios from "axios";
 
 const enviarInfoAlServer = async (userData) => {
-  // console.log(userData);
+
+  //console.log(userData);
+
 
   const email = userData.email;
-  const nickname = userData.nickname;
+  const password = userData.password ?? null;
+  const nickname = userData.nickname ?? null;
   const given_name = userData.given_name ?? null;
-  const picture = userData.picture;
-  const sub = userData.sub;
+  const picture = userData.picture ?? null;
+  const sub = userData.sub ?? null;
 
   try {
+
     const response = await axios.post("/post/user", {
+
       email,
+      password,
       nickname,
       given_name,
       picture,
@@ -19,14 +25,17 @@ const enviarInfoAlServer = async (userData) => {
     });
 
     if (response.status === 201) {
-      console.log(response);
-      // Accede al encabezado Authorization para obtener el token
-      const token = response.headers["authorization"];
 
-      // console.log('Token recibido:', token);
-      // if (response.data) {
-      // console.log(response.data.user)
-      return response.data.user;
+      //console.log("response", response);
+      // Accede al body para obtener el token
+      const token = response.data.token;
+
+      //console.log("Token recibido:", token);
+     // console.log(response.data);
+      const user = { ...response.data, token };
+     // console.log(user);
+      return user;
+    
     } else {
       alert("Error al autenticar/crear usuario");
     }
@@ -38,9 +47,12 @@ const enviarInfoAlServer = async (userData) => {
 const userLog = async (userData) => {
   try {
     const response = await enviarInfoAlServer(userData);
+
+    //console.log(response);
     return response;
   } catch (error) {
-    // console.error('Error en userLog:', error);
+    //console.error("Error en userLog:", error);
+
     throw error; // Puedes manejar el error aquí según tus necesidades
   }
 };
