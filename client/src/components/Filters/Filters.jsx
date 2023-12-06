@@ -24,20 +24,6 @@ export default function Filters(props) {
   const [selectedPlatforms, setSelectedPlatforms] = useState([]);
   const [heightPlatforms, setHeightPlatforms] = useState("h-[250px]");
 
-  const handlerChangePlatforms = (event) => {
-    const currentFilter = event.target.name;
-    //Aplicar filtros:
-    onApplyFilters({
-      page: 0,
-      platforms: selectedPlatforms,
-      genres: selectedGenres,
-      minPrice: prices.minPrice,
-      maxPrice: prices.maxPrice,
-      order: sortOrder.value,
-      name: searchText,
-    });
-  };
-
   const genres = useSelector((state) => state.genres);
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [heightGenres, setHeightGenres] = useState("h-[250px]");
@@ -45,7 +31,6 @@ export default function Filters(props) {
     value: "none",
     label: "Sin orden",
   });
-  const [searchText, setSearchText] = useState("");
 
   const selectedGenresRef = useRef(null);
   const selectedPlatformsRef = useRef(null);
@@ -62,9 +47,27 @@ export default function Filters(props) {
 
   const [inputValue, setInputValue] = useState("");
 
-  const handlerInputChange = (value) => {
-    setInputValue(value);
-    setSearchTextHandler(value);
+  const handlerSubmit = (event, value) => {
+    const currentFilter = event.target.name;
+    //Aplicar filtros:
+    const paramsObj = {
+      page: 0,
+      platforms: selectedPlatforms,
+      genres: selectedGenres,
+      minPrice: prices.minPrice,
+      maxPrice: prices.maxPrice,
+      order: sortOrder.value,
+      name: inputValue,
+    }
+
+    for (const key in paramsObj) {
+       if(key === currentFilter){
+        paramsObj[key] = value
+       }
+    }
+    console.log(value)
+
+    onApplyFilters(paramsObj);
   };
 
   const orderOptions = [
@@ -86,7 +89,7 @@ export default function Filters(props) {
 
   const handleChangePrice = (event) => {
     const property = event.target.name;
-    const value = event.target.value;
+    let value = event.target.value;
 
     setPrices({ ...prices, [property]: value });
     valideInputFilters(
@@ -94,10 +97,12 @@ export default function Filters(props) {
       setErrorPrices,
       errorPrices
     );
-  };
 
-  const setSearchTextHandler = (auxText) => {
-    setSearchText(auxText);
+    if(errorPrices.prices.length === 0){
+      return { ...prices, [property]: value }
+    } else {
+      return prices
+    }
   };
 
   const resetFilters = () => {
@@ -155,7 +160,10 @@ export default function Filters(props) {
               name="minPrice"
               className="flex-1"
               value={prices.minPrice}
-              onChange={handleChangePrice}
+              onChange={() => {
+                const prices = handleChangePrice(event)
+                handlerSubmit(event, prices.minPrice)
+              }}
               label="Min"
             />
             <p className="w-[10%] text-2xl text-white flex justify-center">-</p>
@@ -167,7 +175,10 @@ export default function Filters(props) {
               name="maxPrice"
               className="flex-1 bg"
               value={prices.maxPrice}
-              onChange={handleChangePrice}
+              onChange={() => {
+                const prices = handleChangePrice(event)
+                handlerSubmit(event, prices.maxPrice)
+              }}
               label="Max"
             />
             <span className={style.error}>{errorPrices.prices}</span>
@@ -179,20 +190,24 @@ export default function Filters(props) {
           title={<p className="text-white">Busqueda</p>}
         >
           <SearchBar
-            setSearchText={handlerInputChange}
+            name="name"
+            setSearchText={(value) => {
+              setInputValue(value)
+              handlerSubmit(event, value)
+            }}
             searchText={inputValue}
           />
         </AccordionItem>
         <AccordionItem
           key="3"
-          aria-label="Plataforma"
+          aria-label="platforms"
           title={<p className="text-white">Plataforma</p>}
         >
           <CheckboxGroup
-            name="Platforms"
-            onValueChange={(platforms) => {
-              setSelectedPlatforms(platforms);
-              handlerChangePlatforms(event);
+            name="platforms"
+            onValueChange={(platform) => {
+              setSelectedPlatforms(platform);
+              handlerSubmit(event, platform);
             }}
             defaultValue={selectedPlatforms}
             className={`overflow-hidden ${heightPlatforms}`}
@@ -229,7 +244,11 @@ export default function Filters(props) {
           title={<p className="text-white">Genero</p>}
         >
           <CheckboxGroup
-            onValueChange={setSelectedGenres}
+            name="genres"
+            onValueChange={(genres) => {
+              setSelectedGenres(genres);
+              handlerSubmit(event, genres);
+            }}
             defaultValue={selectedGenres}
             className={`overflow-hidden ${heightGenres}`}
           >
@@ -262,18 +281,9 @@ export default function Filters(props) {
       <div className="flex justify-between w-full mt-4">
         <Button
           size="sm"
-          // color="primary"
           variant="shadow"
-          onClick={applyFilters}
-          className="bg-accent"
-        >
-          Aplicar
-        </Button>
-        <Button
-          size="sm"
-          variant="light"
           onClick={resetFilters}
-          className="text-accent"
+          className="bg-accent"
         >
           Restablecer
         </Button>

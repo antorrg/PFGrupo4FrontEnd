@@ -127,12 +127,7 @@ export default function NavBar() {
       <NavbarContent justify="end" className="hidden sm:flex gap-10 ">
         {navItems.map((item, index) => (
           <NavbarItem key={`${item}-${index}`}>
-<<<<<<< HEAD
-            <Link href={item.to}>
-
-=======
             <Link href={item.to} className="flex">
->>>>>>> f5dec55a2d5de10ab3d822183ea48c8ce82f9b5c
               {
                 <item.icon className="w-7 hover:text-accent dark:text-secondary dark:hover:text-orange-400" />
               }
