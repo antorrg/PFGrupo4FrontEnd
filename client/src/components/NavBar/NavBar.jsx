@@ -1,4 +1,3 @@
-
 // import { Link } from "react-router-dom";
 import LogoutButton from "../Auth0/LogoutButton";
 import LoginButton from "../Auth0/LoginButton";
@@ -31,14 +30,14 @@ import {
   DropdownSection,
   Link,
 } from "@nextui-org/react";
-import { useSelector } from "react-redux";
+
 
 export default function NavBar() {
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const userInfo = useSelector((state) => state.loginUser);
   const { isAuthenticated } = useAuth0();
-
+const [isAuthenticatedLocal, setIsAuthenticatedLocal] = useState(false)
   const { cart } = useContext(CartContext);
 
   const perfilItems = [
@@ -150,12 +149,9 @@ export default function NavBar() {
               as="button"
               avatarProps={{
                 isBordered: true,
-
-                src: userInfo.picture,
               }}
               className="transition-transform"
-              name={userInfo.given_name}
-              description={userInfo.nickname && userInfo.nickname}
+             
             />
           </DropdownTrigger>
           <DropdownMenu aria-label="Profile Actions" variant="flat">

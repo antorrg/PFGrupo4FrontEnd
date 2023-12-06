@@ -11,7 +11,7 @@ YupPassword(Yup);
 import { NavbarItem, }from "@nextui-org/react";
 import LoginButton from "../Auth0/LoginButton";
 
-const FormularioLogin = () => {
+const FormularioLogin = ({ setIsAuthenticatedLocal}) => {
  
   const navigate = useNavigate();
  
@@ -58,7 +58,7 @@ const FormularioLogin = () => {
     values = {...values , nickname: nickName}
     const response = await userLog(values);
     navigate("/home")
- 
+   setIsAuthenticatedLocal(true)
   }
   return (
     <Formik
