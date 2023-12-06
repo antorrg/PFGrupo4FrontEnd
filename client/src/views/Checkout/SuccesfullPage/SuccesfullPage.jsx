@@ -1,6 +1,43 @@
 import img from "../../Landing/all_games.jpg";
+import { useState, useEffect } from "react";
+import axios from "axios";
+
 
 const SuccesfullPage = () => {
+
+  const searchParams = new URLSearchParams(window.location.search);
+  const paymentId = searchParams.get("payment_id");
+  const externalReference = searchParams.get("external_reference");
+
+  const [paymentResult, setPaymentResult] = useState({});
+
+  const showResultHandler = (auxPaymentResult) => {
+    setPaymentResult(auxPaymentResult)
+  }
+
+  const validePaymentResult = async () => {
+    try {
+      const data = await axios.get(`http://localhost:3001/getParchuseOrder?payment_id=${paymentId}&external_reference=${externalReference}`);
+      
+      if(data.data.orderData.status === "waiting"){
+        const waitTime = setTimeout(() => {
+            validePaymentResult();
+        }, 2000);
+      } else {
+        showResultHandler(data.data);
+      }
+
+    //return () => clearTimeout(waitTime);
+    
+    } catch (error) {
+      window.alert(error.message);
+    }
+  };
+
+  useEffect(() => {
+    validePaymentResult();
+  }, []);
+
   return (
     <div>
       <div className="max-w-[1200px]">
@@ -29,45 +66,49 @@ const SuccesfullPage = () => {
                 </dd>
               </dt>
               <ul>
-                <li className="flex gap-4 py-6 justify-between border-t">
-                  <img
-                    src="https://tailwindui.com/img/ecommerce-images/confirmation-page-06-product-01.jpg"
-                    alt=""
-                    className="w-[96px] h-[96px] object-cover rounded-lg"
-                  />
-                  <div className="flex-1">
-                    <h3 className="font-medium">Basic Tee</h3>
-                    <p>Charcoal</p>
-                    <p>L</p>
+                {paymentResult.orderData ? <div>{paymentResult.orderData.status}</div> : 
+                  <div>
+                    <li className="flex gap-4 py-6 justify-between border-t">
+                      <img
+                        src="https://tailwindui.com/img/ecommerce-images/confirmation-page-06-product-01.jpg"
+                        alt=""
+                        className="w-[96px] h-[96px] object-cover rounded-lg"
+                      />
+                      <div className="flex-1">
+                        <h3 className="font-medium">Basic Tee</h3>
+                        <p>Charcoal</p>
+                        <p>L</p>
+                      </div>
+                      <p className="font-medium">$36.00</p>
+                    </li>
+                    <li className="flex gap-4 py-6 justify-between border-t">
+                      <img
+                        src="https://tailwindui.com/img/ecommerce-images/confirmation-page-06-product-01.jpg"
+                        alt=""
+                        className="w-[96px] h-[96px] object-cover rounded-lg"
+                      />
+                      <div className="flex-1">
+                        <h3 className="font-medium">Basic Tee</h3>
+                        <p>Charcoal</p>
+                        <p>L</p>
+                      </div>
+                      <p className="font-medium">$36.00</p>
+                    </li>
+                    <li className="flex gap-4 py-6 justify-between border-t">
+                      <img
+                        src="https://tailwindui.com/img/ecommerce-images/confirmation-page-06-product-01.jpg"
+                        alt=""
+                        className="w-[96px] h-[96px] object-cover rounded-lg"
+                      />
+                      <div className="flex-1">
+                        <h3 className="font-medium">Basic Tee</h3>
+                        <p>Charcoal</p>
+                        <p>L</p>
+                      </div>
+                      <p className="font-medium">$36.00</p>
+                    </li>
                   </div>
-                  <p className="font-medium">$36.00</p>
-                </li>
-                <li className="flex gap-4 py-6 justify-between border-t">
-                  <img
-                    src="https://tailwindui.com/img/ecommerce-images/confirmation-page-06-product-01.jpg"
-                    alt=""
-                    className="w-[96px] h-[96px] object-cover rounded-lg"
-                  />
-                  <div className="flex-1">
-                    <h3 className="font-medium">Basic Tee</h3>
-                    <p>Charcoal</p>
-                    <p>L</p>
-                  </div>
-                  <p className="font-medium">$36.00</p>
-                </li>
-                <li className="flex gap-4 py-6 justify-between border-t">
-                  <img
-                    src="https://tailwindui.com/img/ecommerce-images/confirmation-page-06-product-01.jpg"
-                    alt=""
-                    className="w-[96px] h-[96px] object-cover rounded-lg"
-                  />
-                  <div className="flex-1">
-                    <h3 className="font-medium">Basic Tee</h3>
-                    <p>Charcoal</p>
-                    <p>L</p>
-                  </div>
-                  <p className="font-medium">$36.00</p>
-                </li>
+                }
               </ul>
               <dl className="pt-6 border-t">
                 <div className="flex justify-between items-center">
