@@ -20,6 +20,7 @@ const enviarInfoAlServer = async (userData) => {
       picture,
       sub,
     });
+    console.log(response);
 
     if (response.status === 201) {
       // Accede al encabezado Authorization para obtener el token

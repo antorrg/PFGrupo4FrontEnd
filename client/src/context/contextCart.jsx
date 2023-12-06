@@ -10,11 +10,9 @@ export const CartProvider = ({ children }) => {
   const dispatch = useDispatch();
   const { isAuthenticated } = useAuth0();
   const loginUser = useSelector((state) => state.loginUser);
+  const cartRedux = useSelector((state) => state.cart);
 
   const [cart, setCart] = useState(() => {
-    if (isAuthenticated) {
-    } else {
-    }
     const storeCart = localStorage.getItem("cart");
     return storeCart ? JSON.parse(storeCart) : [];
   });
@@ -32,12 +30,11 @@ export const CartProvider = ({ children }) => {
     };
 
     try {
-      const data = await axios.put(
+      const { data } = await axios.put(
         `http://localhost:3001/put/userShoppingCart/${loginUser.id}`,
         cartItems
       );
-      console.log(data.data);
-      dispatch(updateCart(data.data[0].cart));
+      dispatch(updateCart(data));
     } catch (error) {
       window.alert(error.message);
     }

@@ -1,6 +1,7 @@
 import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Button } from "@nextui-org/react";
+import { UserIcon } from "@heroicons/react/24/outline";
 
 const LoginButton = () => {
   const { loginWithRedirect } = useAuth0();
@@ -8,11 +9,16 @@ const LoginButton = () => {
   return (
     <Button
       onClick={() => loginWithRedirect()}
-      color="primary"
+      className="p-0"
       href="#"
-      variant="flat"
+      variant="invisible"
     >
-      Ingresar/Registrarse
+      {
+        <div className="text-secondary flex items-center gap-1 hover:text-accent">
+          <UserIcon className="w-7"></UserIcon>
+          <p>Ingresar/Registrarse</p>
+        </div>
+      }
     </Button>
   );
 };
