@@ -1,9 +1,12 @@
+
 // import { Link } from "react-router-dom";
 import LogoutButton from "../Auth0/LogoutButton";
 import LoginButton from "../Auth0/LoginButton";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useState, useContext } from "react";
 import logo from "./logo.png";
+import FormularioLogin from "../Form/FormRegister";
+import Modal from "../../Modal/Modal";
 import { CartContext } from "../../context/contextCart";
 import {
   HeartIcon,
@@ -25,16 +28,21 @@ import {
   NavbarMenuToggle,
   NavbarMenuItem,
   DropdownSection,
-  Link
+  Link,
 } from "@nextui-org/react";
+import { useSelector } from "react-redux";
 // import SearchBar from "../SearchBar/SearchBar";
 
 export default function NavBar() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const loginUser = useSelector((state) => state.loginUser);
+  const userLocal = loginUser.result
+  console.log(userLocal)
+   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const admin = "1";
 
   const { user, isAuthenticated } = useAuth0();
-
+  const [isAuthenticatedLocal, setIsAuthenticatedLocal] = useState(false);
   const { cart } = useContext(CartContext);
 
   const perfilItems = [
@@ -81,7 +89,8 @@ export default function NavBar() {
       to: "/carrito",
     },
   ];
-
+  const url =
+    "https://res.cloudinary.com/dmhxl1rpc/image/upload/c_scale,w_250/v1701669223/gameworld/avatar_gamer.jpg";
   return (
     <Navbar
       position="static"
@@ -103,42 +112,56 @@ export default function NavBar() {
           <NavbarItem key={`${item}-${index}`}>
             <Link href={item.to}>
               {<item.icon className="w-8 hover:text-orange-400" />}
-              {(item.element === "Carrito" && cart.length > 0) && <p className="absolute -top-1 -right-3 bg-red-300 rounded-full w-5 h-5 flex items-center justify-center text-[12px] font-semibold">{cart.reduce((sum, item) => sum + item.quantity, 0)}</p>}
+              {item.element === "Carrito" && cart.length > 0 && (
+                <p className="absolute -top-1 -right-3 bg-red-300 rounded-full w-5 h-5 flex items-center justify-center text-[12px] font-semibold">
+                  {cart.reduce((sum, item) => sum + item.quantity, 0)}
+                </p>
+              )}
             </Link>
           </NavbarItem>
         ))}
-        {!isAuthenticated ? (
-          <NavbarItem>
-            <LoginButton />
-          </NavbarItem>
+        {!isAuthenticated && !isAuthenticatedLocal ? (
+          <>
+            <Modal
+              textButton="Ingresar/Registrarse"
+              title="Ingrese su Email y Passsword"
+              body={
+                <FormularioLogin
+                  setIsAuthenticatedLocal={setIsAuthenticatedLocal}
+                />
+              }
+            />
+          </>
         ) : (
           <NavbarItem>
             <LogoutButton />
           </NavbarItem>
         )}
       </NavbarContent>
-      {isAuthenticated && (
+      {(isAuthenticated || isAuthenticatedLocal) && (
         <Dropdown backdrop="blur">
           <DropdownTrigger>
             <User
               as="button"
               avatarProps={{
                 isBordered: true,
-                src: user.picture,
+                src: isAuthenticated ? user.picture : loginUser.picture,
               }}
               className="transition-transform"
-              name={user.given_name}
-              description={user.nickname && user.nickname}
+              name={isAuthenticated ? user.given_name : loginUser.given_name}
+              description={isAuthenticated ? user.nickname : loginUser.nickname}
             />
           </DropdownTrigger>
           <DropdownMenu aria-label="Profile Actions" variant="flat">
             <DropdownSection>
-              {
-                perfilItems.map((item) => (
-                  item.access === "all" && <DropdownItem key={item.element}>
-                    <Link href={item.to}>{item.element}</Link>
-                  </DropdownItem>
-                ))}
+              {perfilItems.map(
+                (item) =>
+                  item.access === "all" && (
+                    <DropdownItem key={item.element}>
+                      <Link href={item.to}>{item.element}</Link>
+                    </DropdownItem>
+                  )
+              )}
             </DropdownSection>
             {admin === "0" && (
               <DropdownSection title="Admin zone" className="border-t">
