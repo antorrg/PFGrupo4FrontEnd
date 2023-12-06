@@ -10,13 +10,28 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#1F0A4D',
-        secondary: '#1F0A4D',
-        accent: '#FFFFFF',
+        primary: "#1F0A4D",
+        secondary: "#5825CC",
+        accent: "#FB923C",
         // Agrega tus colores personalizados con nombres significativos aquí
       },
     },
   },
   darkMode: "class",
-  plugins: [nextui()],
+  plugins: [
+    nextui({
+      themes: {
+        dark: {
+          colors: {
+            foreground: "#ECEDEE",
+            primary: {
+              foreground: "#ECEDEE",
+              DEFAULT: "#1F0A4D",
+            },
+            focus: "#BEF264",
+          },
+        },
+      },
+    }),
+  ],
 };

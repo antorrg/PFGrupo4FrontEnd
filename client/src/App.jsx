@@ -10,7 +10,8 @@ import { NextUIProvider, Spinner } from "@nextui-org/react";
 import { renderRoutes, routes } from "./routes";
 import userLog from "./components/Auth0/Send";
 
-import { Footer, NavBar } from "./views/index";
+import NavBar from "./components/NavBar/NavBar";
+import Footer from "./components/Footer/Footer";
 
 function App() {
   const navigate = useNavigate();
@@ -35,6 +36,15 @@ function App() {
         name: "",
       })
     );
+    if (
+      localStorage.theme === "dark" ||
+      (!("theme" in localStorage) &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches)
+    ) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
   }, []);
   //-----------------------------------------------------
   //    Estas funciones son para enviar datos al reducer
@@ -69,7 +79,7 @@ function App() {
             />
           }
         >
-          <div className="my-0 mx-auto flex flex-col items-center justify-between min-h-screen">
+          <div className="my-0 mx-auto flex flex-col items-center justify-between min-h-screen dark:bg-primary">
             <div
               className="bg-cover bg-center opacity-70 w-full h-screen absolute -z-10 top-0 left-0"
               style={backgroundImage}
