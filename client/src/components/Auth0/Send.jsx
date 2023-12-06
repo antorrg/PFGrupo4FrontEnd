@@ -2,7 +2,7 @@ import axios from "axios";
 
 const enviarInfoAlServer = async (userData) => {
 
-  console.log(userData);
+  //console.log(userData);
 
 
   const email = userData.email;
@@ -26,14 +26,14 @@ const enviarInfoAlServer = async (userData) => {
 
     if (response.status === 201) {
 
-      console.log("response", response);
+      //console.log("response", response);
       // Accede al body para obtener el token
       const token = response.data.token;
 
-      console.log("Token recibido:", token);
-      console.log(response.data);
+      //console.log("Token recibido:", token);
+     // console.log(response.data);
       const user = { ...response.data, token };
-      console.log(user);
+     // console.log(user);
       return user;
     
     } else {
@@ -48,10 +48,10 @@ const userLog = async (userData) => {
   try {
     const response = await enviarInfoAlServer(userData);
 
-    console.log(response);
+    //console.log(response);
     return response;
   } catch (error) {
-    console.error("Error en userLog:", error);
+    //console.error("Error en userLog:", error);
 
     throw error; // Puedes manejar el error aquí según tus necesidades
   }
