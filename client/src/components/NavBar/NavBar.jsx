@@ -2,7 +2,9 @@
 // import { Link } from "react-router-dom";
 import LogoutButton from "../Auth0/LogoutButton";
 import LoginButton from "../Auth0/LoginButton";
+import DarkModeButton from "./DarkModeButton";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useSelector } from "react-redux";
 import { useState, useContext } from "react";
 import logo from "./logo.png";
 import FormularioLogin from "../Form/FormRegister";
@@ -18,7 +20,6 @@ import {
   NavbarBrand,
   NavbarContent,
   NavbarItem,
-  Button,
   Dropdown,
   DropdownTrigger,
   DropdownMenu,
@@ -31,18 +32,13 @@ import {
   Link,
 } from "@nextui-org/react";
 import { useSelector } from "react-redux";
-// import SearchBar from "../SearchBar/SearchBar";
 
 export default function NavBar() {
 
-  const loginUser = useSelector((state) => state.loginUser);
-  const userLocal = loginUser.result
-  console.log(userLocal)
-   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const admin = "1";
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const userInfo = useSelector((state) => state.loginUser);
+  const { isAuthenticated } = useAuth0();
 
-  const { user, isAuthenticated } = useAuth0();
-  const [isAuthenticatedLocal, setIsAuthenticatedLocal] = useState(false);
   const { cart } = useContext(CartContext);
 
   const perfilItems = [
@@ -62,8 +58,13 @@ export default function NavBar() {
       access: "all",
     },
     {
+      element: "Salir",
+      to: "/",
+      access: "all",
+    },
+    {
       element: "Lista de Juegos",
-      to: "/perfil/",
+      to: "/perfil/games",
       access: "admin",
     },
     {
@@ -94,9 +95,10 @@ export default function NavBar() {
   return (
     <Navbar
       position="static"
-      height="6rem"
+      height="5rem"
       maxWidth="2xl"
       onMenuOpenChange={setIsMenuOpen}
+      className="dark:bg-primary"
     >
       <NavbarMenuToggle
         aria-label={isMenuOpen ? "Close menu" : "Open menu"}
@@ -104,14 +106,17 @@ export default function NavBar() {
       />
       <NavbarBrand>
         <Link href={"/"} className="cursor-pointer">
-          <img src={logo} alt="logo" className="h-[70px] w-auto" />
+          <img src={logo} alt="logo" className="h-[60px] w-auto" />
         </Link>
       </NavbarBrand>
-      <NavbarContent justify="end" className="hidden sm:flex gap-10 sm:mr-8">
+      <NavbarContent justify="end" className="hidden sm:flex gap-10">
         {navItems.map((item, index) => (
           <NavbarItem key={`${item}-${index}`}>
             <Link href={item.to}>
-              {<item.icon className="w-8 hover:text-orange-400" />}
+
+              {
+                <item.icon className="w-7 hover:text-orange-400 dark:text-secondary dark:hover:text-orange-400" />
+              }
               {item.element === "Carrito" && cart.length > 0 && (
                 <p className="absolute -top-1 -right-3 bg-red-300 rounded-full w-5 h-5 flex items-center justify-center text-[12px] font-semibold">
                   {cart.reduce((sum, item) => sum + item.quantity, 0)}
@@ -145,36 +150,62 @@ export default function NavBar() {
               as="button"
               avatarProps={{
                 isBordered: true,
-                src: isAuthenticated ? user.picture : loginUser.picture,
+
+                src: userInfo.picture,
               }}
               className="transition-transform"
-              name={isAuthenticated ? user.given_name : loginUser.given_name}
-              description={isAuthenticated ? user.nickname : loginUser.nickname}
+              name={userInfo.given_name}
+              description={userInfo.nickname && userInfo.nickname}
             />
           </DropdownTrigger>
           <DropdownMenu aria-label="Profile Actions" variant="flat">
-            <DropdownSection>
-              {perfilItems.map(
-                (item) =>
+            <DropdownSection aria-label="Dark Mode">
+              <DropdownItem
+                key="Dark mode button"
+                className="cursor-default"
+                isReadOnly
+                endContent={<DarkModeButton />}
+              >
+                <p className="text-base text-primary dark:text-white">Tema</p>
+              </DropdownItem>
+            </DropdownSection>
+            <DropdownSection aria-label="roll client" className="border-t">
+              {perfilItems.map((item) => {
+                return (
                   item.access === "all" && (
                     <DropdownItem key={item.element}>
-                      <Link href={item.to}>{item.element}</Link>
+                      {item.element !== "Salir" ? (
+                        <Link href={item.to} className="dark:text-white">
+                          {item.element}
+                        </Link>
+                      ) : (
+                        <LogoutButton element={item.element} to={item.to} />
+                      )}
                     </DropdownItem>
                   )
-              )}
+                );
+              })}
+
             </DropdownSection>
-            {admin === "0" && (
-              <DropdownSection title="Admin zone" className="border-t">
+            {
+              // userInfo.role === "0" &&
+              <DropdownSection
+                title="Admin zone"
+                className="border-t"
+                aria-label="roll admin"
+              >
                 {perfilItems.map(
                   (item) =>
                     item.access === "admin" && (
                       <DropdownItem key={item.element}>
-                        <Link href={item.to}>{item.element}</Link>
+                        <Link href={item.to} className="dark:text-white">
+                          {item.element}
+                        </Link>
                       </DropdownItem>
                     )
                 )}
               </DropdownSection>
-            )}
+            }
           </DropdownMenu>
         </Dropdown>
       )}

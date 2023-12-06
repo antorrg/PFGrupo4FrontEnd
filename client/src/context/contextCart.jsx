@@ -1,15 +1,55 @@
 import { createContext, useEffect, useState } from "react";
+import axios from "axios";
+import { useSelector, useDispatch } from "react-redux";
+import { useAuth0 } from "@auth0/auth0-react";
+import { updateCart } from "../redux/actions";
 
 export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
+  const dispatch = useDispatch();
+  const { isAuthenticated } = useAuth0();
+  const loginUser = useSelector((state) => state.loginUser);
+
   const [cart, setCart] = useState(() => {
+    if (isAuthenticated) {
+    } else {
+    }
     const storeCart = localStorage.getItem("cart");
     return storeCart ? JSON.parse(storeCart) : [];
   });
 
+  const updateCartDB = async (cart) => {
+    const auxArray = cart.map((e) => {
+      return {
+        id: e.id,
+        quantity: e.quantity,
+      };
+    });
+
+    const cartItems = {
+      cartItems: auxArray,
+    };
+
+    try {
+      const data = await axios.put(
+        `http://localhost:3001/put/userShoppingCart/${loginUser.id}`,
+        cartItems
+      );
+      console.log(data.data);
+      dispatch(updateCart(data.data[0].cart));
+    } catch (error) {
+      window.alert(error.message);
+    }
+  };
+
   useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cart));
+    if (isAuthenticated) {
+      updateCartDB(cart);
+      localStorage.cart = [];
+    } else {
+      localStorage.setItem("cart", JSON.stringify(cart));
+    }
   }, [cart]);
 
   const getQuantityId = (id) => {
@@ -44,7 +84,9 @@ export const CartProvider = ({ children }) => {
       if (item?.quantity === 1) {
         return currItems;
       } else {
-        return currItems.map((item) => (item.id === id ? { ...item, quantity: item.quantity - 1 } : item));
+        return currItems.map((item) =>
+          item.id === id ? { ...item, quantity: item.quantity - 1 } : item
+        );
       }
     });
   };
@@ -68,7 +110,8 @@ export const CartProvider = ({ children }) => {
         removeFromCart,
         removeItem,
         removeIdCart,
-      }}>
+      }}
+    >
       {children}
     </CartContext.Provider>
   );

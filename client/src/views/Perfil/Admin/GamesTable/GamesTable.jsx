@@ -1,7 +1,7 @@
 import axios from "axios";
-import Modal from "../../../Modal/Modal";
+import Modal from "../../../../Modal/Modal";
 import Swal from "sweetalert2";
-import Formulario from "../../../components/Form/Form";
+import Formulario from "../../../../components/Form/Form";
 import {
   Table,
   TableHeader,
@@ -35,21 +35,15 @@ const statusColorMap = {
 };
 
 const GamesTable = ({ videogames }) => {
-
-
- 
-  const handlerDelete =async (id, game) => {
+  const handlerDelete = async (id, game) => {
     try {
-      const {data} = await axios.delete(`delete/games/${id}`)
-      console.log(data);
-      console.log()
+      const { data } = await axios.delete(`delete/games/${id}`);
       Swal.fire({
         position: "center",
         icon: "success",
         title: `${game.name}`,
         text: `${data.message}`,
         showConfirmButton: true,
-        
       });
     } catch (error) {
       Swal.fire({
@@ -61,17 +55,17 @@ const GamesTable = ({ videogames }) => {
   };
 
   return (
-    <Table>
+    <Table aria-label="games admin table">
       <TableHeader>
         {columns.map((column) => {
           return <TableColumn>{column.name}</TableColumn>;
         })}
       </TableHeader>
       <TableBody>
-        {videogames.map((game) => {
-          console.log(game)
+        {videogames.map((game, index) => {
+          console.log(game);
           return (
-            <TableRow key="1">
+            <TableRow key={`${game}-row-${index}`}>
               <TableCell>
                 <User
                   avatarProps={{ radius: "lg", src: game.image }}
@@ -87,11 +81,15 @@ const GamesTable = ({ videogames }) => {
                 <div className="relative flex items-center gap-2">
                   <Tooltip content="Editar">
                     <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                    <Modal
+                      <Modal
                         textButton="Editar Juego"
                         title="Actualizar Juego"
                         body={({ onClose }) => (
-                          <Formulario props={game} id={game.id} onClose={onClose} />
+                          <Formulario
+                            props={game}
+                            id={game.id}
+                            onClose={onClose}
+                          />
                         )}
                         openButton={
                           <PencilSquareIcon className="text-black w-4" />

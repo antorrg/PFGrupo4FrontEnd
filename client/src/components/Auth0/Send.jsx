@@ -1,15 +1,10 @@
 import axios from 'axios';
-//import {useSelector}from 'react-redux',
 import Swal from "sweetalert2";
 
 
+const enviarInfoAlServer = async (userData) => {
 
-  // const token = useSelector(state=>state.loginUser.token);
-  // const protect = {
-  //   headers: {
-  //   'Authorization': `Bearer ${token}`
-  // }
-  // }
+  //console.log(userData);
 
 
 const enviarInfoAlServer = async (userData) => {
@@ -64,22 +59,20 @@ const enviarInfoAlServer = async (userData) => {
           showConfirmButton: false,
           timer: 1500,
         });
-    }
-    
-    
-}
+    } 
 
-
-const userLog = async (userData) => {
-    try {
-      const response = await enviarInfoAlServer(userData);
-      return response;
-    } catch (error) {
-      console.error('Error en userLog:', error);
-      throw error; // Puedes manejar el error aquí según tus necesidades
-    }
   };
   
 
+const userLog = async (userData) => {
+  try {
+    const response = await enviarInfoAlServer(userData);
+    return response;
+  } catch (error) {
+    //console.error("Error en userLog:", error);
+    throw error; // Puedes manejar el error aquí según tus necesidades
+  }
+};
 
 export default userLog
+

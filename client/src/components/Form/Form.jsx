@@ -54,7 +54,7 @@ const Formulario = ({ props, onClose }) => {
       platformsDefault.push(platFilt[0]);
     }
   }
-  let valuesEdit = {};
+  // let valuesEdit = {};
   if (props) {
     let {
       name,
@@ -93,13 +93,28 @@ const Formulario = ({ props, onClose }) => {
 
   const initialValues = {
     name: "",
-    image: null,
+    image: undefined,
     platforms: [],
     released: "",
     price: "",
     genres: [],
     physicalGame: false,
   };
+
+  let valuesEdit = {};
+  if (props) {
+    const { name, image, platforms, released, price, genres, physicalGame } =
+      props;
+    valuesEdit = {
+      name,
+      image,
+      platforms,
+      released,
+      price,
+      genres,
+      physicalGame,
+    };
+  }
 
   const formSchema = Yup.object().shape({
     name: Yup.string()
@@ -113,7 +128,7 @@ const Formulario = ({ props, onClose }) => {
       )
       .min(5, `Mínimo 5 caracteres`),
 
-    image: Yup.mixed().required("La imagen es obligatoria"),
+    // image: Yup.mixed().required("La imagen es obligatoria"),
     platforms: Yup.array()
       .min(1, "Selecciona al menos una plataforma")
       .required("Campo Requerido"),

@@ -9,7 +9,7 @@ const ConsoleLogos = ({ Platforms }) => {
   });
 
   return (
-    <div className="flex w-fit items-center justify-start gap-2 bg-[#1F0A4D]">
+    <div className="flex w-fit items-center justify-start gap-2 mb-2">
       {consoles.map((plat) => {
         return (
           <img
