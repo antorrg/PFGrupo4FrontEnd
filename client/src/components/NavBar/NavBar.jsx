@@ -1,4 +1,3 @@
-
 // import { Link } from "react-router-dom";
 import LogoutButton from "../Auth0/LogoutButton";
 import LoginButton from "../Auth0/LoginButton";
@@ -18,7 +17,7 @@ import {
   CurrencyDollarIcon,
   Cog6ToothIcon,
   BuildingStorefrontIcon,
-  PlusIcon
+  PlusIcon,
 } from "@heroicons/react/24/outline";
 import {
   Navbar,
@@ -36,10 +35,9 @@ import {
   DropdownSection,
   Link,
 } from "@nextui-org/react";
-import { useSelector } from "react-redux";
 
 export default function NavBar() {
-
+  const [isAuthenticatedLocal, setIsAuthenticatedLocal] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const userInfo = useSelector((state) => state.loginUser);
   const { isAuthenticated } = useAuth0();
@@ -104,6 +102,7 @@ export default function NavBar() {
   ];
   const url =
     "https://res.cloudinary.com/dmhxl1rpc/image/upload/c_scale,w_250/v1701669223/gameworld/avatar_gamer.jpg";
+
   return (
     <Navbar
       position="static"
@@ -111,7 +110,7 @@ export default function NavBar() {
       maxWidth="2xl"
       classNames={{
         base: "px-5 sm:px-20",
-        wrapper: "p-0"
+        wrapper: "p-0",
       }}
       onMenuOpenChange={setIsMenuOpen}
       className="dark:bg-primary"
@@ -128,8 +127,12 @@ export default function NavBar() {
       <NavbarContent justify="end" className="hidden sm:flex gap-10 ">
         {navItems.map((item, index) => (
           <NavbarItem key={`${item}-${index}`}>
+<<<<<<< HEAD
             <Link href={item.to}>
 
+=======
+            <Link href={item.to} className="flex">
+>>>>>>> f5dec55a2d5de10ab3d822183ea48c8ce82f9b5c
               {
                 <item.icon className="w-7 hover:text-accent dark:text-secondary dark:hover:text-orange-400" />
               }
@@ -146,11 +149,11 @@ export default function NavBar() {
             <Modal
               textButton="Ingresar/Registrarse"
               title="Ingrese su Email y Passsword"
-              body={
+              body={({ onClose }) => (
                 <FormularioLogin
                   setIsAuthenticatedLocal={setIsAuthenticatedLocal}
                 />
-              }
+              )}
             />
           </>
         ) : (
@@ -166,12 +169,11 @@ export default function NavBar() {
               as="button"
               avatarProps={{
                 isBordered: true,
-
-                src: userInfo.picture,
+                // src: userInfo.picture,
               }}
               className="transition-transform"
-              name={userInfo.given_name}
-              description={userInfo.nickname && userInfo.nickname}
+              // name={userInfo.given_name}
+              // description={userInfo.nickname && userInfo.nickname}
             />
           </DropdownTrigger>
           <DropdownMenu aria-label="Profile Actions" variant="flat">
@@ -189,7 +191,10 @@ export default function NavBar() {
               {perfilItems.map((item) => {
                 return (
                   item.access === "all" && (
-                    <DropdownItem key={item.element} startContent={<item.icon className="w-5"/>}>
+                    <DropdownItem
+                      key={item.element}
+                      startContent={<item.icon className="w-5" />}
+                    >
                       {item.element !== "Salir" ? (
                         <Link href={item.to} className="dark:text-white">
                           {item.element}
@@ -201,7 +206,6 @@ export default function NavBar() {
                   )
                 );
               })}
-
             </DropdownSection>
             {
               // userInfo.role === "0" &&
@@ -213,7 +217,10 @@ export default function NavBar() {
                 {perfilItems.map(
                   (item) =>
                     item.access === "admin" && (
-                      <DropdownItem key={item.element} startContent={<item.icon className="w-5"/>}>
+                      <DropdownItem
+                        key={item.element}
+                        startContent={<item.icon className="w-5" />}
+                      >
                         <Link href={item.to} className="dark:text-white">
                           {item.element}
                         </Link>
