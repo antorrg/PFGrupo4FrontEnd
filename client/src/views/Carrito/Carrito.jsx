@@ -2,11 +2,14 @@ import { Button } from "@nextui-org/react";
 import { CartContext } from "../../context/contextCart";
 import { useContext, useEffect, useState } from "react";
 import { FaPlus, FaMinus } from "react-icons/fa";
-import PaymentTest from "./PaymentTest";
+
+// import PaymentTest from "./PaymentTest";
+
 import { RemoveFromCartIcon } from "../../icono/icono";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useSelector } from "react-redux";
 import axios from "axios";
+
 
 const CartItem = ({
   image,
@@ -17,6 +20,7 @@ const CartItem = ({
   removeItem,
   removeIdCart,
 }) => {
+
   const subTotal = quantity * price;
 
   return (
