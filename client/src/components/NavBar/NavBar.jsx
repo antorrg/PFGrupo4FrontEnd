@@ -1,7 +1,7 @@
-// import { Link } from "react-router-dom";
 import LogoutButton from "../Auth0/LogoutButton";
 import LoginButton from "../Auth0/LoginButton";
 import DarkModeButton from "./DarkModeButton";
+import SearchBar from "../SearchBar/SearchBar";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useSelector } from "react-redux";
 import { useState, useContext } from "react";
@@ -156,6 +156,7 @@ export default function NavBar() {
             <LogoutButton />
           </NavbarItem>
         )}
+        <SearchBar />
       </NavbarContent>
       {(isAuthenticated || isAuthenticatedLocal) && (
         <Dropdown backdrop="blur">

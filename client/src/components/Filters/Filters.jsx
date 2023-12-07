@@ -1,7 +1,6 @@
 import style from "./Filters.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect, useRef } from "react";
-import Select from "react-select";
 
 import { getPlatforms, getGenres } from "../../redux/actions";
 import SearchBar from "../../components/SearchBar/SearchBar";
@@ -20,73 +19,24 @@ export default function Filters(props) {
   const dispatch = useDispatch();
   const { onApplyFilters } = props;
 
+  // plataformas -------------------------------------------
   const platforms = useSelector((state) => state.platforms);
   const [selectedPlatforms, setSelectedPlatforms] = useState([]);
   const [heightPlatforms, setHeightPlatforms] = useState("h-[250px]");
-
+  const selectedPlatformsRef = useRef(null);
+  // generos -------------------------------------------------
   const genres = useSelector((state) => state.genres);
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [heightGenres, setHeightGenres] = useState("h-[250px]");
-  const [sortOrder, setSortOrder] = useState({
-    value: "none",
-    label: "Sin orden",
-  });
-
   const selectedGenresRef = useRef(null);
-  const selectedPlatformsRef = useRef(null);
-  const selectedOrderRef = useRef(null);
-
+  // Precios ---------------------------------------------------
   const [prices, setPrices] = useState({
     minPrice: "",
     maxPrice: "",
   });
-
   const [errorPrices, setErrorPrices] = useState({
     prices: "",
   });
-
-  const [inputValue, setInputValue] = useState("");
-
-  const handlerSubmit = (event, value) => {
-    const currentFilter = event.target.name;
-    //Aplicar filtros:
-    const paramsObj = {
-      page: 0,
-      platforms: selectedPlatforms,
-      genres: selectedGenres,
-      minPrice: prices.minPrice,
-      maxPrice: prices.maxPrice,
-      order: sortOrder.value,
-      name: inputValue,
-    }
-
-    for (const key in paramsObj) {
-       if(key === currentFilter){
-        paramsObj[key] = value
-       }
-    }
-    console.log(value)
-
-    onApplyFilters(paramsObj);
-  };
-
-  const orderOptions = [
-    { value: "none", label: "Sin orden" },
-    { value: "ASC_N", label: "Nombre ascendente" },
-    { value: "DESC_N", label: "Nombre descendente" },
-    { value: "ASC_P", label: "Precio ascendente" },
-    { value: "DESC_P", label: "Precio descendente" },
-  ];
-
-  useEffect(() => {
-    dispatch(getPlatforms());
-    dispatch(getGenres());
-  }, [dispatch]);
-
-  const orderHandler = (auxSelectedOptions) => {
-    setSortOrder(auxSelectedOptions);
-  };
-
   const handleChangePrice = (event) => {
     const property = event.target.name;
     let value = event.target.value;
@@ -98,13 +48,38 @@ export default function Filters(props) {
       errorPrices
     );
 
-    if(errorPrices.prices.length === 0){
-      return { ...prices, [property]: value }
+    if (errorPrices.prices.length === 0) {
+      return { ...prices, [property]: value };
     } else {
-      return prices
+      return prices;
     }
   };
+  // busqueda -------------------------------------------------
+  const [inputValue, setInputValue] = useState("");
 
+  // envio y reset ---------------------------------------------
+  const handlerSubmit = (event, value) => {
+    const currentFilter = event.target.name;
+    //Aplicar filtros:
+    const paramsObj = {
+      page: 0,
+      platforms: selectedPlatforms,
+      genres: selectedGenres,
+      minPrice: prices.minPrice,
+      maxPrice: prices.maxPrice,
+      // order: sortOrder.value,
+      name: inputValue,
+    };
+
+    for (const key in paramsObj) {
+      if (key === currentFilter) {
+        paramsObj[key] = value;
+      }
+    }
+    console.log(paramsObj);
+
+    onApplyFilters(paramsObj);
+  };
   const resetFilters = () => {
     // Restablecer filtros
     onApplyFilters({
@@ -127,18 +102,10 @@ export default function Filters(props) {
     selectedOrderRef.current.clearValue();
   };
 
-  const applyFilters = () => {
-    //Aplicar filtros:
-    onApplyFilters({
-      page: 0,
-      platforms: selectedPlatforms,
-      genres: selectedGenres,
-      minPrice: prices.minPrice,
-      maxPrice: prices.maxPrice,
-      order: sortOrder.value,
-      name: searchText,
-    });
-  };
+  useEffect(() => {
+    dispatch(getPlatforms());
+    dispatch(getGenres());
+  }, [dispatch]);
 
   return (
     <div className="">
@@ -161,8 +128,8 @@ export default function Filters(props) {
               className="flex-1"
               value={prices.minPrice}
               onChange={() => {
-                const prices = handleChangePrice(event)
-                handlerSubmit(event, prices.minPrice)
+                const prices = handleChangePrice(event);
+                handlerSubmit(event, prices.minPrice);
               }}
               label="Min"
             />
@@ -176,8 +143,8 @@ export default function Filters(props) {
               className="flex-1 bg"
               value={prices.maxPrice}
               onChange={() => {
-                const prices = handleChangePrice(event)
-                handlerSubmit(event, prices.maxPrice)
+                const prices = handleChangePrice(event);
+                handlerSubmit(event, prices.maxPrice);
               }}
               label="Max"
             />
@@ -192,8 +159,8 @@ export default function Filters(props) {
           <SearchBar
             name="name"
             setSearchText={(value) => {
-              setInputValue(value)
-              handlerSubmit(event, value)
+              setInputValue(value);
+              handlerSubmit(event, value);
             }}
             searchText={inputValue}
           />
@@ -272,12 +239,6 @@ export default function Filters(props) {
           </button>
         </AccordionItem>
       </Accordion>
-      <Select
-        options={orderOptions}
-        onChange={(selectedOption) => orderHandler(selectedOption)}
-        placeholder="Ordenar..."
-        ref={selectedOrderRef}
-      />
       <div className="flex justify-between w-full mt-4">
         <Button
           size="sm"
