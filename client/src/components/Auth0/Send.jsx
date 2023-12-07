@@ -2,7 +2,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 
 const enviarInfoAlServer = async (userData) => {
-  console.log(userData);
+  // console.log(userData);
 
   const email = userData.email;
   const password = userData.password ?? null;
@@ -20,17 +20,17 @@ const enviarInfoAlServer = async (userData) => {
       picture,
       sub,
     });
-    console.log(response);
+    // console.log(response);
 
-    if (response.status === 201) {
+    if (response.status === 200) {
       // Accede al encabezado Authorization para obtener el token
       const token = response.data.token;
 
       console.log("Token recibido:", token);
       // if (response.data) {
-      console.log(response.data.result.user);
+      // console.log(response.data.result.user);
       const user = { ...response.data, token };
-      console.log(user);
+      // console.log(user);
       return user;
     } else {
       Swal.fire({
@@ -55,7 +55,7 @@ const enviarInfoAlServer = async (userData) => {
 const userLog = async (userData) => {
   try {
     const response = await enviarInfoAlServer(userData);
-    return response;
+    return response.result.user;
   } catch (error) {
     //console.error("Error en userLog:", error);
     throw error; // Puedes manejar el error aquí según tus necesidades

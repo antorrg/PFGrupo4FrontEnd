@@ -40,6 +40,7 @@ export default function NavBar() {
   const [isAuthenticatedLocal, setIsAuthenticatedLocal] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const userInfo = useSelector((state) => state.loginUser);
+  console.log(userInfo);
   const { isAuthenticated } = useAuth0();
 
   const { cart } = useContext(CartContext);
@@ -139,7 +140,7 @@ export default function NavBar() {
             </Link>
           </NavbarItem>
         ))}
-        {!isAuthenticated && !isAuthenticatedLocal ? (
+        {!isAuthenticated && !isAuthenticatedLocal && (
           <>
             <Modal
               textButton="Ingresar/Registrarse"
@@ -151,12 +152,8 @@ export default function NavBar() {
               )}
             />
           </>
-        ) : (
-          <NavbarItem>
-            <LogoutButton />
-          </NavbarItem>
         )}
-        <SearchBar />
+        {/* <SearchBar /> */}
       </NavbarContent>
       {(isAuthenticated || isAuthenticatedLocal) && (
         <Dropdown backdrop="blur">
@@ -165,11 +162,11 @@ export default function NavBar() {
               as="button"
               avatarProps={{
                 isBordered: true,
-                // src: userInfo.picture,
+                src: userInfo.picture,
               }}
               className="transition-transform"
-              // name={userInfo.given_name}
-              // description={userInfo.nickname && userInfo.nickname}
+              name={userInfo.given_name}
+              description={userInfo.nickname && userInfo.nickname}
             />
           </DropdownTrigger>
           <DropdownMenu aria-label="Profile Actions" variant="flat">

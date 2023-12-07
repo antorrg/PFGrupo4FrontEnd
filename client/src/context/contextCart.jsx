@@ -26,12 +26,11 @@ export const CartProvider = ({ children }) => {
   });*/
 
   const updateCartDB = async (cart) => {
-
     const cartItems = {
       userID: loginUser.id,
       cartItems: cart,
     };
-    
+
     try {
       const data = await axios.post(
         `http://localhost:3001/post/createShoppingCart`,
@@ -47,7 +46,9 @@ export const CartProvider = ({ children }) => {
   const getUserCartDB = async () => {
     try {
       //const data = await axios.get(`http://localhost:3001/getUserShoppingCart/${loginUser.id}`);
-      const data = await axios.get(`http://localhost:3001/getUserShoppingCart/90699e67-022a-4bb7-93ad-792672016456`);
+      const data = await axios.get(
+        `http://localhost:3001/getUserShoppingCart/90699e67-022a-4bb7-93ad-792672016456`
+      );
       //dispatch(updateCart(data.data));
       setCart(data.data);
     } catch (error) {
@@ -56,10 +57,13 @@ export const CartProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    if(initUpdateCart) { //Initialize cart
-      if (!isAuthenticated) {//Initialize if user is login
+    if (initUpdateCart) {
+      //Initialize cart
+      if (isAuthenticated) {
+        //Initialize if user is login
         getUserCartDB();
-      } else { //Initialize with local storage:
+      } else {
+        //Initialize with local storage:
         const storeCart = localStorage.getItem("cart");
         //dispatch(storeCart ? JSON.parse(storeCart) : []);
         setCart(storeCart ? JSON.parse(storeCart) : []);
@@ -82,12 +86,13 @@ export const CartProvider = ({ children }) => {
   };
 
   const addToCart = (product, updateFlagHandler) => {
-    
     const auxProduct = {
-      id: product.id
+      id: product.id,
     };
 
-    const productInCartIndex = cart.findIndex((item) => item.id === auxProduct.id);
+    const productInCartIndex = cart.findIndex(
+      (item) => item.id === auxProduct.id
+    );
     if (productInCartIndex >= 0) {
       const newCart = [...cart];
       newCart[productInCartIndex].quantity += 1;
