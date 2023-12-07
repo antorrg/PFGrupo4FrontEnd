@@ -129,11 +129,10 @@ const [isAuthenticatedLocal, setIsAuthenticatedLocal] = useState(false)
             <Modal
               textButton="Ingresar/Registrarse"
               title="Ingrese su Email y Passsword"
-              body={
-                <FormularioLogin
-                  setIsAuthenticatedLocal={setIsAuthenticatedLocal}
-                />
-              }
+              body={ ({onClose}) => <FormularioLogin
+             onClose={onClose} setIsAuthenticatedLocal={setIsAuthenticatedLocal}
+            />
+          }
             />
           </>
         ) : (
@@ -145,13 +144,15 @@ const [isAuthenticatedLocal, setIsAuthenticatedLocal] = useState(false)
       {(isAuthenticated || isAuthenticatedLocal) && (
         <Dropdown backdrop="blur">
           <DropdownTrigger>
-            <User
+          <User
               as="button"
               avatarProps={{
                 isBordered: true,
+               // src: userInfo  ?? userInfo .picture ,
               }}
               className="transition-transform"
-             
+             // name={userInfo ?? userInfo .given_name }
+              //description={userInfo  ?? userInfo .nickname }
             />
           </DropdownTrigger>
           <DropdownMenu aria-label="Profile Actions" variant="flat">
