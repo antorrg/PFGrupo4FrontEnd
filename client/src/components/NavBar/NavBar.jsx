@@ -120,7 +120,7 @@ export default function NavBar() {
         aria-label={isMenuOpen ? "Close menu" : "Open menu"}
         className="sm:hidden"
       />
-      <NavbarBrand className="justify-end sm:justify-start">
+      <NavbarBrand className="justify-start">
         <Link href={"/"} className="cursor-pointer">
           <img src={logo} alt="logo" className="h-[60px] w-auto" />
         </Link>
@@ -165,8 +165,8 @@ export default function NavBar() {
                 src: userInfo.picture,
               }}
               className="transition-transform"
-              name={userInfo.given_name}
-              description={userInfo.nickname && userInfo.nickname}
+              // name={userInfo.given_name}
+              // description={userInfo.nickname && userInfo.nickname}
             />
           </DropdownTrigger>
           <DropdownMenu aria-label="Profile Actions" variant="flat">
