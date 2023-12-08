@@ -6,7 +6,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useSelector } from "react-redux";
 import { useState, useContext } from "react";
 import logo from "./logo.png";
-import FormularioLogin from "../Form/FormRegister";
+import FormularioLogin from "../Form/FormLogin";
 import Modal from "../../Modal/Modal";
 import { CartContext } from "../../context/contextCart";
 import {
@@ -89,8 +89,7 @@ const [isAuthenticatedLocal, setIsAuthenticatedLocal] = useState(false)
       to: "/carrito",
     },
   ];
-  const url =
-    "https://res.cloudinary.com/dmhxl1rpc/image/upload/c_scale,w_250/v1701669223/gameworld/avatar_gamer.jpg";
+  
   return (
     <Navbar
       position="static"
@@ -128,7 +127,7 @@ const [isAuthenticatedLocal, setIsAuthenticatedLocal] = useState(false)
           <>
             <Modal
               textButton="Ingresar/Registrarse"
-              title="Ingrese su Email y Passsword"
+              title="Bienvenido inicie secion "
               body={ ({onClose}) => <FormularioLogin
              onClose={onClose} setIsAuthenticatedLocal={setIsAuthenticatedLocal}
             />

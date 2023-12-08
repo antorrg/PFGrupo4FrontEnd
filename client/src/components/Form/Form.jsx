@@ -54,7 +54,7 @@ const Formulario = ({ props, onClose }) => {
       platformsDefault.push(platFilt[0]);
     }
   }
-  // let valuesEdit = {};
+  
   if (props) {
     let {
       name,
@@ -128,7 +128,7 @@ const Formulario = ({ props, onClose }) => {
       )
       .min(5, `Mínimo 5 caracteres`),
 
-    // image: Yup.mixed().required("La imagen es obligatoria"),
+    image: Yup.string().required("La imagen es obligatoria"),
     platforms: Yup.array()
       .min(1, "Selecciona al menos una plataforma")
       .required("Campo Requerido"),
