@@ -56,7 +56,7 @@ const enviarInfoAlServer = async (userData) => {
 const userLog = async (userData) => {
   try {
     const response = await enviarInfoAlServer(userData);
-    return response;
+    return response.result.user;
   } catch (error) {
     //console.error("Error en userLog:", error);
     throw error; // Puedes manejar el error aquí según tus necesidades

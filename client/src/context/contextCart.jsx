@@ -10,45 +10,74 @@ export const CartProvider = ({ children }) => {
   const dispatch = useDispatch();
   const { isAuthenticated } = useAuth0();
   const loginUser = useSelector((state) => state.loginUser);
+  const cartRedux = useSelector((state) => state.cart);
 
-  const [cart, setCart] = useState(() => {
+  const [cart, setCart] = useState([]);
+  const [initUpdateCart, setInitUpdateCart] = useState(true);
+  /*const [cart, setCart] = useState(() => {
     if (isAuthenticated) {
+      const initValue = getUserCartDB();
+      console.log("initValue: " + initValue);
+      return initValue;
     } else {
+      const storeCart = localStorage.getItem("cart");
+      return storeCart ? JSON.parse(storeCart) : [];
     }
-    const storeCart = localStorage.getItem("cart");
-    return storeCart ? JSON.parse(storeCart) : [];
-  });
+  });*/
 
   const updateCartDB = async (cart) => {
-    const auxArray = cart.map((e) => {
-      return {
-        id: e.id,
-        quantity: e.quantity,
-      };
-    });
-
     const cartItems = {
-      cartItems: auxArray,
+      userID: loginUser.id,
+      cartItems: cart,
     };
 
     try {
-      const data = await axios.put(
-        `http://localhost:3001/put/userShoppingCart/${loginUser.id}`,
+      const data = await axios.post(
+        `http://localhost:3001/post/createShoppingCart`,
         cartItems
       );
-      console.log(data.data);
-      dispatch(updateCart(data.data[0].cart));
+      //console.log(data.data);
+      dispatch(updateCart(data.data));
+    } catch (error) {
+      window.alert(error.message);
+    }
+  };
+
+  const getUserCartDB = async () => {
+    try {
+      //const data = await axios.get(`http://localhost:3001/getUserShoppingCart/${loginUser.id}`);
+      const data = await axios.get(
+        `http://localhost:3001/getUserShoppingCart/90699e67-022a-4bb7-93ad-792672016456`
+      );
+      //dispatch(updateCart(data.data));
+      setCart(data.data);
     } catch (error) {
       window.alert(error.message);
     }
   };
 
   useEffect(() => {
-    if (isAuthenticated) {
-      updateCartDB(cart);
-      localStorage.cart = [];
+    if (initUpdateCart) {
+      //Initialize cart
+      if (isAuthenticated) {
+        //Initialize if user is login
+        getUserCartDB();
+      } else {
+        //Initialize with local storage:
+        const storeCart = localStorage.getItem("cart");
+        //dispatch(storeCart ? JSON.parse(storeCart) : []);
+        setCart(storeCart ? JSON.parse(storeCart) : []);
+      }
+      setInitUpdateCart(false);
     } else {
-      localStorage.setItem("cart", JSON.stringify(cart));
+      if (isAuthenticated) {
+        updateCartDB(cart);
+        //localStorage.cart = [];
+      } else {
+        localStorage.setItem("cart", JSON.stringify(cart));
+      }
+      //console.log("JSON.stringify(cart): " + JSON.stringify(cart))
+      //localStorage.setItem("cart", JSON.stringify(cart));
     }
   }, [cart]);
 
@@ -56,8 +85,14 @@ export const CartProvider = ({ children }) => {
     return cart.find((item) => item.id === id)?.quantity || 0;
   };
 
-  const addToCart = (product) => {
-    const productInCartIndex = cart.findIndex((item) => item.id === product.id);
+  const addToCart = (product, updateFlagHandler) => {
+    const auxProduct = {
+      id: product.id,
+    };
+
+    const productInCartIndex = cart.findIndex(
+      (item) => item.id === auxProduct.id
+    );
     if (productInCartIndex >= 0) {
       const newCart = [...cart];
       newCart[productInCartIndex].quantity += 1;
@@ -66,19 +101,23 @@ export const CartProvider = ({ children }) => {
       setCart((prevState) => [
         ...prevState,
         {
-          ...product,
+          ...auxProduct,
           quantity: 1,
         },
       ]);
     }
+
+    updateFlagHandler && updateFlagHandler();
   };
 
-  const removeIdCart = (productId) => {
+  const removeIdCart = (productId, updateFlagHandler) => {
     const newCart = cart.filter((item) => item.id !== productId);
     setCart(newCart);
+
+    updateFlagHandler && updateFlagHandler();
   };
 
-  const removeItem = (id) => {
+  const removeItem = (id, updateFlagHandler) => {
     setCart((currItems) => {
       const item = currItems.find((item) => item.id === id);
       if (item?.quantity === 1) {
@@ -89,14 +128,17 @@ export const CartProvider = ({ children }) => {
         );
       }
     });
+
+    updateFlagHandler && updateFlagHandler();
   };
 
   const removeFromCart = (product) => {
     setCart((prevState) => prevState.filter((item) => item.id !== product.id));
   };
 
-  const clearCart = () => {
+  const clearCart = (updateFlagHandler) => {
     setCart([]);
+    updateFlagHandler && updateFlagHandler();
   };
 
   return (
