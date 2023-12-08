@@ -1,7 +1,7 @@
 import axios from "axios";
-import Modal from "../../../Modal/Modal";
+import Modal from "../../../../Modal/Modal";
 import Swal from "sweetalert2";
-import Formulario from "../../../components/Form/Form";
+import Formulario from "../../../../components/Form/Form";
 import {
   Table,
   TableHeader,
@@ -19,6 +19,7 @@ import {
   TrashIcon,
   PencilSquareIcon,
 } from "@heroicons/react/24/outline";
+import { useState } from "react";
 
 const columns = [
   { name: "GAME" },
@@ -34,15 +35,15 @@ const statusColorMap = {
 };
 
 const GamesTable = ({ videogames }) => {
-  const handlerDelete = (id) => {
+  const handlerDelete = async (id, game) => {
     try {
-      axios.delete(`/games/${id}`);
+      const { data } = await axios.delete(`delete/games/${id}`);
       Swal.fire({
         position: "center",
         icon: "success",
-        title: "Videojuego eliminado con exito !!",
-        showConfirmButton: false,
-        timer: 2000,
+        title: `${game.name}`,
+        text: `${data.message}`,
+        showConfirmButton: true,
       });
     } catch (error) {
       Swal.fire({
@@ -54,16 +55,17 @@ const GamesTable = ({ videogames }) => {
   };
 
   return (
-    <Table>
+    <Table aria-label="games admin table">
       <TableHeader>
         {columns.map((column) => {
           return <TableColumn>{column.name}</TableColumn>;
         })}
       </TableHeader>
       <TableBody>
-        {videogames.map((game) => {
+        {videogames.map((game, index) => {
+          console.log(game);
           return (
-            <TableRow key="1">
+            <TableRow key={`${game}-row-${index}`}>
               <TableCell>
                 <User
                   avatarProps={{ radius: "lg", src: game.image }}
@@ -82,7 +84,13 @@ const GamesTable = ({ videogames }) => {
                       <Modal
                         textButton="Editar Juego"
                         title="Actualizar Juego"
-                        body={<Formulario props={game} id={game.id} />}
+                        body={({ onClose }) => (
+                          <Formulario
+                            props={game}
+                            id={game.id}
+                            onClose={onClose}
+                          />
+                        )}
                         openButton={
                           <PencilSquareIcon className="text-black w-4" />
                         }
@@ -97,7 +105,7 @@ const GamesTable = ({ videogames }) => {
                   <Tooltip color="danger" content="Eliminar">
                     <span
                       className="text-lg text-danger cursor-pointer active:opacity-50"
-                      onClick={() => handlerDelete(game.id)}
+                      onClick={() => handlerDelete(game.id, game)}
                     >
                       <TrashIcon className="text-black w-4" />
                     </span>

@@ -70,8 +70,8 @@ const Pagination = (props) => {
   return totalItems <= 0 ? (
     <div>No hay juegos que cumplan los filtros</div>
   ) : (
-    <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6 mt-4">
-      <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+    <div className="flex items-center justify-center px-4 py-3 sm:px-6">
+      <div className="hidden sm:flex sm:items-center sm:justify-between">
         <div>
           <nav
             className="isolate inline-flex -space-x-px rounded-md shadow-sm"
@@ -95,8 +95,8 @@ const Pagination = (props) => {
                 aria-current="page"
                 className={
                   index.page === currentPage
-                    ? "relative z-10 inline-flex items-center bg-indigo-600 px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                    : "relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 md:inline-flex"
+                    ? "relative z-10 inline-flex items-center bg-secondary px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    : "relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900  hover:bg-accent focus:z-20 focus:outline-offset-0 md:inline-flex dark:text-white"
                 }
               >
                 {index.isEllipsis ? "..." : index.page + 1}

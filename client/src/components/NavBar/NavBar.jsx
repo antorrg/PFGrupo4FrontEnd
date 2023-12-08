@@ -1,9 +1,14 @@
-import { Link } from "react-router-dom";
+
+// import { Link } from "react-router-dom";
 import LogoutButton from "../Auth0/LogoutButton";
 import LoginButton from "../Auth0/LoginButton";
+import DarkModeButton from "./DarkModeButton";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useSelector } from "react-redux";
 import { useState, useContext } from "react";
 import logo from "./logo.png";
+import FormularioLogin from "../Form/FormRegister";
+import Modal from "../../Modal/Modal";
 import { CartContext } from "../../context/contextCart";
 import {
   HeartIcon,
@@ -15,7 +20,6 @@ import {
   NavbarBrand,
   NavbarContent,
   NavbarItem,
-  Button,
   Dropdown,
   DropdownTrigger,
   DropdownMenu,
@@ -25,19 +29,24 @@ import {
   NavbarMenuToggle,
   NavbarMenuItem,
   DropdownSection,
+  Link,
 } from "@nextui-org/react";
-// import SearchBar from "../SearchBar/SearchBar";
+import { useSelector } from "react-redux";
 
 export default function NavBar() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  //const auth = true;
-  const admin = "1";
 
-  const { user, isAuthenticated } = useAuth0();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const userInfo = useSelector((state) => state.loginUser);
+  const { isAuthenticated } = useAuth0();
 
   const { cart } = useContext(CartContext);
 
   const perfilItems = [
+    {
+      element: "Wishlist",
+      to: "/wishlist",
+      access: "all",
+    },
     {
       element: "Pedidos",
       to: "/perfil/orders",
@@ -49,8 +58,13 @@ export default function NavBar() {
       access: "all",
     },
     {
+      element: "Salir",
+      to: "/",
+      access: "all",
+    },
+    {
       element: "Lista de Juegos",
-      to: "/perfil/",
+      to: "/perfil/games",
       access: "admin",
     },
     {
@@ -76,76 +90,122 @@ export default function NavBar() {
       to: "/carrito",
     },
   ];
-
+  const url =
+    "https://res.cloudinary.com/dmhxl1rpc/image/upload/c_scale,w_250/v1701669223/gameworld/avatar_gamer.jpg";
   return (
     <Navbar
       position="static"
-      height="6rem"
+      height="5rem"
       maxWidth="2xl"
       onMenuOpenChange={setIsMenuOpen}
+      className="dark:bg-primary"
     >
       <NavbarMenuToggle
         aria-label={isMenuOpen ? "Close menu" : "Open menu"}
         className="sm:hidden"
       />
       <NavbarBrand>
-        <Link to={"/"} className="cursor-pointer">
-          <img src={logo} alt="logo" className="h-[70px] w-auto" />
+        <Link href={"/"} className="cursor-pointer">
+          <img src={logo} alt="logo" className="h-[60px] w-auto" />
         </Link>
       </NavbarBrand>
-      <NavbarContent justify="end" className="hidden sm:flex gap-10 sm:mr-8">
+      <NavbarContent justify="end" className="hidden sm:flex gap-10">
         {navItems.map((item, index) => (
           <NavbarItem key={`${item}-${index}`}>
-            <Link to={item.to}>
-              {<item.icon className="w-8 hover:text-orange-400" />}
+            <Link href={item.to}>
+
+              {
+                <item.icon className="w-7 hover:text-orange-400 dark:text-secondary dark:hover:text-orange-400" />
+              }
+              {item.element === "Carrito" && cart.length > 0 && (
+                <p className="absolute -top-1 -right-3 bg-red-300 rounded-full w-5 h-5 flex items-center justify-center text-[12px] font-semibold">
+                  {cart.reduce((sum, item) => sum + item.quantity, 0)}
+                </p>
+              )}
             </Link>
           </NavbarItem>
         ))}
-        {!isAuthenticated ? (
-          <NavbarItem>
-            <LoginButton />
-          </NavbarItem>
+        {!isAuthenticated && !isAuthenticatedLocal ? (
+          <>
+            <Modal
+              textButton="Ingresar/Registrarse"
+              title="Ingrese su Email y Passsword"
+              body={
+                <FormularioLogin
+                  setIsAuthenticatedLocal={setIsAuthenticatedLocal}
+                />
+              }
+            />
+          </>
         ) : (
           <NavbarItem>
             <LogoutButton />
           </NavbarItem>
         )}
       </NavbarContent>
-      {isAuthenticated && (
+      {(isAuthenticated || isAuthenticatedLocal) && (
         <Dropdown backdrop="blur">
           <DropdownTrigger>
             <User
               as="button"
               avatarProps={{
                 isBordered: true,
-                src: user.picture,
+
+                src: userInfo.picture,
               }}
               className="transition-transform"
-              name={user.given_name}
-              description={user.nickname && user.nickname}
+              name={userInfo.given_name}
+              description={userInfo.nickname && userInfo.nickname}
             />
           </DropdownTrigger>
           <DropdownMenu aria-label="Profile Actions" variant="flat">
-            <DropdownSection>
-              {isAuthenticated &&
-                perfilItems.map((item) => (
-                  <DropdownItem key={item.element}>
-                    <Link to={item.to}>{item.element}</Link>
-                  </DropdownItem>
-                ))}
+            <DropdownSection aria-label="Dark Mode">
+              <DropdownItem
+                key="Dark mode button"
+                className="cursor-default"
+                isReadOnly
+                endContent={<DarkModeButton />}
+              >
+                <p className="text-base text-primary dark:text-white">Tema</p>
+              </DropdownItem>
             </DropdownSection>
-            {admin === "1" && (
-              <DropdownSection title="Admin zone" className="border-t">
+            <DropdownSection aria-label="roll client" className="border-t">
+              {perfilItems.map((item) => {
+                return (
+                  item.access === "all" && (
+                    <DropdownItem key={item.element}>
+                      {item.element !== "Salir" ? (
+                        <Link href={item.to} className="dark:text-white">
+                          {item.element}
+                        </Link>
+                      ) : (
+                        <LogoutButton element={item.element} to={item.to} />
+                      )}
+                    </DropdownItem>
+                  )
+                );
+              })}
+
+            </DropdownSection>
+            {
+              // userInfo.role === "0" &&
+              <DropdownSection
+                title="Admin zone"
+                className="border-t"
+                aria-label="roll admin"
+              >
                 {perfilItems.map(
                   (item) =>
                     item.access === "admin" && (
                       <DropdownItem key={item.element}>
-                        <Link to={item.to}>{item.element}</Link>
+                        <Link href={item.to} className="dark:text-white">
+                          {item.element}
+                        </Link>
                       </DropdownItem>
                     )
                 )}
               </DropdownSection>
-            )}
+            }
           </DropdownMenu>
         </Dropdown>
       )}
@@ -161,7 +221,7 @@ export default function NavBar() {
                   : "foreground"
               }
               className="w-full"
-              to={item.to}
+              href={item.to}
               size="lg"
             >
               {item.element}

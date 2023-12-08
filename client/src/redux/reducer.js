@@ -9,6 +9,7 @@ import {
   GET_ALL_GAMES,
   LOG,
   CLEAN_LOG,
+  UPDATE_CART,
 } from "./actions";
 
 let initialState = {
@@ -28,6 +29,7 @@ let initialState = {
   },
   bgPage: "",
   allGames: [],
+  cart: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -82,16 +84,20 @@ const reducer = (state = initialState, action) => {
     case GET_ALL_GAMES:
       return { ...state, allGames: action.payload };
 
-      case LOG:
-        return{
-            ...state,
-            loginUser:action.payload,
-        }
-        case CLEAN_LOG:
-            return{
-                ...state,
-                loginUser: [],
-            }
+    case LOG:
+      return {
+        ...state,
+        loginUser: action.payload,
+      };
+
+    case CLEAN_LOG:
+      return {
+        ...state,
+        loginUser: [],
+      };
+
+    case UPDATE_CART:
+      return { ...state, cart: action.payload };
 
     default:
       return { ...state };
