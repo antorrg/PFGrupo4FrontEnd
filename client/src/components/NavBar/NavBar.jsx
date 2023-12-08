@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+// import { Link } from "react-router-dom";
+>>>>>>> ae90a79bb950c8c5e9a408dd6f568c9393a60b46
 import LogoutButton from "../Auth0/LogoutButton";
 import LoginButton from "../Auth0/LoginButton";
 import DarkModeButton from "./DarkModeButton";
@@ -35,6 +39,10 @@ import {
   DropdownSection,
   Link,
 } from "@nextui-org/react";
+<<<<<<< HEAD
+=======
+
+>>>>>>> ae90a79bb950c8c5e9a408dd6f568c9393a60b46
 
 export default function NavBar() {
   const [isAuthenticatedLocal, setIsAuthenticatedLocal] = useState(false);
@@ -42,7 +50,7 @@ export default function NavBar() {
   const userInfo = useSelector((state) => state.loginUser);
   console.log(userInfo);
   const { isAuthenticated } = useAuth0();
-
+const [isAuthenticatedLocal, setIsAuthenticatedLocal] = useState(false)
   const { cart } = useContext(CartContext);
 
   const perfilItems = [
@@ -145,11 +153,18 @@ export default function NavBar() {
             <Modal
               textButton="Ingresar/Registrarse"
               title="Ingrese su Email y Passsword"
+<<<<<<< HEAD
               body={({ onClose }) => (
                 <FormularioLogin
                   setIsAuthenticatedLocal={setIsAuthenticatedLocal}
                 />
               )}
+=======
+              body={ ({onClose}) => <FormularioLogin
+             onClose={onClose} setIsAuthenticatedLocal={setIsAuthenticatedLocal}
+            />
+          }
+>>>>>>> ae90a79bb950c8c5e9a408dd6f568c9393a60b46
             />
           </>
         )}
@@ -157,6 +172,7 @@ export default function NavBar() {
       </NavbarContent>
       {(isAuthenticated || isAuthenticatedLocal) && (
         <Dropdown backdrop="blur">
+<<<<<<< HEAD
           <DropdownTrigger className="ml-6">
             <User
               as="button"
@@ -167,6 +183,18 @@ export default function NavBar() {
               className="transition-transform"
               // name={userInfo.given_name}
               // description={userInfo.nickname && userInfo.nickname}
+=======
+          <DropdownTrigger>
+          <User
+              as="button"
+              avatarProps={{
+                isBordered: true,
+               // src: userInfo  ?? userInfo .picture ,
+              }}
+              className="transition-transform"
+             // name={userInfo ?? userInfo .given_name }
+              //description={userInfo  ?? userInfo .nickname }
+>>>>>>> ae90a79bb950c8c5e9a408dd6f568c9393a60b46
             />
           </DropdownTrigger>
           <DropdownMenu aria-label="Profile Actions" variant="flat">
