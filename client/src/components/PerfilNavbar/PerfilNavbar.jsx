@@ -1,14 +1,14 @@
 // import { Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import {
-  Navbar, 
-  NavbarBrand, 
-  NavbarContent, 
-  NavbarItem, 
+  Navbar,
+  NavbarBrand,
+  NavbarContent,
+  NavbarItem,
   NavbarMenuToggle,
   NavbarMenu,
   NavbarMenuItem,
-  Link
+  Link,
 } from "@nextui-org/react";
 
 const navigation = [
@@ -18,11 +18,11 @@ const navigation = [
     current: false,
     access: "all",
   },
-  { 
-    name: "Pedidos", 
-    to: "/perfil/orders", 
-    current: false, 
-    access: "all" 
+  {
+    name: "Pedidos",
+    to: "/perfil/orders",
+    current: false,
+    access: "all",
   },
   { name: "Juegos", to: "/perfil/", current: false, access: "admin" },
   {
@@ -37,17 +37,17 @@ const PerfilNavbar = () => {
   const { user, isAuthenticated } = useAuth0();
 
   return (
-    <Navbar className="hidden sm:flex">
+    <Navbar className="hidden sm:flex bg-[#0B0120]">
       <NavbarContent className="flex gap-10" justify="center">
-        {
-          navigation.map(navItem => {
-            return <NavbarItem>
-                      <Link color="foreground" href={navItem.to}>
-                        {navItem.name}
-                      </Link>
-                    </NavbarItem> 
-          })
-        }
+        {navigation.map((navItem) => {
+          return (
+            <NavbarItem>
+              <Link color="foreground" href={navItem.to}>
+                <p className="text-white">{navItem.name}</p>
+              </Link>
+            </NavbarItem>
+          );
+        })}
       </NavbarContent>
     </Navbar>
   );
