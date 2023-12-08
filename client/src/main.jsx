@@ -11,7 +11,6 @@ const domain = import.meta.env.VITE_AUTH0_DOMAIN;
 const clientId = import.meta.env.VITE_AUTH0_CLIENT_ID;
 const url = import.meta.env.VITE_URL;
 //axios.defaults.baseURL = "http://localhost:3001";
-// axios.defaults.baseURL = "https://backendpf-4vdq.onrender.com";
 axios.defaults.baseURL = url;
 
 ReactDOM.createRoot(document.getElementById("root")).render(
@@ -21,7 +20,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     authorizationParams={{ redirect_uri: window.location.origin }}
   >
     <Provider store={store}>
-    <BrowserRouter>
+      <BrowserRouter>
         <App />
       </BrowserRouter>
     </Provider>

@@ -24,7 +24,7 @@ const navigation = [
     current: false,
     access: "all",
   },
-  { name: "Juegos", to: "/perfil/", current: false, access: "admin" },
+  { name: "Juegos", to: "/perfil/games", current: false, access: "admin" },
   {
     name: "Ingresar Juego",
     to: "/perfil/create",
@@ -37,7 +37,13 @@ const PerfilNavbar = () => {
   const { user, isAuthenticated } = useAuth0();
 
   return (
-    <Navbar className="hidden sm:flex bg-[#0B0120]">
+    <Navbar
+      className="hidden sm:flex bg-[#0B0120]"
+      classNames={{
+        base: "hidden sm:flex bg-[#0B0120] px-20",
+        wrapper: "max-w-[1536px] p-0",
+      }}
+    >
       <NavbarContent className="flex gap-10" justify="center">
         {navigation.map((navItem) => {
           return (
