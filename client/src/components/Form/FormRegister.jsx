@@ -7,14 +7,15 @@ import userLog from "../Auth0/Send";
 import { useState } from "react";
 import {useNavigate } from 'react-router-dom';
 YupPassword(Yup);
-
+import { login } from "../../redux/actions";
 import { NavbarItem, }from "@nextui-org/react";
 import LoginButton from "../Auth0/LoginButton";
+import { useDispatch } from "react-redux";
 
-const FormularioLogin = ({ setIsAuthenticatedLocal}) => {
+const FormularioLogin = ({ onClose,setIsAuthenticatedLocal}) => {
  
   const navigate = useNavigate();
- 
+ const dispatch = useDispatch()
 
   const user = {
     email: "",
@@ -57,8 +58,11 @@ const FormularioLogin = ({ setIsAuthenticatedLocal}) => {
     const nickName = values.email.split('@')[0];
     values = {...values , nickname: nickName}
     const response = await userLog(values);
+    console.log(response)
+    dispatch(login(response));
     navigate("/home")
-   setIsAuthenticatedLocal(true)
+    setIsAuthenticatedLocal(true)
+  onClose()
   }
   return (
     <Formik
