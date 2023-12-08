@@ -41,7 +41,7 @@ const PerfilNavbar = () => {
       <NavbarContent className="flex gap-10" justify="center">
         {navigation.map((navItem) => {
           return (
-            <NavbarItem>
+            <NavbarItem key={navItem.name}>
               <Link color="foreground" href={navItem.to}>
                 <p className="text-white">{navItem.name}</p>
               </Link>

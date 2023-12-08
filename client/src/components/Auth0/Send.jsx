@@ -1,15 +1,10 @@
 import axios from "axios";
 import Swal from "sweetalert2";
 
-<<<<<<< HEAD
-const enviarInfoAlServer = async (userData) => {
-  // console.log(userData);
-=======
 //console.log(userData);
 
 const enviarInfoAlServer = async (userData) => {
   console.log(userData);
->>>>>>> ae90a79bb950c8c5e9a408dd6f568c9393a60b46
 
   const email = userData.email;
   const password = userData.password ?? null;
@@ -27,28 +22,16 @@ const enviarInfoAlServer = async (userData) => {
       picture,
       sub,
     });
-<<<<<<< HEAD
-    // console.log(response);
-
-    if (response.status === 200) {
-=======
 
     if (response.status === 201) {
->>>>>>> ae90a79bb950c8c5e9a408dd6f568c9393a60b46
       // Accede al encabezado Authorization para obtener el token
       const token = response.data.token;
 
       console.log("Token recibido:", token);
       // if (response.data) {
-<<<<<<< HEAD
-      // console.log(response.data.result.user);
-      const user = { ...response.data, token };
-      // console.log(user);
-=======
       console.log(response.data.result.user);
       const user = { ...response.data, token };
       console.log(user);
->>>>>>> ae90a79bb950c8c5e9a408dd6f568c9393a60b46
       return user;
     } else {
       Swal.fire({
@@ -63,11 +46,7 @@ const enviarInfoAlServer = async (userData) => {
     Swal.fire({
       position: "top-end",
       icon: "error",
-<<<<<<< HEAD
-      title: `Error al enviar la solicitud al servidor ${error.message}`,
-=======
       title: "no",
->>>>>>> ae90a79bb950c8c5e9a408dd6f568c9393a60b46
       showConfirmButton: false,
       timer: 1500,
     });
