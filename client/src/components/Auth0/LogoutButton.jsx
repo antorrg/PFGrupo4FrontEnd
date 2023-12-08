@@ -2,7 +2,7 @@ import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Link } from "@nextui-org/react";
 
-const LogoutButton = ({element, to}) => {
+const LogoutButton = () => {
   const { logout } = useAuth0();
 1
   return (
@@ -10,9 +10,9 @@ const LogoutButton = ({element, to}) => {
       onClick={() =>
         logout({ logoutParams: { returnTo: window.location.origin } })
       }
-      className="text-danger" color="danger"
+      className="text-danger flex" color="danger"
       >
-      {element}
+        Salir
       </Link>
   );
 };

@@ -23,11 +23,6 @@ function Detail() {
 
   return (
     <div className="overflow-hidden w-full flex-1 ">
-      <div>
-        <Link to="/home">
-          <h3>Atras</h3>
-        </Link>
-      </div>
       <div className="w-full h-full mb-4">
         <div className="flex flex-col items-center gap-4">
           <div className="flex items-center justify-center flex-wrap w-full gap-2">
