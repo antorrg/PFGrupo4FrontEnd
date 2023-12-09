@@ -2,7 +2,6 @@ import * as Yup from "yup";
 import YupPassword from "yup-password";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import { Button } from "@nextui-org/react";
-import Swal from "sweetalert2";
 import userLog from "../Auth0/Send";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -18,18 +17,12 @@ const FormularioLogin = ({ onClose, setIsAuthenticatedLocal }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const user = {
+  let user = {
     email: "",
     password: "",
     nickname: "",
     sub: null,
-    given_name: "",
-    picture: "",
-  };
-
-  const initialValues = {
-    email: "",
-    password: "",
+    isLogin: true,
   };
 
   const [viewPassword, setViewPassword] = useState(false);
@@ -54,46 +47,44 @@ const FormularioLogin = ({ onClose, setIsAuthenticatedLocal }) => {
     email: Yup.string().email("Email Inválido").required("Campo Requerido"),
     password: passwordField(),
   });
+ 
+  const loginUser = async (values,setFieldValue) => {
+    
+      const nickName = values.email.split("@")[0];
+      values = { ...values, nickname: nickName };
+      console.log(values);
+      const response = await userLog(values);
+      console.log(response);
+      if(response) {
+        dispatch(login(response));
+        navigate("/home");
+        setIsAuthenticatedLocal(true);
+        onClose();
+      
+      } 
+      user = { ...user, password:"" };
+    
 
-  const loginUser = async (values) => {
-    const nickName = values.email.split("@")[0];
-    values = { ...values, nickname: nickName };
-    const response = await userLog(values);
-    console.log(response);
-    dispatch(login(response));
-    navigate("/home");
-    setIsAuthenticatedLocal(true);
-    onClose();
   };
   return (
     <Formik
       initialValues={user}
       validationSchema={formSchema}
-      onSubmit={async (values) => {
-        try {
-          await loginUser(values);
-        } catch (error) {
-          console.log(error.message);
-          Swal.fire({
-            position: "top-end",
-            icon: "error",
-            title: `${error.message}`,
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        }
+      onSubmit={async (values, setFieldValue) => {
+        console.log(values);
+        await loginUser(values,setFieldValue);
       }}
     >
       {({ values, setFieldValue }) => (
         <Form>
-          <div className="flex items-center justify-center" >
+          <div className="flex items-center justify-center">
             <NavbarItem>
               <LoginButton />
             </NavbarItem>
           </div>
-         <br />
-         <hr />
-         <br />
+          <br />
+          <hr />
+          <br />
 
           <div className="mb-4">
             <label

@@ -2,21 +2,15 @@ import * as Yup from "yup";
 import YupPassword from "yup-password";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import { Button } from "@nextui-org/react";
-import Swal from "sweetalert2";
+
 import userLog from "../Auth0/Send";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+
 YupPassword(Yup);
-import { login } from "../../redux/actions";
-import { NavbarItem } from "@nextui-org/react";
-import LoginButton from "../Auth0/LoginButton";
-import { useDispatch } from "react-redux";
+
 import axios from "axios";
 
 const FormRegistrer = ({ onClose, setIsAuthenticatedLocal }) => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-
   const user = {
     email: "",
     password: "",
@@ -96,31 +90,27 @@ const FormRegistrer = ({ onClose, setIsAuthenticatedLocal }) => {
   };
 
   const loginUser = async (values) => {
-    const nickName = values.email.split("@")[0];
-    values = { ...values, nickname: nickName };
-    delete values.password1;
-    if (!values.picture) {
-      values.picture = pictureDefault;
+    try {
+      const nickName = values.email.split("@")[0];
+      values = { ...values, nickname: nickName };
+      delete values.password1;
+      if (!values.picture) {
+        values.picture = pictureDefault;
+      }
+      console.log(values);
+      const response = await userLog(values);
+    } catch (error) {
+      throw new Error(error);
     }
-    console.log(values);
   };
   return (
     <Formik
       initialValues={user}
       validationSchema={formSchema}
       onSubmit={async (values) => {
-        try {
-          await loginUser(values);
-        } catch (error) {
-          console.log(error.message);
-          Swal.fire({
-            position: "top-end",
-            icon: "error",
-            title: `${error.message}`,
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        }
+        await loginUser(values);
+
+        onClose();
       }}
     >
       {({ values, setFieldValue }) => (

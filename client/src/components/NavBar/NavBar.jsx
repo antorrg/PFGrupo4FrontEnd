@@ -35,7 +35,9 @@ import {
 export default function NavBar() {
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const userInfo = useSelector((state) => state.loginUser);
+  const userLogin = useSelector((state) => state.loginUser);
+  const userInfo = userLogin
+ 
   const { isAuthenticated } = useAuth0();
 const [isAuthenticatedLocal, setIsAuthenticatedLocal] = useState(false)
   const { cart } = useContext(CartContext);
@@ -123,7 +125,7 @@ const [isAuthenticatedLocal, setIsAuthenticatedLocal] = useState(false)
             </Link>
           </NavbarItem>
         ))}
-        {!isAuthenticated && !isAuthenticatedLocal ? (
+        {(   !isAuthenticated  || userInfo.length === 0 ) ? (
           <>
             <Modal
               textButton="Ingresar/Registrarse"
@@ -135,23 +137,17 @@ const [isAuthenticatedLocal, setIsAuthenticatedLocal] = useState(false)
             />
           </>
         ) : (
-          <NavbarItem>
-            <LogoutButton />
-          </NavbarItem>
-        )}
-      </NavbarContent>
-      {(isAuthenticated || isAuthenticatedLocal) && (
-        <Dropdown backdrop="blur">
+          <Dropdown backdrop="blur">
           <DropdownTrigger>
           <User
               as="button"
               avatarProps={{
                 isBordered: true,
-               // src: userInfo  ?? userInfo .picture ,
+               src: userInfo.picture && userInfo.picture ,
               }}
               className="transition-transform"
-             // name={userInfo ?? userInfo .given_name }
-              //description={userInfo  ?? userInfo .nickname }
+              name={userInfo.given_name  ?? userInfo.given_name }
+              description={userInfo.nickname   ?? userInfo.nickname }
             />
           </DropdownTrigger>
           <DropdownMenu aria-label="Profile Actions" variant="flat">
@@ -204,7 +200,11 @@ const [isAuthenticatedLocal, setIsAuthenticatedLocal] = useState(false)
             }
           </DropdownMenu>
         </Dropdown>
-      )}
+        )}
+      </NavbarContent>
+      
+        
+      
       <NavbarMenu className="mr-4">
         {navItems.map((item, index) => (
           <NavbarMenuItem key={`${item}-${index}-Menu`}>
