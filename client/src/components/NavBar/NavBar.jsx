@@ -125,7 +125,7 @@ const [isAuthenticatedLocal, setIsAuthenticatedLocal] = useState(false)
             </Link>
           </NavbarItem>
         ))}
-        {(   !isAuthenticated  || userInfo.length === 0 ) ? (
+        { userInfo.length === 0  ? (
           <>
             <Modal
               textButton="Ingresar/Registrarse"
