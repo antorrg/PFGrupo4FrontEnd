@@ -2,6 +2,7 @@ import LogoutButton from "../Auth0/LogoutButton";
 import LoginButton from "../Auth0/LoginButton";
 import DarkModeButton from "./DarkModeButton";
 import SearchBar from "../SearchBar/SearchBar";
+import PopoverCart from "./PopoverCart";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useSelector } from "react-redux";
 import { useState, useContext } from "react";
@@ -18,6 +19,7 @@ import {
   Cog6ToothIcon,
   BuildingStorefrontIcon,
   PlusIcon,
+  SparklesIcon,
 } from "@heroicons/react/24/outline";
 import {
   Navbar,
@@ -55,6 +57,12 @@ export default function NavBar() {
       to: "/perfil/orders",
       access: "all",
       icon: CurrencyDollarIcon,
+    },
+    {
+      element: "Calificar",
+      to: "/perfil/qualification",
+      access: "all",
+      icon: SparklesIcon,
     },
     {
       element: "Configuración",
@@ -124,20 +132,37 @@ export default function NavBar() {
         </Link>
       </NavbarBrand>
       <NavbarContent justify="end" className="hidden sm:flex gap-10 ">
-        {navItems.map((item, index) => (
-          <NavbarItem key={`${item}-${index}`}>
-            <Link href={item.to} className="flex">
-              {
-                <item.icon className="w-7 hover:text-accent dark:text-secondary dark:hover:text-orange-400" />
-              }
-              {item.element === "Carrito" && cart.length > 0 && (
-                <p className="absolute -top-1 -right-3 bg-red-300 rounded-full w-5 h-5 flex items-center justify-center text-[12px] font-semibold">
-                  {cart.reduce((sum, item) => sum + item.quantity, 0)}
-                </p>
+        {navItems.map((item, index) => {
+          return item.element === "Carrito" ? (
+            <NavbarItem key={`${item}-${index}`}>
+              {cart.length > 0 ? (
+                <Link href={item.to} className="flex">
+                  <item.icon className="w-7 hover:text-accent dark:text-secondary dark:hover:text-orange-400" />
+                  <p className="absolute -top-1 -right-3 bg-red-300 rounded-full w-5 h-5 flex items-center justify-center text-[12px] font-semibold">
+                    {cart.reduce((sum, item) => sum + item.quantity, 0)}
+                  </p>
+                </Link>
+              ) : (
+                // <item.icon
+                //   className="w-7 hover:text-accent dark:text-secondary dark:hover:text-orange-400"
+                // />
+                <PopoverCart
+                  icon={
+                    <item.icon className="w-7 hover:text-accent dark:text-secondary dark:hover:text-orange-400" />
+                  }
+                />
               )}
-            </Link>
-          </NavbarItem>
-        ))}
+            </NavbarItem>
+          ) : (
+            <NavbarItem key={`${item}-${index}`}>
+              <Link href={item.to} className="flex">
+                {
+                  <item.icon className="w-7 hover:text-accent dark:text-secondary dark:hover:text-orange-400" />
+                }
+              </Link>
+            </NavbarItem>
+          );
+        })}
         {!isAuthenticated && !isAuthenticatedLocal && (
           <>
             <Modal
