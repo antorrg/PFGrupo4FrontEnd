@@ -212,7 +212,7 @@ const Carrito = () => {
         {itemsPayment.length && (
           <PaymentTest
             //userID={loginUser.id}
-            userID={"3102ebab-8b0c-4953-808a-98f43ada165b"}
+            userID={"94e9b0a0-5403-4885-b8e6-867058e02461"}
             arrayItems={itemsPayment}
           />
         )}

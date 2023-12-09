@@ -7,14 +7,15 @@ import { Button } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-const url = import.meta.env.VITE_URL;
+import { useSelector } from "react-redux";
 
 const Orders = () => {
   const [orders, setOrders] = useState({});
+  const loginUser = useSelector((state) => state.loginUser);
 
   const searchOrdersBD = async () => {
     const { data } = await axios.get(
-      "http://localhost:3001/getOrdersByUserId?userID=3102ebab-8b0c-4953-808a-98f43ada165b&page=0&size=100"
+      `http://localhost:3001/getOrdersByUserId?userID=${loginUser.id}&page=0&size=100`
     );
     setOrders(data);
   };

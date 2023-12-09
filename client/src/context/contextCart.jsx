@@ -47,7 +47,7 @@ export const CartProvider = ({ children }) => {
     try {
       //const data = await axios.get(`http://localhost:3001/getUserShoppingCart/${loginUser.id}`);
       const data = await axios.get(
-        `http://localhost:3001/getUserShoppingCart/3102ebab-8b0c-4953-808a-98f43ada165b`
+        `http://localhost:3001/getUserShoppingCart/94e9b0a0-5403-4885-b8e6-867058e02461`
       );
       //dispatch(updateCart(data.data));
       setCart(data.data);
