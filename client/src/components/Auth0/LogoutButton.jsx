@@ -4,7 +4,7 @@ import { Link } from "@nextui-org/react";
 import { useDispatch } from "react-redux";
 import { limpiarLogin } from "../../redux/actions";
 
-const LogoutButton = ({element, to}) => {
+const LogoutButton = () => {
   const { logout } = useAuth0();
  const dispatch = useDispatch()
   return (
@@ -15,9 +15,9 @@ const LogoutButton = ({element, to}) => {
       }
         
       }
-      className="text-danger" color="danger"
+      className="text-danger flex" color="danger"
       >
-      {element}
+        Salir
       </Link>
   );
 };

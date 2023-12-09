@@ -1,6 +1,7 @@
 import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Button } from "@nextui-org/react";
+import { UserIcon } from "@heroicons/react/24/outline";
 
 const LoginButton = () => {
   const { loginWithRedirect } = useAuth0();
@@ -9,6 +10,7 @@ const LoginButton = () => {
     
     
     <Button
+<<<<<<< HEAD
     onClick={() => loginWithRedirect()}
     href="#"
     variant="flat"
@@ -114,6 +116,19 @@ const LoginButton = () => {
           </svg>
         </div>
       </div>
+=======
+      onClick={() => loginWithRedirect()}
+      className="p-0"
+      href="#"
+      variant="invisible"
+    >
+      {
+        <div className="text-secondary flex items-center gap-1 hover:text-accent">
+          <UserIcon className="w-7"></UserIcon>
+          <p>Ingresar/Registrarse</p>
+        </div>
+      }
+>>>>>>> fe6e47cac3f38e18b65e0fa1c4efd77daa689aa6
     </Button>
     
   );

@@ -69,8 +69,18 @@ const enviarInfoAlServer = async (userData) => {
 };
 
 const userLog = async (userData) => {
+<<<<<<< HEAD
   const response = await enviarInfoAlServer(userData);
   return response;
+=======
+  try {
+    const response = await enviarInfoAlServer(userData);
+    return response.result.user;
+  } catch (error) {
+    //console.error("Error en userLog:", error);
+    throw error; // Puedes manejar el error aquí según tus necesidades
+  }
+>>>>>>> fe6e47cac3f38e18b65e0fa1c4efd77daa689aa6
 };
 
 export default userLog;

@@ -3,12 +3,12 @@ import { CartContext } from "../../context/contextCart";
 import { useContext, useEffect, useState } from "react";
 import { FaPlus, FaMinus } from "react-icons/fa";
 
-// import PaymentTest from "./PaymentTest";
+import PaymentTest from "./PaymentTest";
 
 import { RemoveFromCartIcon } from "../../icono/icono";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useSelector } from "react-redux";
-
+import axios from "axios";
 
 const CartItem = ({
   image,
@@ -19,11 +19,10 @@ const CartItem = ({
   removeItem,
   removeIdCart,
 }) => {
-
   const subTotal = quantity * price;
 
   return (
-    <div className="w-[90%] ">
+    <div className="w-[90%]">
       <div className="max-w-[600px] sm:mx-auto sm:mt-0 lg:w-full lg:flex gap-8 lg:max-w-7xl justify-between">
         <div className="flex flex-col pb-16 sm:w-[600px]">
           <div className="w-full h-[140px] py-4 flex gap-4 border-b-1 sm:h-[270px] sm:py-8">
@@ -84,38 +83,84 @@ const CartItem = ({
 };
 
 const Carrito = () => {
-  const cartRedux = useSelector((state) => state.cart);
+  //const cartRedux = useSelector((state) => state.cart);
   const { isAuthenticated } = useAuth0();
   const { cart, removeItem, addToCart, removeIdCart, clearCart } =
     useContext(CartContext);
+  const [cartData, setCartData] = useState([]);
+  const [updateFlag, setUpdateFlag] = useState(false);
+  const [itemsPayment, setItemsPayment] = useState([]);
   // const [cartInfo, setCartInfo] = useState({});
-  const total = cart.reduce(
+  let total = cartData.reduce(
     (acc, el) => acc + Number(el.price) * el.quantity,
     0
   );
 
-  console.log(cartRedux);
-  useEffect(() => {
-    if (isAuthenticated) {
-    } else {
+  const getCartVideogamesData = async (auxCart) => {
+    const videogamesIds = {
+      ids: auxCart.map((item) => {
+        return item.id;
+      }),
+    };
+    //console.log("ids: " + JSON.stringify(videogamesIds));
+    try {
+      const data = await axios.post(
+        `http://localhost:3001/post/videogamesByIds`,
+        videogamesIds
+      );
+
+      //const auxObj = {...data.data[0], quantity: 1};
+      const auxObj = data.data.map((item) => {
+        return {
+          ...item,
+          quantity: auxCart.find((obj) => obj.id === item.id).quantity,
+        };
+      });
+      //console.log("auxObj 2: " + JSON.stringify(auxObj));
+      setCartData(auxObj);
+      //console.log(data.data);
+      //dispatch(updateCart(data.data));
+    } catch (error) {
+      window.alert(error.message);
     }
-  }, []);
+  };
+
+  const updateFlagHandler = () => {
+    setUpdateFlag(!updateFlag);
+  };
+
+  const checkoutHandler = () => {
+    const auxItemsPayment = cartData.map((item) => {
+      return {
+        id: item.id,
+        title: item.name,
+        unit_price: Math.round(item.price),
+        quantity: item.quantity,
+        currency_id: "USD",
+      };
+    });
+    setItemsPayment(auxItemsPayment);
+  };
+
+  useEffect(() => {
+    getCartVideogamesData(cart);
+  }, [updateFlag]);
 
   return (
     <div>
-      {!cart.length ? (
+      {!cartData.length ? (
         <h1 className="text-xl font-semibold mb-4">Carrito de Compra Vacio</h1>
       ) : (
         <h1 className="text-xl font-semibold mb-4">Carrito de Compra</h1>
       )}
       <ul>
-        {cart.map((game) => (
+        {cartData.map((game) => (
           <CartItem
             key={game.id}
-            addToCart={() => addToCart(game)}
-            removeItem={() => removeItem(game.id)}
+            addToCart={() => addToCart(game, updateFlagHandler)}
+            removeItem={() => removeItem(game.id, updateFlagHandler)}
             total={total}
-            removeIdCart={() => removeIdCart(game.id)}
+            removeIdCart={() => removeIdCart(game.id, updateFlagHandler)}
             {...game}
           />
         ))}
@@ -123,7 +168,7 @@ const Carrito = () => {
           radius="sm"
           color="error"
           className="text-white py-3 w-full mt-4"
-          onClick={clearCart}
+          onClick={() => clearCart(updateFlagHandler)}
         >
           Vaciar Carrito
         </Button>
@@ -132,7 +177,7 @@ const Carrito = () => {
         radius="sm"
         color="error"
         className="text-danger py-3 w-full mt-4"
-        onClick={clearCart}
+        onClick={() => clearCart(updateFlagHandler)}
       >
         Vaciar Carrito <RemoveFromCartIcon />
       </Button>
@@ -148,7 +193,12 @@ const Carrito = () => {
             <h1 className="font-medium">${total.toFixed(2)}</h1>
           </div>
         </div>
-        <Button radius="sm" color="primary" className="text-white py-5 w-full">
+        <Button
+          radius="sm"
+          color="primary"
+          className="text-white py-5 w-full"
+          onClick={() => checkoutHandler()}
+        >
           <p className="text-base">Comprar</p>
         </Button>
         <div className="h-[50px] flex items-center justify-center">
@@ -158,7 +208,15 @@ const Carrito = () => {
           </span>
         </div>
       </div>
-      <div>{/* <PaymentTest /> */}</div>
+      <div>
+        {itemsPayment.length && (
+          <PaymentTest
+            //userID={loginUser.id}
+            userID={"94e9b0a0-5403-4885-b8e6-867058e02461"}
+            arrayItems={itemsPayment}
+          />
+        )}
+      </div>
     </div>
   );
 };
