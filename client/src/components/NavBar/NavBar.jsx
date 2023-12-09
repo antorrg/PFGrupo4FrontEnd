@@ -1,7 +1,8 @@
-// import { Link } from "react-router-dom";
 import LogoutButton from "../Auth0/LogoutButton";
 import LoginButton from "../Auth0/LoginButton";
 import DarkModeButton from "./DarkModeButton";
+import SearchBar from "../SearchBar/SearchBar";
+import PopoverCart from "./PopoverCart";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useSelector } from "react-redux";
 import { useState, useContext } from "react";
@@ -13,6 +14,12 @@ import {
   HeartIcon,
   HomeIcon,
   ShoppingCartIcon,
+  UserIcon,
+  CurrencyDollarIcon,
+  Cog6ToothIcon,
+  BuildingStorefrontIcon,
+  PlusIcon,
+  SparklesIcon,
 } from "@heroicons/react/24/outline";
 import {
   Navbar,
@@ -31,13 +38,11 @@ import {
   Link,
 } from "@nextui-org/react";
 
-
 export default function NavBar() {
-
+  const [isAuthenticatedLocal, setIsAuthenticatedLocal] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const userInfo = useSelector((state) => state.loginUser);
   const { isAuthenticated } = useAuth0();
-const [isAuthenticatedLocal, setIsAuthenticatedLocal] = useState(false)
   const { cart } = useContext(CartContext);
 
   const perfilItems = [
@@ -45,33 +50,46 @@ const [isAuthenticatedLocal, setIsAuthenticatedLocal] = useState(false)
       element: "Wishlist",
       to: "/wishlist",
       access: "all",
+      icon: HeartIcon,
     },
     {
       element: "Pedidos",
       to: "/perfil/orders",
       access: "all",
+      icon: CurrencyDollarIcon,
+    },
+    {
+      element: "Calificar",
+      to: "/perfil/qualification",
+      access: "all",
+      icon: SparklesIcon,
     },
     {
       element: "Configuración",
-      to: "/perfil/settings",
+      to: "/perfil/",
       access: "all",
+      icon: Cog6ToothIcon,
     },
     {
       element: "Salir",
       to: "/",
       access: "all",
+      icon: UserIcon,
     },
     {
       element: "Lista de Juegos",
       to: "/perfil/games",
       access: "admin",
+      icon: BuildingStorefrontIcon,
     },
     {
       element: "Ingresar Juego",
       to: "/perfil/create",
       access: "admin",
+      icon: PlusIcon,
     },
   ];
+
   const navItems = [
     {
       element: "Home",
@@ -91,11 +109,16 @@ const [isAuthenticatedLocal, setIsAuthenticatedLocal] = useState(false)
   ];
   const url =
     "https://res.cloudinary.com/dmhxl1rpc/image/upload/c_scale,w_250/v1701669223/gameworld/avatar_gamer.jpg";
+
   return (
     <Navbar
       position="static"
       height="5rem"
       maxWidth="2xl"
+      classNames={{
+        base: "px-5 sm:px-20",
+        wrapper: "p-0",
+      }}
       onMenuOpenChange={setIsMenuOpen}
       className="dark:bg-primary"
     >
@@ -103,56 +126,71 @@ const [isAuthenticatedLocal, setIsAuthenticatedLocal] = useState(false)
         aria-label={isMenuOpen ? "Close menu" : "Open menu"}
         className="sm:hidden"
       />
-      <NavbarBrand>
+      <NavbarBrand className="justify-start">
         <Link href={"/"} className="cursor-pointer">
           <img src={logo} alt="logo" className="h-[60px] w-auto" />
         </Link>
       </NavbarBrand>
-      <NavbarContent justify="end" className="hidden sm:flex gap-10">
-        {navItems.map((item, index) => (
-          <NavbarItem key={`${item}-${index}`}>
-            <Link href={item.to}>
-
-              {
-                <item.icon className="w-7 hover:text-orange-400 dark:text-secondary dark:hover:text-orange-400" />
-              }
-              {item.element === "Carrito" && cart.length > 0 && (
-                <p className="absolute -top-1 -right-3 bg-red-300 rounded-full w-5 h-5 flex items-center justify-center text-[12px] font-semibold">
-                  {cart.reduce((sum, item) => sum + item.quantity, 0)}
-                </p>
+      <NavbarContent justify="end" className="hidden sm:flex gap-10 ">
+        {navItems.map((item, index) => {
+          return item.element === "Carrito" ? (
+            <NavbarItem key={`${item}-${index}`}>
+              {cart.length > 0 ? (
+                <Link href={item.to} className="flex">
+                  <item.icon className="w-7 hover:text-accent dark:text-secondary dark:hover:text-orange-400" />
+                  <p className="absolute -top-1 -right-3 bg-red-300 rounded-full w-5 h-5 flex items-center justify-center text-[12px] font-semibold">
+                    {cart.reduce((sum, item) => sum + item.quantity, 0)}
+                  </p>
+                </Link>
+              ) : (
+                // <item.icon
+                //   className="w-7 hover:text-accent dark:text-secondary dark:hover:text-orange-400"
+                // />
+                <PopoverCart
+                  icon={
+                    <item.icon className="w-7 hover:text-accent dark:text-secondary dark:hover:text-orange-400" />
+                  }
+                />
               )}
-            </Link>
-          </NavbarItem>
-        ))}
-        {!isAuthenticated && !isAuthenticatedLocal ? (
+            </NavbarItem>
+          ) : (
+            <NavbarItem key={`${item}-${index}`}>
+              <Link href={item.to} className="flex">
+                {
+                  <item.icon className="w-7 hover:text-accent dark:text-secondary dark:hover:text-orange-400" />
+                }
+              </Link>
+            </NavbarItem>
+          );
+        })}
+        {!isAuthenticated && !isAuthenticatedLocal && (
           <>
             <Modal
               textButton="Ingresar/Registrarse"
               title="Ingrese su Email y Passsword"
-              body={ ({onClose}) => <FormularioLogin
-             onClose={onClose} setIsAuthenticatedLocal={setIsAuthenticatedLocal}
-            />
-          }
+              body={({ onClose }) => (
+                <FormularioLogin
+                  onClose={onClose}
+                  setIsAuthenticatedLocal={setIsAuthenticatedLocal}
+                />
+              )}
             />
           </>
-        ) : (
-          <NavbarItem>
-            <LogoutButton />
-          </NavbarItem>
         )}
+        {/* <SearchBar /> */}
       </NavbarContent>
       {(isAuthenticated || isAuthenticatedLocal) && (
         <Dropdown backdrop="blur">
-          <DropdownTrigger>
-          <User
+          <DropdownTrigger className="ml-6">
+            <User
               as="button"
               avatarProps={{
                 isBordered: true,
-               // src: userInfo  ?? userInfo .picture ,
+                src: userInfo.picture && userInfo.picture,
               }}
               className="transition-transform"
-             // name={userInfo ?? userInfo .given_name }
-              //description={userInfo  ?? userInfo .nickname }
+              name={userInfo.given_name && userInfo.given_name}
+              description={userInfo.nickname && userInfo.nickname}
             />
           </DropdownTrigger>
           <DropdownMenu aria-label="Profile Actions" variant="flat">
@@ -166,11 +204,14 @@ const [isAuthenticatedLocal, setIsAuthenticatedLocal] = useState(false)
                 <p className="text-base text-primary dark:text-white">Tema</p>
               </DropdownItem>
             </DropdownSection>
-            <DropdownSection aria-label="roll client" className="border-t">
+            <DropdownSection aria-label="client role" className="border-t">
               {perfilItems.map((item) => {
                 return (
                   item.access === "all" && (
-                    <DropdownItem key={item.element}>
+                    <DropdownItem
+                      key={item.element}
+                      startContent={<item.icon className="w-5" />}
+                    >
                       {item.element !== "Salir" ? (
                         <Link href={item.to} className="dark:text-white">
                           {item.element}
@@ -182,7 +223,6 @@ const [isAuthenticatedLocal, setIsAuthenticatedLocal] = useState(false)
                   )
                 );
               })}
-
             </DropdownSection>
             {
               // userInfo.role === "0" &&
@@ -194,7 +234,10 @@ const [isAuthenticatedLocal, setIsAuthenticatedLocal] = useState(false)
                 {perfilItems.map(
                   (item) =>
                     item.access === "admin" && (
-                      <DropdownItem key={item.element}>
+                      <DropdownItem
+                        key={item.element}
+                        startContent={<item.icon className="w-5" />}
+                      >
                         <Link href={item.to} className="dark:text-white">
                           {item.element}
                         </Link>

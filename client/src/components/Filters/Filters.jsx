@@ -1,7 +1,6 @@
 import style from "./Filters.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect, useRef } from "react";
-import Select from "react-select";
 
 import { getPlatforms, getGenres } from "../../redux/actions";
 import SearchBar from "../../components/SearchBar/SearchBar";
@@ -20,59 +19,27 @@ export default function Filters(props) {
   const dispatch = useDispatch();
   const { onApplyFilters } = props;
 
+  // plataformas -------------------------------------------
   const platforms = useSelector((state) => state.platforms);
   const [selectedPlatforms, setSelectedPlatforms] = useState([]);
   const [heightPlatforms, setHeightPlatforms] = useState("h-[250px]");
-
+  const selectedPlatformsRef = useRef(null);
+  // generos -------------------------------------------------
   const genres = useSelector((state) => state.genres);
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [heightGenres, setHeightGenres] = useState("h-[250px]");
-  const [sortOrder, setSortOrder] = useState({
-    value: "none",
-    label: "Sin orden",
-  });
-  const [searchText, setSearchText] = useState("");
-
   const selectedGenresRef = useRef(null);
-  const selectedPlatformsRef = useRef(null);
-  const selectedOrderRef = useRef(null);
-
+  // Precios ---------------------------------------------------
   const [prices, setPrices] = useState({
     minPrice: "",
     maxPrice: "",
   });
-
   const [errorPrices, setErrorPrices] = useState({
     prices: "",
   });
-
-  const [inputValue, setInputValue] = useState("");
-
-  const handlerInputChange = (value) => {
-    setInputValue(value);
-    setSearchTextHandler(value);
-  };
-
-  const orderOptions = [
-    { value: "none", label: "Sin orden" },
-    { value: "ASC_N", label: "Nombre ascendente" },
-    { value: "DESC_N", label: "Nombre descendente" },
-    { value: "ASC_P", label: "Precio ascendente" },
-    { value: "DESC_P", label: "Precio descendente" },
-  ];
-
-  useEffect(() => {
-    dispatch(getPlatforms());
-    dispatch(getGenres());
-  }, [dispatch]);
-
-  const orderHandler = (auxSelectedOptions) => {
-    setSortOrder(auxSelectedOptions);
-  };
-
   const handleChangePrice = (event) => {
     const property = event.target.name;
-    const value = event.target.value;
+    let value = event.target.value;
 
     setPrices({ ...prices, [property]: value });
     valideInputFilters(
@@ -80,12 +47,39 @@ export default function Filters(props) {
       setErrorPrices,
       errorPrices
     );
-  };
 
-  const setSearchTextHandler = (auxText) => {
-    setSearchText(auxText);
+    if (errorPrices.prices.length === 0) {
+      return { ...prices, [property]: value };
+    } else {
+      return prices;
+    }
   };
+  // busqueda -------------------------------------------------
+  const [inputValue, setInputValue] = useState("");
 
+  // envio y reset ---------------------------------------------
+  const handlerSubmit = (event, value) => {
+    const currentFilter = event.target.name;
+    //Aplicar filtros:
+    const paramsObj = {
+      page: 0,
+      platforms: selectedPlatforms,
+      genres: selectedGenres,
+      minPrice: prices.minPrice,
+      maxPrice: prices.maxPrice,
+      // order: sortOrder.value,
+      name: inputValue,
+    };
+
+    for (const key in paramsObj) {
+      if (key === currentFilter) {
+        paramsObj[key] = value;
+      }
+    }
+    console.log(paramsObj);
+
+    onApplyFilters(paramsObj);
+  };
   const resetFilters = () => {
     // Restablecer filtros
     onApplyFilters({
@@ -108,18 +102,10 @@ export default function Filters(props) {
     selectedOrderRef.current.clearValue();
   };
 
-  const applyFilters = () => {
-    //Aplicar filtros:
-    onApplyFilters({
-      page: 0,
-      platforms: selectedPlatforms,
-      genres: selectedGenres,
-      minPrice: prices.minPrice,
-      maxPrice: prices.maxPrice,
-      order: sortOrder.value,
-      name: searchText,
-    });
-  };
+  useEffect(() => {
+    dispatch(getPlatforms());
+    dispatch(getGenres());
+  }, [dispatch]);
 
   return (
     <div className="">
@@ -127,7 +113,11 @@ export default function Filters(props) {
         selectionMode="multiple"
         defaultExpandedKeys={["1", "2", "3", "4"]}
       >
-        <AccordionItem key="1" aria-label="Precio" title="Precio">
+        <AccordionItem
+          key="1"
+          aria-label="Precio"
+          title={<p className="text-white">Precio</p>}
+        >
           <div className="flex justify-between w-full items-center">
             <Input
               size="sm"
@@ -136,9 +126,11 @@ export default function Filters(props) {
               radius="none"
               name="minPrice"
               className="flex-1"
-              color="primary"
               value={prices.minPrice}
-              onChange={handleChangePrice}
+              onChange={() => {
+                const prices = handleChangePrice(event);
+                handlerSubmit(event, prices.minPrice);
+              }}
               label="Min"
             />
             <p className="w-[10%] text-2xl text-white flex justify-center">-</p>
@@ -148,36 +140,56 @@ export default function Filters(props) {
               min="0"
               radius="none"
               name="maxPrice"
-              className="flex-1"
-              color="primary"
+              className="flex-1 bg"
               value={prices.maxPrice}
-              onChange={handleChangePrice}
+              onChange={() => {
+                const prices = handleChangePrice(event);
+                handlerSubmit(event, prices.maxPrice);
+              }}
               label="Max"
-              startContent={
-                <div className="pointer-events-none flex items-center">
-                  <span className="text-default-400 text-small">$</span>
-                </div>
-              }
             />
             <span className={style.error}>{errorPrices.prices}</span>
           </div>
         </AccordionItem>
-        <AccordionItem key="2" aria-label="search bar" title="Busqueda">
+        <AccordionItem
+          key="2"
+          aria-label="search bar"
+          title={<p className="text-white">Busqueda</p>}
+        >
           <SearchBar
-            setSearchText={handlerInputChange}
+            name="name"
+            setSearchText={(value) => {
+              setInputValue(value);
+              handlerSubmit(event, value);
+            }}
             searchText={inputValue}
           />
         </AccordionItem>
-        <AccordionItem key="3" aria-label="Plataforma" title="Plataforma" colo>
+        <AccordionItem
+          key="3"
+          aria-label="platforms"
+          title={<p className="text-white">Plataforma</p>}
+        >
           <CheckboxGroup
-            onValueChange={setSelectedPlatforms}
+            name="platforms"
+            onValueChange={(platform) => {
+              setSelectedPlatforms(platform);
+              handlerSubmit(event, platform);
+            }}
             defaultValue={selectedPlatforms}
             className={`overflow-hidden ${heightPlatforms}`}
           >
             {platforms.map((platform) => {
               return (
-                <Checkbox value={platform.name} key={platform.name}>
-                  {platform.name}
+                <Checkbox
+                  value={platform.name}
+                  key={platform.name}
+                  radius="none"
+                  className={{
+                    base: "#1F0A4D",
+                  }}
+                >
+                  <p className="text-white/80">{platform.name}</p>
                 </Checkbox>
               );
             })}
@@ -193,16 +205,24 @@ export default function Filters(props) {
             {heightPlatforms === "h-[250px]" ? "Ver mas" : "Ver menos"}
           </button>
         </AccordionItem>
-        <AccordionItem key="4" aria-label="Genero" title="Género">
+        <AccordionItem
+          key="4"
+          aria-label="Genero"
+          title={<p className="text-white">Genero</p>}
+        >
           <CheckboxGroup
-            onValueChange={setSelectedGenres}
+            name="genres"
+            onValueChange={(genres) => {
+              setSelectedGenres(genres);
+              handlerSubmit(event, genres);
+            }}
             defaultValue={selectedGenres}
             className={`overflow-hidden ${heightGenres}`}
           >
             {genres.map((genre) => {
               return (
-                <Checkbox value={genre.name} key={genre.name}>
-                  {genre.name}
+                <Checkbox value={genre.name} key={genre.name} radius="none">
+                  <p className="text-white">{genre.name}</p>
                 </Checkbox>
               );
             })}
@@ -219,26 +239,12 @@ export default function Filters(props) {
           </button>
         </AccordionItem>
       </Accordion>
-      <Select
-        options={orderOptions}
-        onChange={(selectedOption) => orderHandler(selectedOption)}
-        placeholder="Ordenar..."
-        ref={selectedOrderRef}
-      />
       <div className="flex justify-between w-full mt-4">
         <Button
           size="sm"
           variant="shadow"
-          onClick={applyFilters}
-          className="bg-accent"
-        >
-          Aplicar
-        </Button>
-        <Button
-          size="sm"
-          variant="light"
           onClick={resetFilters}
-          className="text-accent"
+          className="bg-accent"
         >
           Restablecer
         </Button>

@@ -12,6 +12,7 @@ import userLog from "./components/Auth0/Send";
 
 import NavBar from "./components/NavBar/NavBar";
 import Footer from "./components/Footer/Footer";
+import Breadcrum from "./components/Breadcrums/Breadcrum";
 
 function App() {
   const navigate = useNavigate();
@@ -87,6 +88,7 @@ function App() {
               <div className="bg-gradient-to-t from-white to-transparent w-full h-[50%] bottom-0 absolute"></div>
             </div>
             <NavBar />
+            {/* <Breadcrum/> */}
             <Routes>{renderRoutes(routes)}</Routes>
             <Footer />
           </div>

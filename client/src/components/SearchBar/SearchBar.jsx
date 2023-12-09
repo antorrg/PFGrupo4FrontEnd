@@ -1,6 +1,6 @@
 import { FaSearch } from "react-icons/fa";
 
-export default function SearchBar(props) {
+const SearchBar = (props) => {
   const { setSearchText, searchText } = props;
 
   const onSearchByName = (event) => {
@@ -26,4 +26,6 @@ export default function SearchBar(props) {
       />
     </div>
   );
-}
+};
+
+export default SearchBar;
