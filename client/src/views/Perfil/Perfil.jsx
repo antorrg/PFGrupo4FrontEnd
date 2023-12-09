@@ -7,6 +7,7 @@ import Settings from "./Settings/Settings";
 import Create from "./Admin/Create/Create";
 import AdminHome from "./Admin/AdminHome";
 import NotFound from "../NotFound/NotFound";
+import Qualification from "./Qualification/Qualification";
 
 export default function Perfil() {
   const userInfo = useSelector((state) => state.loginUser);
@@ -18,6 +19,7 @@ export default function Perfil() {
         <Routes>
           <Route path="/" element={<Settings />} />
           <Route path="/orders" element={<Orders />} />
+          <Route path="/qualification" element={<Qualification />} />
           {userInfo.role === 1 && (
             <>
               <Route path="/games" element={<AdminHome />} />
