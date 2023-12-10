@@ -1,5 +1,6 @@
 import axios from "axios";
 import Swal from "sweetalert2";
+import setAuthHeader from "../utils/AxiosUtils";
 
 export const GET_GAMES = "GET_GAMES";
 export const GET_DETAILS = "GET_DETAILS";
@@ -82,10 +83,10 @@ export const getGames = (value) => {
 };
 */
 
-export const getDetails = (id) => {
+export const getDetails = (id, token) => {
   return async function (dispatch) {
     try {
-      const response = await axios.get(`/games/${id}`);
+      const response = await axios.get(`/games/${id}`,setAuthHeader(token));
       return dispatch({
         type: GET_DETAILS,
         payload: response.data,

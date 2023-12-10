@@ -7,10 +7,11 @@ import ConsoleLogos from "../../components/ConsoleLogos/ConsoleLogos";
 function Detail() {
   const dispatch = useDispatch();
   const { id } = useParams();
+  const token = localStorage.getItem('authToken');
   const detailGame = useSelector((state) => state.detailGame);
 
   useEffect(() => {
-    dispatch(getDetails(id));
+    dispatch(getDetails(id, token));
     return () => {
       dispatch(clearDetails());
       dispatch(changeBg(""));

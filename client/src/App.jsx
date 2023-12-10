@@ -4,6 +4,7 @@ import { useEffect, Suspense } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useAuth0 } from "@auth0/auth0-react";
 import { changeBg, getGames, login, limpiarLogin } from "./redux/actions";
+import interceptor from "./utils/AxiosInterceptor";
 // views ----------------------------------------
 import { CartProvider } from "./context/contextCart";
 import { NextUIProvider, Spinner } from "@nextui-org/react";
@@ -16,9 +17,13 @@ import Footer from "./components/Footer/Footer";
 function App() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { user, isAuthenticated } = useAuth0();
+  const { user, isAuthenticated, logout } = useAuth0();
   // console.log(isAuthenticated);
   // console.log(user);
+  useEffect(() => {
+    // Configurar el interceptor cuando el componente se monta
+    interceptor(logout);
+  }, []);
 
   const bgPage = useSelector((state) => state.bgPage);
   const backgroundImage = {
