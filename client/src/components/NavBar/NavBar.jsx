@@ -7,7 +7,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useSelector } from "react-redux";
 import { useState, useContext } from "react";
 import logo from "./logo.png";
-import FormularioLogin from "../Form/FormRegister";
+import FormularioLogin from "../Form/FormLogin";
 import Modal from "../../Modal/Modal";
 import { CartContext } from "../../context/contextCart";
 import {
@@ -39,9 +39,11 @@ import {
 } from "@nextui-org/react";
 
 export default function NavBar() {
-  const [isAuthenticatedLocal, setIsAuthenticatedLocal] = useState(false);
+  
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const userInfo = useSelector((state) => state.loginUser);
+  const userLogin = useSelector((state) => state.loginUser);
+  const userInfo = userLogin;
+
   const { isAuthenticated } = useAuth0();
   const { cart } = useContext(CartContext);
 
@@ -107,8 +109,6 @@ export default function NavBar() {
       to: "/carrito",
     },
   ];
-  const url =
-    "https://res.cloudinary.com/dmhxl1rpc/image/upload/c_scale,w_250/v1701669223/gameworld/avatar_gamer.jpg";
 
   return (
     <Navbar
@@ -163,92 +163,88 @@ export default function NavBar() {
             </NavbarItem>
           );
         })}
-        {!isAuthenticated && !isAuthenticatedLocal && (
+        {userInfo.length === 0 ? (
           <>
             <Modal
               textButton="Ingresar/Registrarse"
-              title="Ingrese su Email y Passsword"
+              title="Bienvenido inicie secion "
               body={({ onClose }) => (
-                <FormularioLogin
-                  onClose={onClose}
-                  setIsAuthenticatedLocal={setIsAuthenticatedLocal}
-                />
+                <FormularioLogin onClose={onClose}/>
               )}
             />
           </>
-        )}
-        {/* <SearchBar /> */}
-      </NavbarContent>
-      {(isAuthenticated || isAuthenticatedLocal) && (
-        <Dropdown backdrop="blur">
-          <DropdownTrigger className="ml-6">
-            <User
-              as="button"
-              avatarProps={{
-                isBordered: true,
-                src: userInfo.picture && userInfo.picture,
-              }}
-              className="transition-transform"
-              name={userInfo.given_name && userInfo.given_name}
-              description={userInfo.nickname && userInfo.nickname}
-            />
-          </DropdownTrigger>
-          <DropdownMenu aria-label="Profile Actions" variant="flat">
-            <DropdownSection aria-label="Dark Mode">
-              <DropdownItem
-                key="Dark mode button"
-                className="cursor-default"
-                isReadOnly
-                endContent={<DarkModeButton />}
-              >
-                <p className="text-base text-primary dark:text-white">Tema</p>
-              </DropdownItem>
-            </DropdownSection>
-            <DropdownSection aria-label="client role" className="border-t">
-              {perfilItems.map((item) => {
-                return (
-                  item.access === "all" && (
-                    <DropdownItem
-                      key={item.element}
-                      startContent={<item.icon className="w-5" />}
-                    >
-                      {item.element !== "Salir" ? (
-                        <Link href={item.to} className="dark:text-white">
-                          {item.element}
-                        </Link>
-                      ) : (
-                        <LogoutButton element={item.element} to={item.to} />
-                      )}
-                    </DropdownItem>
-                  )
-                );
-              })}
-            </DropdownSection>
-            {
-              // userInfo.role === "0" &&
-              <DropdownSection
-                title="Admin zone"
-                className="border-t"
-                aria-label="roll admin"
-              >
-                {perfilItems.map(
-                  (item) =>
-                    item.access === "admin" && (
+        ) : (
+          <Dropdown backdrop="blur">
+            <DropdownTrigger>
+              <User
+                as="button"
+                avatarProps={{
+                  isBordered: true,
+                  src: userInfo.picture && userInfo.picture,
+                }}
+                className="transition-transform"
+                name={userInfo.given_name && userInfo.given_name}
+                description={userInfo.nickname && userInfo.nickname}
+              />
+            </DropdownTrigger>
+            <DropdownMenu aria-label="Profile Actions" variant="flat">
+              <DropdownSection aria-label="Dark Mode">
+                <DropdownItem
+                  key="Dark mode button"
+                  className="cursor-default"
+                  isReadOnly
+                  endContent={<DarkModeButton />}
+                >
+                  <p className="text-base text-primary dark:text-white">Tema</p>
+                </DropdownItem>
+              </DropdownSection>
+              <DropdownSection aria-label="client role" className="border-t">
+                {perfilItems.map((item) => {
+                  return (
+                    item.access === "all" && (
                       <DropdownItem
                         key={item.element}
                         startContent={<item.icon className="w-5" />}
                       >
-                        <Link href={item.to} className="dark:text-white">
-                          {item.element}
-                        </Link>
+                        {item.element !== "Salir" ? (
+                          <Link href={item.to} className="dark:text-white">
+                            {item.element}
+                          </Link>
+                        ) : (
+                          <LogoutButton element={item.element} to={item.to} />
+                        )}
                       </DropdownItem>
                     )
-                )}
+                  );
+                })}
               </DropdownSection>
-            }
-          </DropdownMenu>
-        </Dropdown>
-      )}
+              {
+                // userInfo.role === "0" &&
+                <DropdownSection
+                  title="Admin zone"
+                  className="border-t"
+                  aria-label="roll admin"
+                >
+                  {perfilItems.map(
+                    (item) =>
+                      item.access === "admin" && (
+                        <DropdownItem
+                          key={item.element}
+                          startContent={<item.icon className="w-5" />}
+                        >
+                          <Link href={item.to} className="dark:text-white">
+                            {item.element}
+                          </Link>
+                        </DropdownItem>
+                      )
+                  )}
+                </DropdownSection>
+              }
+            </DropdownMenu>
+          </Dropdown>
+        )}
+      </NavbarContent>
+
       <NavbarMenu className="mr-4">
         {navItems.map((item, index) => (
           <NavbarMenuItem key={`${item}-${index}-Menu`}>

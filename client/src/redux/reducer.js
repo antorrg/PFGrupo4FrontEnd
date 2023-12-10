@@ -18,8 +18,8 @@ let initialState = {
   detailGame: [],
   platforms: [],
   genres: [],
-  loginUser: [],
-  filtersObj: {
+  loginUser:  JSON.parse(localStorage.getItem("loginUser")) || [] ,
+  filtersObj: { 
     page: 0,
     platforms: "",
     genres: "",
@@ -85,12 +85,14 @@ const reducer = (state = initialState, action) => {
       return { ...state, allGames: action.payload };
 
     case LOG:
+      localStorage.setItem("loginUser",JSON.stringify(action.payload));
       return {
         ...state,
         loginUser: action.payload,
       };
 
     case CLEAN_LOG:
+      localStorage.removeItem("loginUser");
       return {
         ...state,
         loginUser: [],
