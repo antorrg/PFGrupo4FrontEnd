@@ -39,11 +39,11 @@ import {
 } from "@nextui-org/react";
 
 export default function NavBar() {
-  const [isAuthenticatedLocal, setIsAuthenticatedLocal] = useState(false);
+  
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const userLogin = useSelector((state) => state.loginUser);
-  const userInfo = userLogin
- 
+  const userInfo = userLogin;
+
   const { isAuthenticated } = useAuth0();
   const { cart } = useContext(CartContext);
 
@@ -109,7 +109,7 @@ export default function NavBar() {
       to: "/carrito",
     },
   ];
-  
+
   return (
     <Navbar
       position="static"
@@ -163,91 +163,88 @@ export default function NavBar() {
             </NavbarItem>
           );
         })}
-        {!isAuthenticated && !isAuthenticatedLocal ?  (
+        {userInfo.length === 0 ? (
           <>
             <Modal
               textButton="Ingresar/Registrarse"
               title="Bienvenido inicie secion "
-              body={ ({onClose}) => <FormularioLogin
-             onClose={onClose} setIsAuthenticatedLocal={setIsAuthenticatedLocal}
-            />
-          }
+              body={({ onClose }) => (
+                <FormularioLogin onClose={onClose}/>
+              )}
             />
           </>
         ) : (
           <Dropdown backdrop="blur">
-          <DropdownTrigger>
-          <User
-              as="button"
-              avatarProps={{
-                isBordered: true,
-               src: userInfo.picture && userInfo.picture ,
-              }}
-              className="transition-transform"
-              name={userInfo.given_name && userInfo.given_name}
-              description={userInfo.nickname && userInfo.nickname}
-            />
-          </DropdownTrigger>
-          <DropdownMenu aria-label="Profile Actions" variant="flat">
-            <DropdownSection aria-label="Dark Mode">
-              <DropdownItem
-                key="Dark mode button"
-                className="cursor-default"
-                isReadOnly
-                endContent={<DarkModeButton />}
-              >
-                <p className="text-base text-primary dark:text-white">Tema</p>
-              </DropdownItem>
-            </DropdownSection>
-            <DropdownSection aria-label="client role" className="border-t">
-              {perfilItems.map((item) => {
-                return (
-                  item.access === "all" && (
-                    <DropdownItem
-                      key={item.element}
-                      startContent={<item.icon className="w-5" />}
-                    >
-                      {item.element !== "Salir" ? (
-                        <Link href={item.to} className="dark:text-white">
-                          {item.element}
-                        </Link>
-                      ) : (
-                        <LogoutButton element={item.element} to={item.to} />
-                      )}
-                    </DropdownItem>
-                  )
-                );
-              })}
-            </DropdownSection>
-            {
-              // userInfo.role === "0" &&
-              <DropdownSection
-                title="Admin zone"
-                className="border-t"
-                aria-label="roll admin"
-              >
-                {perfilItems.map(
-                  (item) =>
-                    item.access === "admin" && (
+            <DropdownTrigger>
+              <User
+                as="button"
+                avatarProps={{
+                  isBordered: true,
+                  src: userInfo.picture && userInfo.picture,
+                }}
+                className="transition-transform"
+                name={userInfo.given_name && userInfo.given_name}
+                description={userInfo.nickname && userInfo.nickname}
+              />
+            </DropdownTrigger>
+            <DropdownMenu aria-label="Profile Actions" variant="flat">
+              <DropdownSection aria-label="Dark Mode">
+                <DropdownItem
+                  key="Dark mode button"
+                  className="cursor-default"
+                  isReadOnly
+                  endContent={<DarkModeButton />}
+                >
+                  <p className="text-base text-primary dark:text-white">Tema</p>
+                </DropdownItem>
+              </DropdownSection>
+              <DropdownSection aria-label="client role" className="border-t">
+                {perfilItems.map((item) => {
+                  return (
+                    item.access === "all" && (
                       <DropdownItem
                         key={item.element}
                         startContent={<item.icon className="w-5" />}
                       >
-                        <Link href={item.to} className="dark:text-white">
-                          {item.element}
-                        </Link>
+                        {item.element !== "Salir" ? (
+                          <Link href={item.to} className="dark:text-white">
+                            {item.element}
+                          </Link>
+                        ) : (
+                          <LogoutButton element={item.element} to={item.to} />
+                        )}
                       </DropdownItem>
                     )
-                )}
+                  );
+                })}
               </DropdownSection>
-            }
-          </DropdownMenu>
-        </Dropdown>
+              {
+                // userInfo.role === "0" &&
+                <DropdownSection
+                  title="Admin zone"
+                  className="border-t"
+                  aria-label="roll admin"
+                >
+                  {perfilItems.map(
+                    (item) =>
+                      item.access === "admin" && (
+                        <DropdownItem
+                          key={item.element}
+                          startContent={<item.icon className="w-5" />}
+                        >
+                          <Link href={item.to} className="dark:text-white">
+                            {item.element}
+                          </Link>
+                        </DropdownItem>
+                      )
+                  )}
+                </DropdownSection>
+              }
+            </DropdownMenu>
+          </Dropdown>
         )}
       </NavbarContent>
-      
-        
-      
+
       <NavbarMenu className="mr-4">
         {navItems.map((item, index) => (
           <NavbarMenuItem key={`${item}-${index}-Menu`}>

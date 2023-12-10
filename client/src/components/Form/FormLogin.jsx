@@ -13,7 +13,7 @@ import { useDispatch } from "react-redux";
 import FormRegistrer from "./FormRegistrer";
 import Modal from "../../Modal/Modal";
 
-const FormularioLogin = ({ onClose, setIsAuthenticatedLocal }) => {
+const FormularioLogin = ({ onClose}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -47,24 +47,18 @@ const FormularioLogin = ({ onClose, setIsAuthenticatedLocal }) => {
     email: Yup.string().email("Email Inválido").required("Campo Requerido"),
     password: passwordField(),
   });
- 
-  const loginUser = async (values,setFieldValue) => {
-    
-      const nickName = values.email.split("@")[0];
-      values = { ...values, nickname: nickName };
-      console.log(values);
-      const response = await userLog(values);
-      console.log(response);
-      if(response) {
-        dispatch(login(response));
-        navigate("/home");
-        setIsAuthenticatedLocal(true);
-        onClose();
-      
-      } 
-      user = { ...user, password:"" };
-    
 
+  const loginUser = async (values, setFieldValue) => {
+    const nickName = values.email.split("@")[0];
+    values = { ...values, nickname: nickName };
+
+    const response = await userLog(values);
+
+    if (response) {
+      dispatch(login(response));
+      navigate("/home");
+      onClose();
+    }
   };
   return (
     <Formik
@@ -72,7 +66,7 @@ const FormularioLogin = ({ onClose, setIsAuthenticatedLocal }) => {
       validationSchema={formSchema}
       onSubmit={async (values, setFieldValue) => {
         console.log(values);
-        await loginUser(values,setFieldValue);
+        await loginUser(values, setFieldValue);
       }}
     >
       {({ values, setFieldValue }) => (

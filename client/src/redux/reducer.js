@@ -18,7 +18,7 @@ let initialState = {
   detailGame: [],
   platforms: [],
   genres: [],
-  loginUser:  [] || JSON.parse(localStorage.getItem("loginUser")) ,
+  loginUser:  JSON.parse(localStorage.getItem("loginUser")) || [] ,
   filtersObj: { 
     page: 0,
     platforms: "",

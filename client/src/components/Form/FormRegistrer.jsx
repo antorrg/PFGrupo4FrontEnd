@@ -10,17 +10,8 @@ YupPassword(Yup);
 
 import axios from "axios";
 
-const FormRegistrer = ({ onClose, setIsAuthenticatedLocal }) => {
+const FormRegistrer = ({ onClose }) => {
   const user = {
-    email: "",
-    password: "",
-    nickname: "",
-    sub: null,
-    given_name: "",
-    picture: "",
-  };
-
-  const initialValues = {
     email: "",
     password: "",
   };
@@ -53,8 +44,6 @@ const FormRegistrer = ({ onClose, setIsAuthenticatedLocal }) => {
     nickname: Yup.string(),
     picture: Yup.string(),
   });
-  const pictureDefault =
-    " https://res.cloudinary.com/dmhxl1rpc/image/upload/c_scale,w_250/v1701669223/gameworld/avatar_gamer.jpg";
 
   const handleImageChange = async (event, setFieldValue) => {
     const image = event.currentTarget.files[0];
@@ -89,27 +78,24 @@ const FormRegistrer = ({ onClose, setIsAuthenticatedLocal }) => {
     }
   };
 
-  const loginUser = async (values) => {
+  const createUser = async (values) => {
     try {
-      const nickName = values.email.split("@")[0];
-      values = { ...values, nickname: nickName };
       delete values.password1;
-      if (!values.picture) {
-        values.picture = pictureDefault;
-      }
-      console.log(values);
       const response = await userLog(values);
     } catch (error) {
       throw new Error(error);
     }
+  };
+
+  const handlerClose = () => {
+    onClose();
   };
   return (
     <Formik
       initialValues={user}
       validationSchema={formSchema}
       onSubmit={async (values) => {
-        await loginUser(values);
-
+        await createUser(values);
         onClose();
       }}
     >
@@ -183,76 +169,12 @@ const FormRegistrer = ({ onClose, setIsAuthenticatedLocal }) => {
             />
           </div>
 
-          <div className="mb-4">
-            <label
-              htmlFor="given_name"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Nombre
-            </label>
-            <Field
-              className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              name="given_name"
-              placeholder="Opcional"
-              type="text"
-            />
-            <ErrorMessage
-              name=" given_name"
-              component="div"
-              className="mt-1 text-sm text-red-600"
-            />
-          </div>
-
-          <div className="mb-4">
-            <label
-              htmlFor="nickname"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Apodo
-            </label>
-            <Field
-              className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              name="nickname"
-              placeholder="Opcional"
-              type="text"
-            />
-            <ErrorMessage
-              name="nickname"
-              component="div"
-              className="mt-1 text-sm text-red-600"
-            />
-          </div>
-
-          <div className="mb-4">
-            <label
-              htmlFor="picture"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Foto
-            </label>
-            <input
-              type="file"
-              id="picture"
-              name="picture"
-              className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              onChange={(event) =>
-                handleImageChange(event, setFieldValue, values)
-              }
-            />
-            <div>
-              <img className="rounded-xl" src={values.picture} alt="" />
-            </div>
-
-            <ErrorMessage
-              name="picture"
-              component="div"
-              className="mt-1 text-sm text-red-600"
-            />
-          </div>
-
           <div className="flex items-center justify-center">
             <Button type="submit" color="primary">
               Crear Usuario
+            </Button>
+            <Button onClick={handlerClose} color="primary">
+              Cancelar
             </Button>
           </div>
         </Form>
