@@ -10,7 +10,7 @@ export const CartProvider = ({ children }) => {
   const dispatch = useDispatch();
   const { isAuthenticated } = useAuth0();
   const loginUser = useSelector((state) => state.loginUser);
-  const cartRedux = useSelector((state) => state.cart);
+  //const cartRedux = useSelector((state) => state.cart);
 
   const [cart, setCart] = useState([]);
   const [initUpdateCart, setInitUpdateCart] = useState(true);
@@ -45,10 +45,10 @@ export const CartProvider = ({ children }) => {
 
   const getUserCartDB = async () => {
     try {
-      //const data = await axios.get(`http://localhost:3001/getUserShoppingCart/${loginUser.id}`);
-      const data = await axios.get(
-        `http://localhost:3001/getUserShoppingCart/94e9b0a0-5403-4885-b8e6-867058e02461`
-      );
+      const data = await axios.get(`http://localhost:3001/getUserShoppingCart/${loginUser.id}`);
+      /*const data = await axios.get(
+        `http://localhost:3001/getUserShoppingCart/87bfab07-3db0-4d3d-8b59-9315fc03fa1a`
+      );*/
       //dispatch(updateCart(data.data));
       setCart(data.data);
     } catch (error) {
