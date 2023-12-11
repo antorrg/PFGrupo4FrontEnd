@@ -48,7 +48,7 @@ const Card = ({
   const submitRatingAndCommentDB = async () => {
     try {
       const data = await axios.post(
-        `http://localhost:3001/post/postUserRated`,
+        `/post/postUserRated`,
         {
           userID,
           itemID,

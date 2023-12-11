@@ -15,7 +15,7 @@ const Orders = () => {
 
   const searchOrdersBD = async () => {
     const { data } = await axios.get(
-      `http://localhost:3001/getOrdersByUserId?userID=${loginUser.id}&page=0&size=100`
+      `/getOrdersByUserId?userID=${loginUser.id}&page=0&size=100`
     );
     setOrders(data);
   };

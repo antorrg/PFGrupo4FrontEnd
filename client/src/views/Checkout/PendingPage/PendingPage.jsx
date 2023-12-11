@@ -17,7 +17,7 @@ const PendingPage = () => {
 
   const validePaymentResult = async () => {
     try {
-      const data = await axios.get(`http://localhost:3001/getParchuseOrder?payment_id=${paymentId}&external_reference=${externalReference}`);
+      const data = await axios.get(`/getParchuseOrder?payment_id=${paymentId}&external_reference=${externalReference}`);
       
       if(data.data.orderData.status === "waiting"){
         const waitTime = setTimeout(() => {

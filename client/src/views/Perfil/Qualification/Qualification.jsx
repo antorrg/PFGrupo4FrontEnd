@@ -10,7 +10,7 @@ const Qualification = () => {
 
   const searchGamesPurchaseDB = async () => {
     const { data } = await axios.get(
-      `http://localhost:3001/getRatedPendingItemsByUserId?userID=${loginUser.id}&page=0&size=100`
+      `/getRatedPendingItemsByUserId?userID=${loginUser.id}&page=0&size=100`
     );
     setRatedPending(data);
   };
