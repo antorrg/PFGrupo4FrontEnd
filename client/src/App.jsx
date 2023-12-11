@@ -4,6 +4,8 @@ import { useEffect, Suspense } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useAuth0 } from "@auth0/auth0-react";
 import { changeBg, getGames, login, limpiarLogin } from "./redux/actions";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 // views ----------------------------------------
 import { CartProvider } from "./context/contextCart";
 import { NextUIProvider, Spinner } from "@nextui-org/react";
@@ -94,6 +96,7 @@ console.log(userData)
             <Footer />
           </div>
         </Suspense>
+        <ToastContainer />
       </NextUIProvider>
     </CartProvider>
   );
