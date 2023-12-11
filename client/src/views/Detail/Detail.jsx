@@ -8,7 +8,7 @@ import CommentsAndRatingsBox from "./CommentsAndRatingsBox";
 function Detail() {
   const dispatch = useDispatch();
   const { id } = useParams();
-  const token = localStorage.getItem('authToken');
+  const token = localStorage.getItem('validToken');
   const detailGame = useSelector((state) => state.detailGame);
 
   useEffect(() => {
