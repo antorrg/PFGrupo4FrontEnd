@@ -1,9 +1,9 @@
 import React from "react";
-import UserEdit from "../../../components/Form/UserEdit";
+//import UserEdit from "../../../components/Form/UserEdit";
 
 const Settings = () => {
   return (
-  <UserEdit/>
+    {/* <UserEdit/> */ }
   
   );
 };
