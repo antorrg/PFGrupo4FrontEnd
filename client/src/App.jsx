@@ -18,10 +18,7 @@ function App() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user, isAuthenticated } = useAuth0();
-  // console.log(isAuthenticated);
-  // console.log(user);
-const userData = useSelector((state) => state.loginUser);
-console.log(userData)
+  const userData = useSelector((state) => state.loginUser);
   const bgPage = useSelector((state) => state.bgPage);
   const backgroundImage = {
     backgroundImage: `url(${bgPage})`,

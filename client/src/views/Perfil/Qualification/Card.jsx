@@ -21,15 +21,15 @@ const Card = ({
 
   const validateComment = (text) => {
     setComment(text);
-    if (text.length < 100) {
+    if (text.length < 10) {
       setCommentErrors(
-        "La descripción tiene que contar con al menos 100 caracteres."
+        "La descripción tiene que contar con al menos 10 caracteres."
       );
       return true;
     }
     if (text.length > 500) {
       setCommentErrors(
-        "La descripción tiene que contar con aun maximo de 500 caracteres."
+        "La descripción tiene que contar con un maximo de 500 caracteres."
       );
       return true;
     }
@@ -46,7 +46,6 @@ const Card = ({
   };
 
   const submitRatingAndCommentDB = async () => {
-    console.log(userID, itemID, comment, rating);
     try {
       const data = await axios.post(
         `http://localhost:3001/post/postUserRated`,
@@ -71,6 +70,8 @@ const Card = ({
 
     if (isCommentValid === false && isRatingValid === false) {
       submitRatingAndCommentDB();
+      setRating(0);
+      setComment("");
       console.log("formulario aprobado y enviado");
     }
   };
