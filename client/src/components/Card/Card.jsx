@@ -3,6 +3,7 @@ import ConsoleLogos from "../ConsoleLogos/ConsoleLogos";
 import { AddToCartIcon, RemoveFromCartIcon } from "../../icono/icono";
 import { useContext } from "react";
 import { CartContext } from "../../context/contextCart";
+import {showSuccess, showError} from "../../utils/Notifications"
 
 const Card = ({ game }) => {
   const { id, Platforms, name, image, price, physicalGame } = game;
@@ -23,7 +24,7 @@ const Card = ({ game }) => {
           <button
             // style={{ backgroundColor: isProductInCart ? "red" : "#09f" }}
             onClick={() => {
-              isProductInCart ? removeFromCart(game) : addToCart(game);
+              isProductInCart ? (removeFromCart(game),showError(`El Video Juego ${game.name} se ha eliminado del carrito`)) : (addToCart(game), showSuccess(`El Video Juego ${game.name} se ha agregado al carrito`));
             }}
           >
             {isProductInCart ? <RemoveFromCartIcon /> : <AddToCartIcon />}

@@ -4,6 +4,8 @@ import { useEffect, Suspense } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useAuth0 } from "@auth0/auth0-react";
 import { changeBg, getGames, login, limpiarLogin } from "./redux/actions";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 // views ----------------------------------------
 import { CartProvider } from "./context/contextCart";
 import { NextUIProvider, Spinner } from "@nextui-org/react";
@@ -12,6 +14,7 @@ import userLog from "./components/Auth0/Send";
 
 import NavBar from "./components/NavBar/NavBar";
 import Footer from "./components/Footer/Footer";
+import Breadcrum from "./components/Breadcrums/Breadcrum";
 
 function App() {
   const navigate = useNavigate();
@@ -19,7 +22,8 @@ function App() {
   const { user, isAuthenticated } = useAuth0();
   // console.log(isAuthenticated);
   // console.log(user);
-
+const userData = useSelector((state) => state.loginUser);
+console.log(userData)
   const bgPage = useSelector((state) => state.bgPage);
   const backgroundImage = {
     backgroundImage: `url(${bgPage})`,
@@ -60,7 +64,7 @@ function App() {
           console.error("Error al obtener información del usuario:", error);
         }
       } else {
-        dispatch(limpiarLogin());
+        //dispatch(limpiarLogin());
       }
     };
 
@@ -87,10 +91,12 @@ function App() {
               <div className="bg-gradient-to-t from-white to-transparent w-full h-[50%] bottom-0 absolute"></div>
             </div>
             <NavBar />
+            {/* <Breadcrum/> */}
             <Routes>{renderRoutes(routes)}</Routes>
             <Footer />
           </div>
         </Suspense>
+        <ToastContainer />
       </NextUIProvider>
     </CartProvider>
   );

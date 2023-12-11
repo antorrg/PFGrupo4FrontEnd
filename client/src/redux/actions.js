@@ -1,5 +1,6 @@
 import axios from "axios";
 import Swal from "sweetalert2";
+import { showError } from "../utils/Notifications";
 
 export const GET_GAMES = "GET_GAMES";
 export const GET_DETAILS = "GET_DETAILS";
@@ -35,7 +36,7 @@ export const updateFilterObj = (filter) => {
 export const getGames = (filtersObj) => {
   return async (dispatch) => {
     try {
-      let filterString = `?page=${filtersObj.page}&size=6`;
+      let filterString = `?page=${filtersObj.page}&size=20`;
       for (const key in filtersObj) {
         if (
           key !== "page" &&
@@ -55,11 +56,12 @@ export const getGames = (filtersObj) => {
       });
     } catch (error) {
       // alert(error);
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: `${error.message}`,
-      });
+      // Swal.fire({
+      //   icon: "error",
+      //   title: "Oops...",
+      //   text: `${error.message}`,
+      // });
+      showError(error.message);
     }
   };
 };
@@ -92,11 +94,12 @@ export const getDetails = (id) => {
       });
     } catch (error) {
       // alert(error);
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: `${error.message}`,
-      });
+      // Swal.fire({
+      //   icon: "error",
+      //   title: "Oops...",
+      //   text: `${error.message}`,
+      // });
+      showError(error.message);
     }
   };
 };
@@ -117,11 +120,12 @@ export const getPlatforms = () => {
       });
     } catch (error) {
       // alert(error);
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: `${error.message}`,
-      });
+      // Swal.fire({
+      //   icon: "error",
+      //   title: "Oops...",
+      //   text: `${error.message}`,
+      // });
+      showError(error.message);
     }
   };
 };
@@ -136,11 +140,12 @@ export const getGenres = () => {
       });
     } catch (error) {
       // alert(error);
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: `${error.message}`,
-      });
+      // Swal.fire({
+      //   icon: "error",
+      //   title: "Oops...",
+      //   text: `${error.message}`,
+      // });
+      showError(error.message);
     }
   };
 };
@@ -155,11 +160,12 @@ export const searchGame = (name) => {
       });
     } catch (error) {
       // alert(error);
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: `${error.message}`,
-      });
+      // Swal.fire({
+      //   icon: "error",
+      //   title: "Oops...",
+      //   text: `${error.message}`,
+      // });
+      showError(error.message);
     }
   };
 };
@@ -180,11 +186,12 @@ export const getAllGames = () => {
         payload: response.data,
       });
     } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: `${error.message}`,
-      });
+      // Swal.fire({
+      //   icon: "error",
+      //   title: "Oops...",
+      //   text: `${error.message}`,
+      // });
+      showError(error.message);
     }
   };
 };
