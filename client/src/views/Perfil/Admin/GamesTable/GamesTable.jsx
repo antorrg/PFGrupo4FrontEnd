@@ -63,7 +63,7 @@ const GamesTable = ({ videogames }) => {
       </TableHeader>
       <TableBody>
         {videogames.map((game, index) => {
-          console.log(game);
+          
           return (
             <TableRow key={`${game}-row-${index}`}>
               <TableCell>

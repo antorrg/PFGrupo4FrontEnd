@@ -24,6 +24,12 @@ const navigation = [
     current: false,
     access: "all",
   },
+  {
+    name: "Calificar",
+    to: "/perfil/qualification",
+    current: false,
+    access: "all",
+  },
   { name: "Juegos", to: "/perfil/games", current: false, access: "admin" },
   {
     name: "Ingresar Juego",

@@ -18,9 +18,7 @@ function App() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user, isAuthenticated } = useAuth0();
-  // console.log(isAuthenticated);
-  // console.log(user);
-
+  const userData = useSelector((state) => state.loginUser);
   const bgPage = useSelector((state) => state.bgPage);
   const backgroundImage = {
     backgroundImage: `url(${bgPage})`,
@@ -61,7 +59,7 @@ function App() {
           console.error("Error al obtener información del usuario:", error);
         }
       } else {
-        dispatch(limpiarLogin());
+        //dispatch(limpiarLogin());
       }
     };
 

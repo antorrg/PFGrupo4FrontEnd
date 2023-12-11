@@ -1,7 +1,7 @@
 import Filters from "../../../components/Filters/Filters";
 import Pagination from "../../../components/Pagination/Pagination";
 import { useSelector, useDispatch } from "react-redux";
-import { getGames } from "../../../redux/actions";
+import { getGames, getAllGames } from "../../../redux/actions";
 import { useState, useEffect } from "react";
 import GamesTable from "./GamesTable/GamesTable";
 
@@ -28,6 +28,7 @@ const AdminHome = () => {
 
   useEffect(() => {
     dispatch(getGames(filters));
+    dispatch(getAllGames());
   }, [filters, dispatch]);
 
   return (

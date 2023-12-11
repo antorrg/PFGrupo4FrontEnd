@@ -3,7 +3,12 @@ import React, { useEffect } from "react";
 import * as Yup from "yup";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllGames, getGenres, getPlatforms } from "../../redux/actions";
+import {
+  getAllGames,
+  getGenres,
+  getPlatforms,
+  getGames,
+} from "../../redux/actions";
 import Select from "react-select";
 import Swal from "sweetalert2";
 import { Button, select } from "@nextui-org/react";
@@ -14,7 +19,17 @@ const Formulario = ({ props, onClose }) => {
   const genres = useSelector((state) => state.genres);
   const games = useSelector((state) => state.allGames);
 
-  let nameGames = games.map((game) => game.name);
+  let nameGames = games.nombres;
+
+  if (props) {
+    nameGames = nameGames.filter((name) => name !== props.name);
+  }
+
+  useEffect(() => {
+    dispatch(getPlatforms());
+    dispatch(getGenres());
+    dispatch(getAllGames());
+  }, [dispatch]);
 
   const platformsOptions = platforms.map((platform) => ({
     value: platform.name,
@@ -26,10 +41,6 @@ const Formulario = ({ props, onClose }) => {
     label: genre.name,
     id: genre.id,
   }));
-
-  if (props) {
-    nameGames = nameGames.filter((game) => game !== props.name);
-  }
 
   let platformsDefault = [];
   let genresDefault = [];
@@ -54,7 +65,7 @@ const Formulario = ({ props, onClose }) => {
       platformsDefault.push(platFilt[0]);
     }
   }
-  // let valuesEdit = {};
+  let valuesEdit = {};
   if (props) {
     let {
       name,
@@ -72,6 +83,7 @@ const Formulario = ({ props, onClose }) => {
     const selectedGenres = genresDefault.map((option) => option.id);
     platforms = selectedPlatforms;
     genres = selectedGenres;
+
     valuesEdit = {
       name,
       image,
@@ -85,12 +97,6 @@ const Formulario = ({ props, onClose }) => {
     };
   }
 
-  useEffect(() => {
-    dispatch(getPlatforms());
-    dispatch(getGenres());
-    dispatch(getAllGames());
-  }, [dispatch]);
-
   const initialValues = {
     name: "",
     image: undefined,
@@ -100,21 +106,6 @@ const Formulario = ({ props, onClose }) => {
     genres: [],
     physicalGame: false,
   };
-
-  let valuesEdit = {};
-  if (props) {
-    const { name, image, platforms, released, price, genres, physicalGame } =
-      props;
-    valuesEdit = {
-      name,
-      image,
-      platforms,
-      released,
-      price,
-      genres,
-      physicalGame,
-    };
-  }
 
   const formSchema = Yup.object().shape({
     name: Yup.string()
@@ -128,7 +119,7 @@ const Formulario = ({ props, onClose }) => {
       )
       .min(5, `Mínimo 5 caracteres`),
 
-    // image: Yup.mixed().required("La imagen es obligatoria"),
+    image: Yup.string().required("La imagen es obligatoria"),
     platforms: Yup.array()
       .min(1, "Selecciona al menos una plataforma")
       .required("Campo Requerido"),
@@ -214,6 +205,16 @@ const Formulario = ({ props, onClose }) => {
         values = { ...values, stock: 0 };
       }
       const { data } = await axios.put(`/put/games/${props.id}`, values);
+      dispatch(
+        getGames({
+          page: 0,
+          platforms: "",
+          genres: "",
+          minPrice: -1,
+          maxPrice: -1,
+          name: "",
+        })
+      );
       Swal.fire({
         position: "center",
         icon: "success",
@@ -237,9 +238,10 @@ const Formulario = ({ props, onClose }) => {
     <Formik
       initialValues={props ? valuesEdit : initialValues}
       validationSchema={formSchema}
-      onSubmit={async (values) => {
+      onSubmit={async (values, {resetForm}) => {
         if (!props) {
           createVideogames(values);
+          resetForm();
         } else {
           await editVideogames(values, props);
         }

@@ -2,35 +2,27 @@ import * as Yup from "yup";
 import YupPassword from "yup-password";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import { Button } from "@nextui-org/react";
-import Swal from "sweetalert2";
 import userLog from "../Auth0/Send";
 import { useState } from "react";
-import {useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 YupPassword(Yup);
 import { login } from "../../redux/actions";
-import { NavbarItem, }from "@nextui-org/react";
+import { NavbarItem } from "@nextui-org/react";
 import LoginButton from "../Auth0/LoginButton";
 import { useDispatch } from "react-redux";
+import FormRegistrer from "./FormRegistrer";
+import Modal from "../../Modal/Modal";
 
-const FormularioLogin = ({ onClose,setIsAuthenticatedLocal}) => {
- 
-
-  
+const FormularioLogin = ({ onClose}) => {
   const navigate = useNavigate();
- const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const user = {
+  let user = {
     email: "",
     password: "",
     nickname: "",
     sub: null,
-    given_name: "" ,
-    picture: "",
-};
-
-  const initialValues = {
-    email: "",
-    password: "",
+    isLogin: true,
   };
 
   const [viewPassword, setViewPassword] = useState(false);
@@ -55,44 +47,45 @@ const FormularioLogin = ({ onClose,setIsAuthenticatedLocal}) => {
     email: Yup.string().email("Email Inválido").required("Campo Requerido"),
     password: passwordField(),
   });
- 
-  const loginUser = async (values) => {
-    const nickName = values.email.split('@')[0];
-    values = {...values , nickname: nickName}
+
+  const loginUser = async (values, setFieldValue) => {
+    const nickName = values.email.split("@")[0];
+    values = { ...values, nickname: nickName };
+
     const response = await userLog(values);
-    console.log(response)
-    dispatch(login(response));
-    navigate("/home")
-    setIsAuthenticatedLocal(true)
-  onClose()
-  }
+
+    if (response) {
+      dispatch(login(response));
+      navigate("/home");
+      onClose();
+    }
+  };
   return (
     <Formik
       initialValues={user}
       validationSchema={formSchema}
-      onSubmit={async (values) => {
-        try {
-       await  loginUser(values)
-        } catch (error) {
-          console.log(error.message)
-          Swal.fire({
-            position: "top-end",
-            icon: "error",
-            title: `${error.message}`,
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        }
+      onSubmit={async (values, setFieldValue) => {
+        console.log(values);
+        await loginUser(values, setFieldValue);
       }}
     >
       {({ values, setFieldValue }) => (
         <Form>
+          <div className="flex items-center justify-center">
+            <NavbarItem>
+              <LoginButton />
+            </NavbarItem>
+          </div>
+          <br />
+          <hr />
+          <br />
+
           <div className="mb-4">
             <label
               htmlFor="email"
               className="block text-sm font-medium text-gray-700"
             >
-             Email
+              Email
             </label>
             <Field
               className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
@@ -112,7 +105,7 @@ const FormularioLogin = ({ onClose,setIsAuthenticatedLocal}) => {
               htmlFor="password"
               className="block text-sm font-medium text-gray-700"
             >
-             Contraseña
+              Contraseña
             </label>
             <Field
               className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
@@ -130,14 +123,24 @@ const FormularioLogin = ({ onClose,setIsAuthenticatedLocal}) => {
               className="mt-1 text-sm text-red-600"
             />
           </div>
-          <div className=" flex mx-auto" >
-          <Button type="submit" color="primary">
-            Ingresar
-          </Button>
-          <NavbarItem>
-              <LoginButton />
-            </NavbarItem>
-            </div>
+          <div className="flex items-center justify-center">
+            <Button type="submit" color="primary">
+              Ingresar
+            </Button>
+          </div>
+          <br />
+          <hr />
+          <br />
+          <div>
+            <h3>
+              ¿No tiene una cuenta ?
+              <Modal
+                textButton="Registrese"
+                title="Cree su usuario"
+                body={({ onClose }) => <FormRegistrer onClose={onClose} />}
+              />
+            </h3>
+          </div>
         </Form>
       )}
     </Formik>

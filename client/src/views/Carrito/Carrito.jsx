@@ -84,6 +84,7 @@ const CartItem = ({
 
 const Carrito = () => {
   //const cartRedux = useSelector((state) => state.cart);
+  const loginUser = useSelector((state) => state.loginUser);
   const { isAuthenticated } = useAuth0();
   const { cart, removeItem, addToCart, removeIdCart, clearCart } =
     useContext(CartContext);
@@ -211,8 +212,8 @@ const Carrito = () => {
       <div>
         {itemsPayment.length && (
           <PaymentTest
-            //userID={loginUser.id}
-            userID={"3102ebab-8b0c-4953-808a-98f43ada165b"}
+            userID={loginUser.id}
+            //userID={"87bfab07-3db0-4d3d-8b59-9315fc03fa1a"}
             arrayItems={itemsPayment}
           />
         )}
