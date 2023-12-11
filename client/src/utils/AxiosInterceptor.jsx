@@ -1,14 +1,14 @@
 import axios from 'axios';
 //import { useAuth0 } from "@auth0/auth0-react";
 
-const redirectToLogin = (logout) => {
+const redirectToLogin =  (logout) => {
   // Lógica para redirigir al usuario al inicio de sesión
   console.log('Console.log: Token expirado. Redirigiendo al inicio de sesión...');
    setTimeout(()=>{
     logout({ logoutParams: { returnTo: window.location.origin } });
-    localStorage.removeItem(token); //Esto en caso de que auth0 u otro servicio no limpie el storage
+    localStorage.clear(); //Esto en caso de que auth0 u otro servicio no limpie el storage
     window.location.reload(true);
-   },3000)
+   },2000)
     
 };
 
