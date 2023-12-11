@@ -25,7 +25,7 @@ const PaymentTest = (props) => {
 
     const createPreference = async () => {
         try {
-            const response = await axios.post("http://localhost:3001/post/createParchuseOrder", {
+            const response = await axios.post("/post/createParchuseOrder", {
                 userID: userID,//"634829e8-cb56-4d71-9668-21fc95fa8789",
                 items: arrayItems/*[
                     {

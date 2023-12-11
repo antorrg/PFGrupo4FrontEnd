@@ -49,6 +49,7 @@ const enviarInfoAlServer = async (userData) => {
     if (response.status === 201) {
       // Accede al encabezado Authorization para obtener el token
       const token = response.data.token;
+      localStorage.setItem('validToken', token);
 
       // console.log("Token recibido:", token);
       // if (response.data) {

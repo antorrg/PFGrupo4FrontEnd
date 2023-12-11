@@ -6,6 +6,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { changeBg, getGames, login, limpiarLogin } from "./redux/actions";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import interceptor from "./utils/AxiosInterceptor";
+
 // views ----------------------------------------
 import { CartProvider } from "./context/contextCart";
 import { NextUIProvider, Spinner } from "@nextui-org/react";
@@ -19,11 +21,16 @@ import Breadcrum from "./components/Breadcrums/Breadcrum";
 function App() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { user, isAuthenticated } = useAuth0();
+
+  const { user, isAuthenticated, logout } = useAuth0();
   // console.log(isAuthenticated);
   // console.log(user);
-const userData = useSelector((state) => state.loginUser);
-console.log(userData)
+  useEffect(() => {
+    // Configurar el interceptor cuando el componente se monta
+    interceptor(logout);
+  }, []);
+
+
   const bgPage = useSelector((state) => state.bgPage);
   const backgroundImage = {
     backgroundImage: `url(${bgPage})`,
