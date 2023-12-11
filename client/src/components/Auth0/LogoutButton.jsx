@@ -1,18 +1,23 @@
 import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Link } from "@nextui-org/react";
+import { useDispatch } from "react-redux";
+import { limpiarLogin } from "../../redux/actions";
 
-const LogoutButton = ({element, to}) => {
+const LogoutButton = () => {
   const { logout } = useAuth0();
-1
+ const dispatch = useDispatch()
   return (
       <Link 
-      onClick={() =>
+      onClick={() => {
         logout({ logoutParams: { returnTo: window.location.origin } })
+        dispatch(limpiarLogin())
       }
-      className="text-danger" color="danger"
+        
+      }
+      className="text-danger flex" color="danger"
       >
-      {element}
+        Salir
       </Link>
   );
 };

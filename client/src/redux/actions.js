@@ -36,7 +36,7 @@ export const updateFilterObj = (filter) => {
 export const getGames = (filtersObj) => {
   return async (dispatch) => {
     try {
-      let filterString = `?page=${filtersObj.page}&size=6`;
+      let filterString = `?page=${filtersObj.page}&size=20`;
       for (const key in filtersObj) {
         if (
           key !== "page" &&

@@ -4,8 +4,6 @@ import Swal from "sweetalert2";
 //console.log(userData);
 
 const enviarInfoAlServer = async (userData) => {
-  console.log(userData);
-
   const email = userData.email;
   const password = userData.password ?? null;
   const nickname = userData.nickname ?? null;
@@ -14,15 +12,37 @@ const enviarInfoAlServer = async (userData) => {
   const sub = userData.sub ?? null;
 
   try {
-    const response = await axios.post("/post/user", {
-      email,
-      password,
-      nickname,
-      given_name,
-      picture,
-      sub,
-    });
-
+    let response;
+    if (userData.isLogin) {
+      response = await axios.post("/post/user/login", {
+        email,
+        password,
+        sub,
+      });
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "Usuario logeado",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    } else {
+      response = await axios.post("/post/user", {
+        email,
+        password,
+        nickname,
+        given_name,
+        picture,
+        sub,
+      });
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "Usuario creado con exito",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
     if (response.status === 201) {
       // Accede al encabezado Authorization para obtener el token
       const token = response.data.token;
@@ -30,24 +50,16 @@ const enviarInfoAlServer = async (userData) => {
 
       console.log("Token recibido:", token);
       // if (response.data) {
-      console.log(response.data.result.user);
-      const user = { ...response.data, token };
-      console.log(user);
+
+      const user = { ...response.data.result.user, token };
+
       return user;
-    } else {
-      Swal.fire({
-        position: "top-end",
-        icon: "error",
-        title: "Error al autenticar/crear usuario",
-        showConfirmButton: false,
-        timer: 1500,
-      });
     }
   } catch (error) {
     Swal.fire({
       position: "top-end",
       icon: "error",
-      title: "no",
+      title: `${error.response.data.error}`,
       showConfirmButton: false,
       timer: 1500,
     });

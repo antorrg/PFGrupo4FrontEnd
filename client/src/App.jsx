@@ -13,10 +13,12 @@ import userLog from "./components/Auth0/Send";
 
 import NavBar from "./components/NavBar/NavBar";
 import Footer from "./components/Footer/Footer";
+import Breadcrum from "./components/Breadcrums/Breadcrum";
 
 function App() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const { user, isAuthenticated, logout } = useAuth0();
   // console.log(isAuthenticated);
   // console.log(user);
@@ -24,6 +26,7 @@ function App() {
     // Configurar el interceptor cuando el componente se monta
     interceptor(logout);
   }, []);
+
 
   const bgPage = useSelector((state) => state.bgPage);
   const backgroundImage = {
@@ -65,7 +68,7 @@ function App() {
           console.error("Error al obtener información del usuario:", error);
         }
       } else {
-        dispatch(limpiarLogin());
+        //dispatch(limpiarLogin());
       }
     };
 
@@ -92,6 +95,7 @@ function App() {
               <div className="bg-gradient-to-t from-white to-transparent w-full h-[50%] bottom-0 absolute"></div>
             </div>
             <NavBar />
+            {/* <Breadcrum/> */}
             <Routes>{renderRoutes(routes)}</Routes>
             <Footer />
           </div>

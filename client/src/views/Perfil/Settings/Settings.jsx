@@ -1,7 +1,11 @@
 import React from "react";
+import UserEdit from "../../../components/Form/UserEdit";
 
 const Settings = () => {
-  return <div>Hola soy Settings</div>;
+  return (
+  <UserEdit/>
+  
+  );
 };
 
 export default Settings;

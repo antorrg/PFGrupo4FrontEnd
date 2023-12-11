@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { clearDetails, getDetails, changeBg } from "../../redux/actions";
 import ConsoleLogos from "../../components/ConsoleLogos/ConsoleLogos";
+import CommentsAndRatingsBox from "./CommentsAndRatingsBox";
 
 function Detail() {
   const dispatch = useDispatch();
@@ -21,14 +22,10 @@ function Detail() {
   if (detailGame.image) {
     dispatch(changeBg(detailGame.image));
   }
+  console.log(detailGame);
 
   return (
     <div className="overflow-hidden w-full flex-1 ">
-      <div>
-        <Link to="/home">
-          <h3>Atras</h3>
-        </Link>
-      </div>
       <div className="w-full h-full mb-4">
         <div className="flex flex-col items-center gap-4">
           <div className="flex items-center justify-center flex-wrap w-full gap-2">
@@ -78,6 +75,39 @@ function Detail() {
             </div>
           </div>
         </div>
+        {detailGame.rated && <CommentsAndRatingsBox rated={detailGame.rated} />}
+        {/* {detailGame.rated && (
+          <div>
+            {detailGame.rated.scorePercentajes.length > 0 && (
+              <div>
+                <p className="text-[14px]">
+                  {"Puntaje Promedio: " + detailGame.rated.avgScore}{" "}
+                </p>
+                <br></br>
+                {detailGame.rated.scorePercentajes.map((rated) => {
+                  return (
+                    <p className="text-[14px]" key={rated.score}>
+                      {"Puntaje " + rated.score + " = " + rated.percent + "%"}
+                    </p>
+                  );
+                })}
+                {detailGame.rated.lastTenRatings.map((rating) => {
+                  return (
+                    <div>
+                      <br></br>
+                      <p className="text-[14px]" key={rating.id}>
+                        {"Comentario: " + rating.comment}
+                      </p>
+                      <p className="text-[14px]" key={rating.id}>
+                        {"Score: " + rating.score}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        )} */}
       </div>
     </div>
   );
