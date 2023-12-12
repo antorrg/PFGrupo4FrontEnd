@@ -13,10 +13,8 @@ import {
 } from "@nextui-org/react";
 import { useSelector } from "react-redux";
 import {
-  HeartIcon,
-  HomeIcon,
-  ShoppingCartIcon,
-  UserIcon,
+  ListBulletIcon,
+  UsersIcon,
   CurrencyDollarIcon,
   Cog6ToothIcon,
   BuildingStorefrontIcon,
@@ -50,6 +48,24 @@ const navigation = [
     icon: BuildingStorefrontIcon,
   },
   {
+    name: "Lista de Generos",
+    to: "/perfil/genres",
+    access: "admin",
+    icon: ListBulletIcon,
+  },
+  {
+    name: "Lista de Plataformas",
+    to: "/perfil/platforms",
+    access: "admin",
+    icon: ListBulletIcon,
+  },
+  {
+    name: "Lista de Usuarios",
+    to: "/perfil/users",
+    access: "admin",
+    icon: UsersIcon,
+  },
+  {
     name: "Ingresar Juego",
     to: "/perfil/create",
     access: "admin",
@@ -65,11 +81,11 @@ const PerfilNavbar = () => {
     <Navbar
       className="hidden sm:flex bg-[#0B0120]"
       classNames={{
-        base: "hidden sm:flex bg-[#0B0120] px-20",
+        base: "hidden sm:flex bg-[#0B0120] px-10",
         wrapper: "max-w-[1536px] p-0",
       }}
     >
-      <NavbarContent className="flex gap-10" justify="center">
+      <NavbarContent className="flex gap-5" justify="center">
         {(loginUser.role === 0 || loginUser.role === 1) &&
           navigation.map((navItem) => {
             return (
@@ -81,14 +97,14 @@ const PerfilNavbar = () => {
                     className="flex items-center"
                   >
                     <navItem.icon className="w-6 h-6 text-accent" />
-                    <p className="text-white ml-4">{navItem.name}</p>
+                    <p className="text-white ml-2">{navItem.name}</p>
                   </Link>
                 </NavbarItem>
               )
             );
           })}
       </NavbarContent>
-      <NavbarContent className="flex gap-10" justify="center">
+      <NavbarContent justify="center">
         {loginUser.role === 0 && (
           <Dropdown>
             <DropdownTrigger>
@@ -105,7 +121,7 @@ const PerfilNavbar = () => {
                       startContent={<navItem.icon className="w-5 h-5" />}
                     >
                       <Link href={navItem.to} className="text-white">
-                      {navItem.name}
+                        {navItem.name}
                       </Link>
                     </DropdownItem>
                   )

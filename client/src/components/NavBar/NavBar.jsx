@@ -16,10 +16,12 @@ import {
   ShoppingCartIcon,
   UserIcon,
   CurrencyDollarIcon,
-  Cog6ToothIcon,
+  UsersIcon,
   BuildingStorefrontIcon,
   PlusIcon,
   SparklesIcon,
+  ListBulletIcon,
+  ArrowLeftOnRectangleIcon,
 } from "@heroicons/react/24/outline";
 import {
   Navbar,
@@ -69,19 +71,37 @@ export default function NavBar() {
       element: "Configuración",
       to: "/perfil/",
       access: "all",
-      icon: Cog6ToothIcon,
+      icon: UserIcon,
     },
     {
       element: "Salir",
       to: "/",
       access: "all",
-      icon: UserIcon,
+      icon: ArrowLeftOnRectangleIcon,
     },
     {
       element: "Lista de Juegos",
       to: "/perfil/games",
       access: "admin",
       icon: BuildingStorefrontIcon,
+    },
+    {
+      element: "Lista de Generos",
+      to: "/perfil/genres",
+      access: "admin",
+      icon: ListBulletIcon,
+    },
+    {
+      element: "Lista de Plataformas",
+      to: "/perfil/platforms",
+      access: "admin",
+      icon: ListBulletIcon,
+    },
+    {
+      element: "Lista de Usuarios",
+      to: "/perfil/users",
+      access: "admin",
+      icon: UsersIcon,
     },
     {
       element: "Ingresar Juego",
@@ -115,7 +135,7 @@ export default function NavBar() {
       height="5rem"
       maxWidth="2xl"
       classNames={{
-        base: "px-5 sm:px-20",
+        base: "px-5 sm:px-20 ",
         wrapper: "p-0",
       }}
       onMenuOpenChange={setIsMenuOpen}
@@ -130,38 +150,37 @@ export default function NavBar() {
           <img src={logo} alt="logo" className="h-[60px] w-auto" />
         </Link>
       </NavbarBrand>
-      <NavbarContent justify="end" className="hidden sm:flex gap-10 ">
-        {navItems.map((item, index) => {
-          return item.element === "Carrito" ? (
-            <NavbarItem key={`${item}-${index}`}>
-              {cart.length > 0 ? (
+      <NavbarContent justify="end" className="gap-10">
+        <NavbarContent justify="end" className="hidden sm:flex gap-10">
+          {navItems.map((item, index) => {
+            return item.element === "Carrito" ? (
+              <NavbarItem key={`${item}-${index}`}>
+                {cart.length > 0 ? (
+                  <Link href={item.to} className="flex">
+                    <item.icon className="w-7 hover:text-accent dark:text-secondary dark:hover:text-orange-400" />
+                    <p className="absolute -top-1 -right-3 bg-red-300 rounded-full w-5 h-5 flex items-center justify-center text-[12px] font-semibold">
+                      {cart.reduce((sum, item) => sum + item.quantity, 0)}
+                    </p>
+                  </Link>
+                ) : (
+                  <PopoverCart
+                    icon={
+                      <item.icon className="w-7 hover:text-accent dark:text-secondary dark:hover:text-orange-400" />
+                    }
+                  />
+                )}
+              </NavbarItem>
+            ) : (
+              <NavbarItem key={`${item}-${index}`}>
                 <Link href={item.to} className="flex">
-                  <item.icon className="w-7 hover:text-accent dark:text-secondary dark:hover:text-orange-400" />
-                  <p className="absolute -top-1 -right-3 bg-red-300 rounded-full w-5 h-5 flex items-center justify-center text-[12px] font-semibold">
-                    {cart.reduce((sum, item) => sum + item.quantity, 0)}
-                  </p>
-                </Link>
-              ) : (
-                // <item.icon
-                //   className="w-7 hover:text-accent dark:text-secondary dark:hover:text-orange-400"
-                // />
-                <PopoverCart
-                  icon={
+                  {
                     <item.icon className="w-7 hover:text-accent dark:text-secondary dark:hover:text-orange-400" />
                   }
-                />
-              )}
-            </NavbarItem>
-          ) : (
-            <NavbarItem key={`${item}-${index}`}>
-              <Link href={item.to} className="flex">
-                {
-                  <item.icon className="w-7 hover:text-accent dark:text-secondary dark:hover:text-orange-400" />
-                }
-              </Link>
-            </NavbarItem>
-          );
-        })}
+                </Link>
+              </NavbarItem>
+            );
+          })}
+        </NavbarContent>
         {userInfo.length === 0 ? (
           <>
             <Modal
@@ -171,7 +190,7 @@ export default function NavBar() {
             />
           </>
         ) : (
-          <Dropdown backdrop="blur">
+          <Dropdown backdrop="blur ">
             <DropdownTrigger>
               <User
                 as="button"

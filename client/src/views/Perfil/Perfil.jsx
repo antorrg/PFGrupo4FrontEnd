@@ -8,6 +8,9 @@ import Create from "./Admin/Create/Create";
 import AdminHome from "./Admin/AdminHome";
 import NotFound from "../NotFound/NotFound";
 import Qualification from "./Qualification/Qualification";
+import Platforms from "./Admin/Platforms/Platforms";
+import Genres from "./Admin/Genres/Genres";
+import Users from "./Admin/Users/Users";
 
 export default function Perfil() {
   const userInfo = useSelector((state) => state.loginUser);
@@ -24,6 +27,9 @@ export default function Perfil() {
             <>
               <Route path="/games" element={<AdminHome />} />
               <Route path="/create" element={<Create />} />
+              <Route path="/platforms" element={<Platforms />} />
+              <Route path="/genres" element={<Genres />} />
+              <Route path="/users" element={<Users />} />
             </>
           )}
           <Route path="/*" element={<NotFound />} />
