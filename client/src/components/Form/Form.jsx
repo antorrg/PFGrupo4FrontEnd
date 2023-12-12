@@ -254,17 +254,16 @@ const Formulario = ({ props, onClose }) => {
       }}
     >
       {({ values, setFieldValue }) => (
-        <div>
-          <div className="w-full max-w-md">
+          <div className="w-full">
             <Form
               encType="multipart/form-data"
-              className="mx-auto p-6 border dark:border-none rounded-md shadow-md"
+              className="mx-auto p-6 rounded-md"
             >
               {!props && (
                 <div className="mb-4">
                   <label
                     htmlFor="name"
-                    className="block text-sm font-medium text-gray-700"
+                    className="block text-sm font-medium text-gray-700 dark:text-white"
                   >
                     {" "}
                     Nombre{" "}
@@ -343,8 +342,7 @@ const Formulario = ({ props, onClose }) => {
                 <Select
                   defaultValue={platformsDefault}
                   id="platforms"
-                  className="form-control "
-                  styles={{ "background-color": "yellow" }}
+                  className="form-control"
                   name="platforms"
                   options={platformsOptions}
                   isMulti
@@ -435,9 +433,9 @@ const Formulario = ({ props, onClose }) => {
               </div>
 
               <div className="mb-4">
-                <label>
+                <label className="">
                   <Field type="checkbox" name="physicalGame" />
-                  ¿Juego Fisico?
+                  <span className="ml-2">¿Juego Fisico?</span>
                 </label>
                 <ErrorMessage
                   name=" physicalGame"
@@ -482,7 +480,6 @@ const Formulario = ({ props, onClose }) => {
               )}
             </Form>
           </div>
-        </div>
       )}
     </Formik>
   );

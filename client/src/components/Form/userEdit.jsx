@@ -7,6 +7,7 @@ import { showSuccess, showError } from "../../utils/Notifications";
 import { useDispatch } from "react-redux";
 import { limpiarLogin } from "../../redux/actions";
 import { useNavigate } from "react-router-dom";
+import {Input} from "@nextui-org/react";
 
 
 
@@ -71,12 +72,43 @@ const UserEdit = ({ onClose }) => {
       }}
     >
       {({ values, setFieldValue }) => (
-        <Form>
-          <h1> {email} </h1>
+        <Form className="flex h-full">
+          <div className="mr-4 w-[300px] p-4 ">
+            <div className="h-[200px] w-[200px] mx-auto"> 
+              <img className="w-full h-full object-contain rounded-2xl" src={values.picture} alt={values.nickname? values.nickname: values.given_name} />
+            </div>
+            <div className="w-full">
+            <input
+              type="file"
+              id="picture"
+              name="picture"
+              className="mt-4 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              onChange={(event) =>
+                handleImageChange(event, setFieldValue, values)
+              }
+            />
+            </div>
 
-          <hr />
-          <br />
-          <div className="mb-4">
+            <ErrorMessage
+              name="picture"
+              component="div"
+              className="text-sm text-red-600"
+            />
+          </div>
+
+          <div className="flex-1 h-full flex flex-col gap-4">
+          <div>
+              <Input 
+                isReadOnly
+                type="email"
+                labelPlacement="outside"
+                label="Email"
+                variant="faded"
+                defaultValue={email}
+              >
+              </Input>
+          </div>
+          <div>
             <label
               htmlFor="given_name"
               className="block text-sm font-medium text-gray-700"
@@ -84,18 +116,17 @@ const UserEdit = ({ onClose }) => {
               Nombre
             </label>
             <Field
-              className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              className="p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               name="given_name"
               type="text"
             />
             <ErrorMessage
               name=" given_name"
               component="div"
-              className="mt-1 text-sm text-red-600"
+              className="text-sm text-red-600"
             />
           </div>
-
-          <div className="mb-4">
+          <div>
             <label
               htmlFor="nickname"
               className="block text-sm font-medium text-gray-700"
@@ -103,18 +134,17 @@ const UserEdit = ({ onClose }) => {
               Apodo
             </label>
             <Field
-              className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              className="p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               name="nickname"
               type="text"
             />
             <ErrorMessage
               name="nickname"
               component="div"
-              className="mt-1 text-sm text-red-600"
+              className="text-sm text-red-600"
             />
           </div>
-
-          <div className="mb-4">
+          <div>
             <label
               htmlFor="country"
               className="block text-sm font-medium text-gray-700"
@@ -122,48 +152,21 @@ const UserEdit = ({ onClose }) => {
               Pais
             </label>
             <Field
-              className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              className="p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               name="country"
               type="text"
             />
             <ErrorMessage
               name="country"
               component="div"
-              className="mt-1 text-sm text-red-600"
+              className="text-sm text-red-600"
             />
           </div>
-
-          <div className="mb-4">
-            <label
-              htmlFor="picture"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Foto
-            </label>
-            <input
-              type="file"
-              id="picture"
-              name="picture"
-              className="  mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              onChange={(event) =>
-                handleImageChange(event, setFieldValue, values)
-              }
-            />
-            <div className="w-[300px] h-[200px]"> 
-              <img className="rounded-3xl w-full h-full object-contain" src={values.picture} alt="" />
-            </div>
-
-            <ErrorMessage
-              name="picture"
-              component="div"
-              className="mt-1 text-sm text-red-600"
-            />
-          </div>
-
           <div className="flex items-center justify-center">
             <Button type="submit" color="primary">
               Editar
             </Button>
+          </div>
           </div>
         </Form>
       )}

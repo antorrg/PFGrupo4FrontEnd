@@ -104,7 +104,9 @@ const PerfilNavbar = () => {
                       key={navItem.name}
                       startContent={<navItem.icon className="w-5 h-5" />}
                     >
+                      <Link href={navItem.to} className="text-white">
                       {navItem.name}
+                      </Link>
                     </DropdownItem>
                   )
                 );
