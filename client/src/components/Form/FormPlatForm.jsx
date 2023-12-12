@@ -8,6 +8,7 @@ import { getPlatforms } from "../../redux/actions";
 import { showInfo, showError, showSuccess } from "../../utils/Notifications";
 import setAuthHeader from '../../utils/AxiosUtils'
 
+
 const FormPlatForm = ({ props, onClose }) => {
   const dispatch = useDispatch();
   const platforms = useSelector((state) => state.platforms).map((p) => p.name);
@@ -31,8 +32,10 @@ const FormPlatForm = ({ props, onClose }) => {
       }),
   });
 
-  const postPlatform = async (value, token) => {
-    
+
+  const postPlatform = async (value) => {
+     const token =localStorage.getItem('validToken')
+
     try {
       await axios.post("/post/platform/", value, setAuthHeader(token));
       showSuccess(`Plataforma ${value.name} agregada`);
@@ -43,7 +46,10 @@ const FormPlatForm = ({ props, onClose }) => {
     }
   };
 
-  const putPlatform = async (values,token, props) => {
+
+  const putPlatform = async (values, props) => {
+     const token =localStorage.getItem('validToken')
+
     try {
       const { data } = await axios.put(`/put/platform/${props.id}`, values, setAuthHeader(token));
       dispatch(getPlatforms());

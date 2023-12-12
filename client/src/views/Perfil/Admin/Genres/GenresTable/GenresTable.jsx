@@ -32,7 +32,6 @@ const GenresTable = () => {
   // console.log(genres);
   const token =localStorage.getItem('validToken');
 
-
   const handlerDelete = async (id, genre) => {
     const userConfirmation = await Swal.fire({
       title: `¿Estás seguro de eliminar el genero ${genre.name}?`,

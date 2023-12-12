@@ -10,10 +10,11 @@ import { showSuccess, showError } from "../../utils/Notifications";
 import { useDispatch } from "react-redux";
 import { limpiarLogin } from "../../redux/actions";
 import { useNavigate } from "react-router-dom";
-
+import setAuthHeader from "../../utils/AxiosUtils";
 const PasswordEdit = ({ onClose }) => {
   const user = useSelector((state) => state.loginUser);
   const dispatch = useDispatch();
+  const token = localStorage.getItem('validToken') 
   const navigate = useNavigate();
   const initialValues = {
     password: "",
@@ -69,7 +70,7 @@ const PasswordEdit = ({ onClose }) => {
     try {
       const response = await axios.put(`/put/user/${user.id}`, {
         password: values.passwordNew,
-      });
+      }, setAuthHeader(token));
 
       showSuccess("Usuario editado ");
       dispatch(limpiarLogin());
