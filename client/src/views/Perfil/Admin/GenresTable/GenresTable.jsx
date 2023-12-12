@@ -9,6 +9,7 @@ import { TrashIcon, PencilSquareIcon } from "@heroicons/react/24/outline";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
+import setAuthHeader from "../../../../utils/AxiosUtils";
 
 
 const columns = [{ name: "GENERO" }, { name: "ACCIONES" }];
@@ -17,7 +18,8 @@ const GenresTable = () => {
   const dispatch = useDispatch();
   const genres = useSelector((state) => state.genres);
   // console.log(genres);
-  const token = localStorage.getItem('validToken');
+  const token =localStorage.getItem('validToken');
+
 
   const handlerDelete = async (id, genre) => {
     const userConfirmation = await Swal.fire({
@@ -33,7 +35,7 @@ const GenresTable = () => {
 
     if (userConfirmation.isConfirmed) {
       try {
-        const response = await axios.delete(`/delete/genres/${id}`);
+        const response = await axios.delete(`/delete/genres/${id}`,setAuthHeader(token));
         const { data } = response;
 
         if (response.status === 200) {
@@ -52,7 +54,7 @@ const GenresTable = () => {
   };
 
   useEffect(() => {
-    dispatch(getGenres(token));
+    dispatch(getGenres());
   }, [dispatch]);
 
   return (
