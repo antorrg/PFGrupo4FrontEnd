@@ -6,7 +6,7 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import { Button } from "@nextui-org/react";
 import { getGenres } from "../../redux/actions";
 import { showInfo, showError, showSuccess } from "../../utils/Notifications";
-import setAuthHeader from '../../../utils/AxiosUtils.jsx'
+import setAuthHeader from '../../utils/AxiosUtils.jsx'
 
 const FormGenres = ({ props, onClose }) => {
   const dispatch = useDispatch();
