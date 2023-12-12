@@ -3,13 +3,21 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import { Button } from "@nextui-org/react";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { showSuccess, showError } from "../../utils/Notifications";
+import { useDispatch } from "react-redux";
+import { limpiarLogin } from "../../redux/actions";
+import { useNavigate } from "react-router-dom";
+
+
 
 const UserEdit = ({ onClose }) => {
   const user = useSelector((state) => state.loginUser);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const { country, given_name, nickname, picture, email, id } = user;
-
-  let userEdit = { country, given_name, nickname, picture };
+  const { country, given_name, nickname, picture, email, id, role , enable} = user;
+ 
+  let userEdit = { country, given_name, nickname, picture ,role, enable};
 
   if (userEdit.country === null) userEdit = { ...userEdit, country: "" };
 
@@ -33,22 +41,10 @@ const UserEdit = ({ onClose }) => {
           "https://api.cloudinary.com/v1_1/duy9efu8j/image/upload",
           formData
         );
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "Imagen cargada con exito",
-          showConfirmButton: false,
-          timer: 2000,
-        });
+       showSuccess("Imagen cargada")
         setFieldValue("picture", response.data.url);
       } catch (error) {
-        Swal.fire({
-          position: "center",
-          icon: "error",
-          title: error.message,
-          showConfirmButton: false,
-          timer: 2000,
-        });
+        showError("No fue posible cargar la imagen")
       }
     }
   };
@@ -56,9 +52,11 @@ const UserEdit = ({ onClose }) => {
   const editUser = async (values) => {
     try {
       const response = await axios.put(`/put/user/${id}`, values);
-      console.log(values);
-      console.log(response)
+      showSuccess("Usuario actualizado");
+      dispatch(limpiarLogin());
+      navigate("/");
     } catch (error) {
+      showError("No fue posible actualizar su usuario")
       throw new Error(error);
     }
   };
@@ -146,13 +144,13 @@ const UserEdit = ({ onClose }) => {
               type="file"
               id="picture"
               name="picture"
-              className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              className="  mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               onChange={(event) =>
                 handleImageChange(event, setFieldValue, values)
               }
             />
-            <div>
-              <img className="rounded-xl" src={values.picture} alt="" />
+            <div className="w-[300px] h-[200px]"> 
+              <img className="rounded-3xl w-full h-full object-contain" src={values.picture} alt="" />
             </div>
 
             <ErrorMessage

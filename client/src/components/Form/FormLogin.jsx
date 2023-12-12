@@ -13,14 +13,13 @@ import { useDispatch } from "react-redux";
 import FormRegistrer from "./FormRegistrer";
 import Modal from "../../Modal/Modal";
 
-const FormularioLogin = ({ onClose}) => {
+const FormularioLogin = ({ onClose }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   let user = {
     email: "",
     password: "",
-    nickname: "",
     sub: null,
     isLogin: true,
   };
@@ -49,9 +48,6 @@ const FormularioLogin = ({ onClose}) => {
   });
 
   const loginUser = async (values, setFieldValue) => {
-    const nickName = values.email.split("@")[0];
-    values = { ...values, nickname: nickName };
-
     const response = await userLog(values);
 
     if (response) {
@@ -65,7 +61,6 @@ const FormularioLogin = ({ onClose}) => {
       initialValues={user}
       validationSchema={formSchema}
       onSubmit={async (values, setFieldValue) => {
-        console.log(values);
         await loginUser(values, setFieldValue);
       }}
     >

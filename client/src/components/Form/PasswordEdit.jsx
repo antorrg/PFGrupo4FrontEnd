@@ -6,10 +6,16 @@ import { useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 YupPassword(Yup);
+import { showSuccess, showError } from "../../utils/Notifications";
+import { useDispatch } from "react-redux";
+import { limpiarLogin } from "../../redux/actions";
+import { useNavigate } from "react-router-dom";
+
 
 const PasswordEdit = ({ onClose }) => {
   const user = useSelector((state) => state.loginUser);
-
+const dispatch = useDispatch();
+const navigate = useNavigate();
   const initialValues = {
     password: "",
     passwordNew: "",
@@ -48,28 +54,29 @@ const PasswordEdit = ({ onClose }) => {
 
   const validateUser = async (values) => {
     try {
-      console.log(values.password);
       const response = await axios.post("/post/user/login", {
         email: user.email,
         password: values.password,
         sub: null,
       });
-      console.log(response);
+
       setValidate(true);
+      showSuccess("Validacion exitosa");
     } catch (error) {
-      alert("contraseña incorrecta");
-      throw new Error(error);
+      showError("Contraseña incorrecta");
     }
   };
   const editUser = async (values) => {
     try {
-      console.log(values);
       const response = await axios.put(`/put/user/${user.id}`, {
         password: values.passwordNew,
       });
-      console.log(response);
+  console.log(response)
+      showSuccess("Usuario editado ");
+      dispatch(limpiarLogin())
+      navigate("/")
     } catch (error) {
-      throw new Error(error);
+      showError("No fue posible editar el usuario");
     }
   };
   return (
@@ -90,7 +97,7 @@ const PasswordEdit = ({ onClose }) => {
 
           <hr />
           <br />
-          {!validate && (
+          {!validate && user.password  && (
             <div className="mb-4">
               <label
                 htmlFor="password"
@@ -116,7 +123,7 @@ const PasswordEdit = ({ onClose }) => {
             </div>
           )}
 
-          {validate && (
+          {(validate || !user.password && setValidate(true)) && (
             <div>
               <div className="mb-4">
                 <label
@@ -131,7 +138,7 @@ const PasswordEdit = ({ onClose }) => {
                   placeholder="Obigatorio"
                   type={!viewPassword ? "password" : "text"}
                 />
-                <button  type="button" onClick={handlerPassword}>
+                <button type="button" onClick={handlerPassword}>
                   {" "}
                   {viewPassword ? "Ocultar" : "Ver"}{" "}
                 </button>
@@ -155,7 +162,7 @@ const PasswordEdit = ({ onClose }) => {
                   placeholder="Obigatorio"
                   type={!viewPassword ? "password" : "text"}
                 />
-                <button   type="button" onClick={handlerPassword}>
+                <button type="button" onClick={handlerPassword}>
                   {" "}
                   {viewPassword ? "Ocultar" : "Ver"}{" "}
                 </button>
@@ -168,7 +175,7 @@ const PasswordEdit = ({ onClose }) => {
             </div>
           )}
 
-          {validate ? (
+          {validate || !user.password ? (
             <div className="flex items-center justify-center">
               <Button type="submit" color="primary">
                 Actulizar contraseña
