@@ -10,12 +10,14 @@ import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
+
 const columns = [{ name: "GENERO" }, { name: "ACCIONES" }];
 
 const GenresTable = () => {
   const dispatch = useDispatch();
   const genres = useSelector((state) => state.genres);
   // console.log(genres);
+  const token = localStorage.getItem('validToken');
 
   const handlerDelete = async (id, genre) => {
     const userConfirmation = await Swal.fire({
@@ -50,7 +52,7 @@ const GenresTable = () => {
   };
 
   useEffect(() => {
-    dispatch(getGenres());
+    dispatch(getGenres(token));
   }, [dispatch]);
 
   return (
