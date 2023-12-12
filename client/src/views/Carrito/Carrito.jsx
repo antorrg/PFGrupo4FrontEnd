@@ -109,7 +109,7 @@ const Carrito = () => {
     try {
       const data = await axios.post(
         `/post/videogamesByIds`, setAuthHeader(token),
-        videogamesIds
+
       );
 
       //const auxObj = {...data.data[0], quantity: 1};
@@ -140,6 +140,7 @@ const Carrito = () => {
         unit_price: Math.round(item.price),
         quantity: item.quantity,
         currency_id: "USD",
+        picture_url: item.image
       };
     });
     setItemsPayment(auxItemsPayment);
@@ -215,6 +216,7 @@ const Carrito = () => {
         {itemsPayment.length && (
           <PaymentTest
             userID={loginUser.id}
+            userEmail={loginUser.email}
             //userID={"87bfab07-3db0-4d3d-8b59-9315fc03fa1a"}
             arrayItems={itemsPayment}
           />

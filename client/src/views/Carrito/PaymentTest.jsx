@@ -9,10 +9,11 @@ import setAuthHeader from '../../../utils/AxiosUtils.jsx'
 const PaymentTest = (props) => {
     const token = localStorage.getItem('validToken')
 
-    const { userID, arrayItems } = props;
+    const { userID, userEmail, arrayItems } = props;
 
-    console.log("userID: " + userID);
-    console.log("arrayItems: " + JSON.stringify(arrayItems));
+    //console.log("userID: " + userID);
+    //console.log("userEmail: " + userEmail);
+    //console.log("arrayItems: " + JSON.stringify(arrayItems));
 
     const [preferenceId, setPreferenceId] = useState(0);
     //const [initPoint, setInitPoint] = useState("");
@@ -28,7 +29,8 @@ const PaymentTest = (props) => {
     const createPreference = async () => {
         try {
             const response = await axios.post("/post/createParchuseOrder",setAuthHeader(token), {
-                userID: userID,//"634829e8-cb56-4d71-9668-21fc95fa8789",
+   userID: userID,//"634829e8-cb56-4d71-9668-21fc95fa8789",
+                userEmail: userEmail,
                 items: arrayItems/*[
                     {
                         id: "1234654",
