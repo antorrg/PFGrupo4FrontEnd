@@ -3,8 +3,7 @@ import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { useAuth0 } from "@auth0/auth0-react";
 import { updateCart } from "../redux/actions";
-import setAuthHeader from '../../../utils/AxiosUtils.jsx'
-
+import setAuthHeader from '.././utils/AxiosUtils'
 export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {

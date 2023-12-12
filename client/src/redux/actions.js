@@ -111,10 +111,10 @@ export const clearDetails = () => {
   };
 };
 
-export const getPlatforms = (token) => {
+export const getPlatforms = () => {
   return async function (dispatch) {
     try {
-      const response = await axios.get("/platforms",setAuthHeader(token));
+      const response = await axios.get("/platforms");
       return dispatch({
         type: GET_PLATFORMS,
         payload: response.data,
@@ -131,10 +131,10 @@ export const getPlatforms = (token) => {
   };
 };
 
-export const getGenres = (token) => {
+export const getGenres = () => {
   return async function (dispatch) {
     try {
-      const response = await axios.get("/genres",setAuthHeader(token));
+      const response = await axios.get("/genres");
       return dispatch({
         type: GET_GENRES,
         payload: response.data,
@@ -178,10 +178,10 @@ export const changeBg = (data) => {
   };
 };
 
-export const getAllGames = (token) => {
+export const getAllGames = () => {
   return async function (dispatch) {
     try {
-      const response = await axios.get("/games",setAuthHeader(token));
+      const response = await axios.get("/games");
       return dispatch({
         type: GET_ALL_GAMES,
         payload: response.data,
