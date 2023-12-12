@@ -113,7 +113,7 @@ const FormularioLogin = ({ onClose}) => {
               placeholder=""
               type={!viewPassword ? "password" : "text"}
             />
-            <button onClick={handlerPassword}>
+            <button type="button" onClick={handlerPassword}>
               {" "}
               {viewPassword ? "Ocultar" : "Ver"}{" "}
             </button>
