@@ -2,9 +2,29 @@ import axios from "axios";
 import Modal from "../../../../Modal/Modal";
 import Swal from "sweetalert2";
 import Formulario from "../../../../components/Form/Form";
+
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, User, Chip, Tooltip, getKeyValue } from "@nextui-org/react";
 import { EyeIcon, TrashIcon, PencilSquareIcon } from "@heroicons/react/24/outline";
 import { showSuccess, showError, showInfo } from "../../../../utils/Notifications";
+import setAuthHeader from '../../../../utils/AxiosUtils'
+import {
+  Table,
+  TableHeader,
+  TableColumn,
+  TableBody,
+  TableRow,
+  TableCell,
+  User,
+  Chip,
+  Tooltip,
+  getKeyValue,
+} from "@nextui-org/react";
+import {
+  EyeIcon,
+  TrashIcon,
+  PencilSquareIcon,
+} from "@heroicons/react/24/outline";
+import { useState } from "react";
 
 const columns = [{ name: "GAME" }, { name: "CANTIDAD" }, { name: "PRICE" }, { name: "ACCIONES" }];
 
@@ -15,7 +35,9 @@ const statusColorMap = {
 };
 
 const GamesTable = ({ videogames }) => {
+  const token = localStorage.getItem('validToken')
   const handlerDelete = async (id, game) => {
+
     const userConfirmation = await Swal.fire({
       title: `¿Estás seguro de eliminar ${game.name}?`,
       text: "Esta acción no se puede deshacer.",
@@ -29,7 +51,7 @@ const GamesTable = ({ videogames }) => {
 
     if (userConfirmation.isConfirmed) {
       try {
-        const response = await axios.delete(`/delete/games/${id}`);
+        const response = await axios.delete(`/delete/games/${id}`,setAuthHeader(token));
         const { data } = response;
         if (response.status === 200) {
           showSuccess(`${game.name} eliminado`);

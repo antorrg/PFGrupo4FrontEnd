@@ -9,6 +9,7 @@ import { RemoveFromCartIcon } from "../../icono/icono";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import setAuthHeader from '../../utils/AxiosUtils'
 
 const CartItem = ({
   image,
@@ -84,6 +85,7 @@ const CartItem = ({
 
 const Carrito = () => {
   //const cartRedux = useSelector((state) => state.cart);
+  const token = localStorage.getItem('validToken')
   const loginUser = useSelector((state) => state.loginUser);
   const { isAuthenticated } = useAuth0();
   const { cart, removeItem, addToCart, removeIdCart, clearCart } =
@@ -106,8 +108,8 @@ const Carrito = () => {
     //console.log("ids: " + JSON.stringify(videogamesIds));
     try {
       const data = await axios.post(
-        `http://localhost:3001/post/videogamesByIds`,
-        videogamesIds
+        `/post/videogamesByIds`, setAuthHeader(token),
+
       );
 
       //const auxObj = {...data.data[0], quantity: 1};
@@ -138,6 +140,7 @@ const Carrito = () => {
         unit_price: Math.round(item.price),
         quantity: item.quantity,
         currency_id: "USD",
+        picture_url: item.image
       };
     });
     setItemsPayment(auxItemsPayment);
@@ -213,6 +216,7 @@ const Carrito = () => {
         {itemsPayment.length && (
           <PaymentTest
             userID={loginUser.id}
+            userEmail={loginUser.email}
             //userID={"87bfab07-3db0-4d3d-8b59-9315fc03fa1a"}
             arrayItems={itemsPayment}
           />

@@ -6,14 +6,16 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import { Button } from "@nextui-org/react";
 import { getGenres } from "../../redux/actions";
 import { showInfo, showError, showSuccess } from "../../utils/Notifications";
+import setAuthHeader from '../../../utils/AxiosUtils.jsx'
 
 const FormGenres = ({ props, onClose }) => {
   const dispatch = useDispatch();
   const genres = useSelector((state) => state.genres).map((g) => g.name);
   // console.log(genres);
+  const token =localStorage.getItem('validToken')
 
   useEffect(() => {
-    dispatch(getGenres());
+    dispatch(getGenres(token));
   }, [dispatch]);
 
   const genre = {
@@ -30,21 +32,21 @@ const FormGenres = ({ props, onClose }) => {
       }),
   });
 
-  const postGenre = async (value) => {
+  const postGenre = async (value, token) => {
     try {
-      await axios.post("/post/genre/", value);
+      await axios.post("/post/genre/",setAuthHeader(token), value);
       showSuccess(`Genero ${value.name} agregado`);
-      dispatch(getGenres());
+      dispatch(getGenres(token));
     } catch (error) {
       // console.log(error.response.data.error);
       showError(`${error.response.data.error}`);
     }
   };
 
-  const putGenre = async (values, props) => {
+  const putGenre = async (values,token, props) => {
     try {
-      const { data } = await axios.put(`/put/genre/${props.id}`, values);
-      dispatch(getGenres());
+      const { data } = await axios.put(`/put/genre/${props.id}`,setAuthHeader(token), values);
+      dispatch(getGenres(token));
       showSuccess(`Genero ${values.name} actualizado`);
       onClose();
     } catch (error) {

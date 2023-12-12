@@ -12,6 +12,8 @@ const LogoutButton = () => {
       onClick={() => {
         logout({ logoutParams: { returnTo: window.location.origin } })
         dispatch(limpiarLogin())
+        //limpiar el localStorage:
+        localStorage.clear();
       }
         
       }

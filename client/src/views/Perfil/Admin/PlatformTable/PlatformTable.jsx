@@ -10,12 +10,14 @@ import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
+
 const columns = [{ name: "PLATAFORMA" }, { name: "ACCIONES" }];
 
 const PlatformTable = () => {
   const dispatch = useDispatch();
   const platforms = useSelector((state) => state.platforms);
   // console.log(platforms);
+  const token = localStorage.getItem('validToken')
 
   const handlerDelete = async (id, platform) => {
     const userConfirmation = await Swal.fire({
@@ -50,7 +52,7 @@ const PlatformTable = () => {
   };
 
   useEffect(() => {
-    dispatch(getPlatforms());
+    dispatch(getPlatforms(token));
   }, [dispatch]);
 
   return (

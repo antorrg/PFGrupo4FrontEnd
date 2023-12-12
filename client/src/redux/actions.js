@@ -1,6 +1,7 @@
 import axios from "axios";
-import Swal from "sweetalert2";
 import { showError } from "../utils/Notifications";
+import setAuthHeader from "../utils/AxiosUtils";
+
 
 export const GET_GAMES = "GET_GAMES";
 export const GET_DETAILS = "GET_DETAILS";
@@ -194,7 +195,7 @@ export const getAllGames = () => {
       showError(error.message);
     }
   };
-};
+}; 
 
 export const login = (userData) => {
   return {

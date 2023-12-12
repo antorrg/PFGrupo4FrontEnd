@@ -1,9 +1,11 @@
 import img from "../../Landing/all_games.jpg";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import setAuthHeader from '../../../utils/AxiosUtils'
 
 
 const SuccesfullPage = () => {
+  const token = localStorage.getItem('validToken')
 
   const searchParams = new URLSearchParams(window.location.search);
   const paymentId = searchParams.get("payment_id");
@@ -17,7 +19,7 @@ const SuccesfullPage = () => {
 
   const validePaymentResult = async () => {
     try {
-      const data = await axios.get(`http://localhost:3001/getParchuseOrder?payment_id=${paymentId}&external_reference=${externalReference}`);
+      const data = await axios.get(`/getParchuseOrder?payment_id=${paymentId}&external_reference=${externalReference}`,setAuthHeader(token));
       
       if(data.data.orderData.status === "waiting"){
         const waitTime = setTimeout(() => {
