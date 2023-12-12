@@ -12,14 +12,14 @@ import {
 import Select from "react-select";
 import Swal from "sweetalert2";
 import { Button, select } from "@nextui-org/react";
-import setAuthHeader from '../../utils/AxiosUtils.jsx'
+import setAuthHeader from "../../utils/AxiosUtils.jsx";
 
 const Formulario = ({ props, onClose }) => {
   const dispatch = useDispatch();
   const platforms = useSelector((state) => state.platforms);
   const genres = useSelector((state) => state.genres);
   const games = useSelector((state) => state.allGames);
-  const token = localStorage.getItem('validToken')
+  const token = localStorage.getItem("validToken");
 
   let nameGames = games.nombres;
 
@@ -182,7 +182,7 @@ const Formulario = ({ props, onClose }) => {
 
   const createVideogames = async (values, token) => {
     try {
-      await axios.post("/post",setAuthHeader(token), values);
+      await axios.post("/post", setAuthHeader(token), values);
       Swal.fire({
         position: "center",
         icon: "success",
@@ -206,7 +206,11 @@ const Formulario = ({ props, onClose }) => {
       if (!values.physicalGame) {
         values = { ...values, stock: 0 };
       }
-      const { data } = await axios.put(`/put/games/${props.id}`,setAuthHeader(token), values);
+      const { data } = await axios.put(
+        `/put/games/${props.id}`,
+        setAuthHeader(token),
+        values
+      );
       dispatch(
         getGames({
           page: 0,
@@ -240,7 +244,7 @@ const Formulario = ({ props, onClose }) => {
     <Formik
       initialValues={props ? valuesEdit : initialValues}
       validationSchema={formSchema}
-      onSubmit={async (values, {resetForm}) => {
+      onSubmit={async (values, { resetForm }) => {
         if (!props) {
           createVideogames(values);
           resetForm();
@@ -254,7 +258,7 @@ const Formulario = ({ props, onClose }) => {
           <div className="w-full max-w-md">
             <Form
               encType="multipart/form-data"
-              className="mx-auto p-6 border rounded-md bg-white shadow-md"
+              className="mx-auto p-6 border dark:border-none rounded-md shadow-md"
             >
               {!props && (
                 <div className="mb-4">
@@ -266,7 +270,7 @@ const Formulario = ({ props, onClose }) => {
                     Nombre{" "}
                   </label>
                   <Field
-                    className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    className="mt-1 p-2 block w-full border dark:border-none rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                     name="name"
                     placeholder=""
                     type="text"
@@ -282,13 +286,13 @@ const Formulario = ({ props, onClose }) => {
               <div className="mb-4">
                 <label
                   htmlFor="description"
-                  className="block text-sm font-medium text-gray-700"
+                  className="block text-sm font-medium text-gray-700 dark:text-white"
                 >
                   {" "}
                   Descripcion{" "}
                 </label>
                 <Field
-                  className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  className="mt-1 p-2 block w-full border dark:border-none rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   name="description"
                   placeholder=""
                   type="text"
@@ -303,7 +307,7 @@ const Formulario = ({ props, onClose }) => {
               <div className="mb-4">
                 <label
                   htmlFor="image"
-                  className="block text-sm font-medium text-gray-700"
+                  className="block text-sm font-medium text-gray-700 dark:text-white"
                 >
                   {" "}
                   Imagen{" "}
@@ -312,7 +316,7 @@ const Formulario = ({ props, onClose }) => {
                   type="file"
                   id="image"
                   name="image"
-                  className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  className="mt-1 p-2 block w-full border dark:border-none rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   onChange={(event) =>
                     handleImageChange(event, setFieldValue, values)
                   }
@@ -331,7 +335,7 @@ const Formulario = ({ props, onClose }) => {
               <div className="mb-4">
                 <label
                   htmlFor="platforms"
-                  className="block text-sm font-medium text-gray-700"
+                  className="block text-sm font-medium text-gray-700 dark:text-white"
                 >
                   Plataformas
                 </label>
@@ -339,7 +343,8 @@ const Formulario = ({ props, onClose }) => {
                 <Select
                   defaultValue={platformsDefault}
                   id="platforms"
-                  className="form-control"
+                  className="form-control "
+                  styles={{ "background-color": "yellow" }}
                   name="platforms"
                   options={platformsOptions}
                   isMulti
@@ -361,13 +366,13 @@ const Formulario = ({ props, onClose }) => {
               <div className="mb-4">
                 <label
                   htmlFor="released"
-                  className="block text-sm font-medium text-gray-700"
+                  className="block text-sm font-medium text-gray-700 dark:text-white"
                 >
                   {" "}
                   Fecha de Lanzamiento
                 </label>
                 <Field
-                  className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  className="mt-1 p-2 block w-full border dark:border-none rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   name="released"
                   placeholder="AAAA-MM-DD"
                   type="text"
@@ -381,12 +386,12 @@ const Formulario = ({ props, onClose }) => {
               <div className="mb-4">
                 <label
                   htmlFor="price"
-                  className="block text-sm font-medium text-gray-700"
+                  className="block text-sm font-medium text-gray-700 dark:text-white"
                 >
                   Precio
                 </label>
                 <Field
-                  className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  className="mt-1 p-2 block w-full border dark:border-none rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   name="price"
                   min="1"
                   placeholder="11111.11"
@@ -401,7 +406,7 @@ const Formulario = ({ props, onClose }) => {
               <div className="mb-4">
                 <label
                   htmlFor="genres"
-                  className="block text-sm font-medium text-gray-700"
+                  className="block text-sm font-medium text-gray-700 dark:text-white"
                 >
                   {" "}
                   Generos{" "}
@@ -445,12 +450,12 @@ const Formulario = ({ props, onClose }) => {
                 <div className="mb-4">
                   <label
                     htmlFor="stock"
-                    className="block text-sm font-medium text-gray-700"
+                    className="block text-sm font-medium text-gray-700 dark:text-white"
                   >
                     Stock
                   </label>
                   <Field
-                    className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    className="mt-1 p-2 block w-full border dark:border-none rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                     name="stock"
                     value={values.stock}
                     placeholder=""

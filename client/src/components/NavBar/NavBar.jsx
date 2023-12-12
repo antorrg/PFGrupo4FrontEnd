@@ -39,7 +39,6 @@ import {
 } from "@nextui-org/react";
 
 export default function NavBar() {
-  
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const userLogin = useSelector((state) => state.loginUser);
   const userInfo = userLogin;
@@ -168,9 +167,7 @@ export default function NavBar() {
             <Modal
               textButton="Ingresar/Registrarse"
               title="Bienvenido inicie secion "
-              body={({ onClose }) => (
-                <FormularioLogin onClose={onClose}/>
-              )}
+              body={({ onClose }) => <FormularioLogin onClose={onClose} />}
             />
           </>
         ) : (
@@ -218,8 +215,7 @@ export default function NavBar() {
                   );
                 })}
               </DropdownSection>
-              {
-                // userInfo.role === "0" &&
+              {userInfo.role === 0 && (
                 <DropdownSection
                   title="Admin zone"
                   className="border-t"
@@ -239,7 +235,7 @@ export default function NavBar() {
                       )
                   )}
                 </DropdownSection>
-              }
+              )}
             </DropdownMenu>
           </Dropdown>
         )}

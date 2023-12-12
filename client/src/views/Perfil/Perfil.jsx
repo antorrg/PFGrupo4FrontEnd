@@ -20,7 +20,7 @@ export default function Perfil() {
           <Route path="/" element={<Settings />} />
           <Route path="/orders" element={<Orders />} />
           <Route path="/qualification" element={<Qualification />} />
-          {userInfo.role === 1 && (
+          {userInfo.role === 0 && (
             <>
               <Route path="/games" element={<AdminHome />} />
               <Route path="/create" element={<Create />} />
