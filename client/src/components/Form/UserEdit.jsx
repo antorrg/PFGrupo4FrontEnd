@@ -8,12 +8,14 @@ import { useDispatch } from "react-redux";
 import { limpiarLogin } from "../../redux/actions";
 import { useNavigate } from "react-router-dom";
 import {Input} from "@nextui-org/react";
+import setAuthHeader from "../../utils/AxiosUtils";
 
 
 
 const UserEdit = ({ onClose }) => {
   const user = useSelector((state) => state.loginUser);
   const dispatch = useDispatch();
+  const token = localStorage.getItem('validToken')
   const navigate = useNavigate();
 
   const { country, given_name, nickname, picture, email, id, role , enable} = user;
@@ -52,7 +54,7 @@ const UserEdit = ({ onClose }) => {
 
   const editUser = async (values) => {
     try {
-      const response = await axios.put(`/put/user/${id}`, values);
+      const response = await axios.put(`/put/user/${id}`, valuessetAuthHeader(token));
       showSuccess("Usuario actualizado");
       dispatch(limpiarLogin());
       navigate("/");
