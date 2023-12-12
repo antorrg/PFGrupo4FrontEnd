@@ -8,6 +8,7 @@ import { getPlatforms } from "../../redux/actions";
 import { showInfo, showError, showSuccess } from "../../utils/Notifications";
 import setAuthHeader from '../../utils/AxiosUtils'
 
+
 const FormPlatForm = ({ props, onClose }) => {
   const dispatch = useDispatch();
   const platforms = useSelector((state) => state.platforms).map((p) => p.name);
@@ -43,6 +44,7 @@ const FormPlatForm = ({ props, onClose }) => {
       showError(`${error.response.data.error}`);
     }
   };
+
 
   const putPlatform = async (values, props) => {
      const token =localStorage.getItem('validToken')

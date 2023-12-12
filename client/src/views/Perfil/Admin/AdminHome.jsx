@@ -8,7 +8,6 @@ import GamesTable from "./GamesTable/GamesTable";
 const AdminHome = () => {
   const dispatch = useDispatch();
   const games = useSelector((state) => state.games);
-  const token = localStorage.getItem("validToken");
 
   const [filters, setFilters] = useState({
     page: 0,

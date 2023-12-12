@@ -22,7 +22,7 @@ import { TrashIcon, PencilSquareIcon } from "@heroicons/react/24/outline";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import setAuthHeader from "../../../../utils/AxiosUtils";
+import setAuthHeader from "../../../../../utils/AxiosUtils.jsx";
 
 const columns = [{ name: "PLATAFORMA" }, { name: "ACCIONES" }];
 
