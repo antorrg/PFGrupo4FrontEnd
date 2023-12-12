@@ -12,12 +12,14 @@ import {
 import Select from "react-select";
 import Swal from "sweetalert2";
 import { Button, select } from "@nextui-org/react";
+import setAuthHeader from '../../../utils/AxiosUtils.jsx'
 
 const Formulario = ({ props, onClose }) => {
   const dispatch = useDispatch();
   const platforms = useSelector((state) => state.platforms);
   const genres = useSelector((state) => state.genres);
   const games = useSelector((state) => state.allGames);
+  const token = localStorage.getItem('validToken')
 
   let nameGames = games.nombres;
 
@@ -26,9 +28,9 @@ const Formulario = ({ props, onClose }) => {
   }
 
   useEffect(() => {
-    dispatch(getPlatforms());
-    dispatch(getGenres());
-    dispatch(getAllGames());
+    dispatch(getPlatforms(token));
+    dispatch(getGenres(token));
+    dispatch(getAllGames(token));
   }, [dispatch]);
 
   const platformsOptions = platforms.map((platform) => ({
@@ -178,9 +180,9 @@ const Formulario = ({ props, onClose }) => {
     }
   };
 
-  const createVideogames = async (values) => {
+  const createVideogames = async (values, token) => {
     try {
-      await axios.post("/post", values);
+      await axios.post("/post",setAuthHeader(token), values);
       Swal.fire({
         position: "center",
         icon: "success",
@@ -199,12 +201,12 @@ const Formulario = ({ props, onClose }) => {
     }
   };
 
-  const editVideogames = async (values, props) => {
+  const editVideogames = async (values, props, token) => {
     try {
       if (!values.physicalGame) {
         values = { ...values, stock: 0 };
       }
-      const { data } = await axios.put(`/put/games/${props.id}`, values);
+      const { data } = await axios.put(`/put/games/${props.id}`,setAuthHeader(token), values);
       dispatch(
         getGames({
           page: 0,

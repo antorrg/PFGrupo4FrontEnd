@@ -1,5 +1,6 @@
 import axios from "axios";
 import Swal from "sweetalert2";
+import { showSuccess, showError } from "../../utils/Notifications";
 
 //console.log(userData);
 
@@ -19,13 +20,14 @@ const enviarInfoAlServer = async (userData) => {
         password,
         sub,
       });
-      Swal.fire({
-        position: "top-end",
-        icon: "success",
-        title: "Usuario logeado",
-        showConfirmButton: false,
-        timer: 1500,
-      });
+      // Swal.fire({
+      //   position: "top-end",
+      //   icon: "success",
+      //   title: "Usuario logeado",
+      //   showConfirmButton: false,
+      //   timer: 1500,
+      // });
+      showSuccess("Usuario logueado con exito");
     } else {
       response = await axios.post("/post/user", {
         email,
@@ -35,19 +37,21 @@ const enviarInfoAlServer = async (userData) => {
         picture,
         sub,
       });
-      Swal.fire({
-        position: "top-end",
-        icon: "success",
-        title: "Usuario creado con exito",
-        showConfirmButton: false,
-        timer: 1500,
-      });
+      // Swal.fire({
+      //   position: "top-end",
+      //   icon: "success",
+      //   title: "Usuario logueado con exito",
+      //   showConfirmButton: false,
+      //   timer: 1500,
+      // });
+      showSuccess("Usuario logueado con exito");
     }
     if (response.status === 201) {
       // Accede al encabezado Authorization para obtener el token
       const token = response.data.token;
+      localStorage.setItem('validToken', token);
 
-      console.log("Token recibido:", token);
+      // console.log("Token recibido:", token);
       // if (response.data) {
 
       const user = { ...response.data.result.user, token };
@@ -55,13 +59,14 @@ const enviarInfoAlServer = async (userData) => {
       return user;
     }
   } catch (error) {
-    Swal.fire({
-      position: "top-end",
-      icon: "error",
-      title: `${error.response.data.error}`,
-      showConfirmButton: false,
-      timer: 1500,
-    });
+    // Swal.fire({
+    //   position: "top-end",
+    //   icon: "error",
+    //   title: `${error.response.data.error}`,
+    //   showConfirmButton: false,
+    //   timer: 1500,
+    // });
+    showError(`${error.response.data.error}`);
   }
 };
 

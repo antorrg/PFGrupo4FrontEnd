@@ -2,6 +2,7 @@ import axios from "axios";
 import Modal from "../../../../Modal/Modal";
 import Swal from "sweetalert2";
 import Formulario from "../../../../components/Form/Form";
+import setAuthHeader from '../../../utils/AxiosUtils.jsx'
 import {
   Table,
   TableHeader,
@@ -35,9 +36,10 @@ const statusColorMap = {
 };
 
 const GamesTable = ({ videogames }) => {
+  const token = localStorage.getItem('validToken')
   const handlerDelete = async (id, game) => {
     try {
-      const { data } = await axios.delete(`delete/games/${id}`);
+      const { data } = await axios.delete(`delete/games/${id}`,setAuthHeader(token));
       Swal.fire({
         position: "center",
         icon: "success",

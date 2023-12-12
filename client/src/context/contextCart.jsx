@@ -3,6 +3,7 @@ import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { useAuth0 } from "@auth0/auth0-react";
 import { updateCart } from "../redux/actions";
+import setAuthHeader from '../../../utils/AxiosUtils.jsx'
 
 export const CartContext = createContext();
 
@@ -11,6 +12,7 @@ export const CartProvider = ({ children }) => {
   const { isAuthenticated } = useAuth0();
   const loginUser = useSelector((state) => state.loginUser);
   //const cartRedux = useSelector((state) => state.cart);
+  const token = localStorage.getItem('validToken')
 
   const [cart, setCart] = useState([]);
   const [initUpdateCart, setInitUpdateCart] = useState(true);
@@ -33,7 +35,7 @@ export const CartProvider = ({ children }) => {
 
     try {
       const data = await axios.post(
-        `http://localhost:3001/post/createShoppingCart`,
+        `/post/createShoppingCart`, setAuthHeader(token),
         cartItems
       );
       //console.log(data.data);
@@ -45,7 +47,7 @@ export const CartProvider = ({ children }) => {
 
   const getUserCartDB = async () => {
     try {
-      const data = await axios.get(`http://localhost:3001/getUserShoppingCart/${loginUser.id}`);
+      const data = await axios.get(`/getUserShoppingCart/${loginUser.id}`,setAuthHeader(token));
       /*const data = await axios.get(
         `http://localhost:3001/getUserShoppingCart/87bfab07-3db0-4d3d-8b59-9315fc03fa1a`
       );*/
@@ -138,6 +140,7 @@ export const CartProvider = ({ children }) => {
 
   const clearCart = (updateFlagHandler) => {
     setCart([]);
+    updateCartDB([]);
     updateFlagHandler && updateFlagHandler();
   };
 

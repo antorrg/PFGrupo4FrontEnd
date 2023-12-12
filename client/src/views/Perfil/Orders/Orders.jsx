@@ -8,14 +8,17 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import setAuthHeader from '../../../utils/AxiosUtils.jsx'
 
 const Orders = () => {
   const [orders, setOrders] = useState({});
   const loginUser = useSelector((state) => state.loginUser);
+  const token = localStorage.getItem('validToken');
 
   const searchOrdersBD = async () => {
     const { data } = await axios.get(
-      `http://localhost:3001/getOrdersByUserId?userID=${loginUser.id}&page=0&size=100`
+      `/getOrdersByUserId?userID=${loginUser.id}&page=0&size=100`,
+      setAuthHeader(token)
     );
     setOrders(data);
   };
@@ -131,16 +134,16 @@ const Orders = () => {
                     <div className="flex items-center p-6 pt-4 sm:pt-0 border-b sm:border-none border-primary">
                       {order.status === "approved" ? (
                         <>
-                          <XCircleIcon className="w-5 h-5 text-red-500" />
-                          <span className="text-red-500">
-                            Transacción Denegada
+                          <CheckCircleIcon className="w-5 h-5 text-green-500" />
+                          <span className="text-green-500">
+                            Transacción Aprobada
                           </span>
                         </>
                       ) : order.status === "rejected" ? (
                         <>
-                          <CheckCircleIcon className="w-5 h-5 text-green-500" />
-                          <span className="text-green-500">
-                            Transacción Aprobada
+                          <XCircleIcon className="w-5 h-5 text-red-500" />
+                          <span className="text-red-500">
+                            Transacción Denegada
                           </span>
                         </>
                       ) : (
