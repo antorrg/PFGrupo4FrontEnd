@@ -49,7 +49,7 @@ const Home = () => {
 
   return (
     <div className="mt-4 flex items-start justify-center gap-8 w-[80%] flex-1">
-      <div className="w-[220px] h-auto bg-[#5825cc]">
+      <div className="w-[220px] h-auto bg-[#5825cc] hidden sm:flex">
         <Filters onApplyFilters={onApplyFiltersHandlers} />
       </div>
       <div className="flex-1 h-auto">
