@@ -138,6 +138,7 @@ export const CartProvider = ({ children }) => {
 
   const clearCart = (updateFlagHandler) => {
     setCart([]);
+    updateCartDB([]);
     updateFlagHandler && updateFlagHandler();
   };
 
