@@ -2,7 +2,7 @@ import axios from "axios";
 import Modal from "../../../../Modal/Modal";
 import Swal from "sweetalert2";
 import Formulario from "../../../../components/Form/Form";
-import setAuthHeader from '../../../utils/AxiosUtils.jsx'
+import setAuthHeader from '../../../../utils/AxiosUtils'
 import {
   Table,
   TableHeader,
