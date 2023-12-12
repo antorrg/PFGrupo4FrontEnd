@@ -33,7 +33,7 @@ export const CartProvider = ({ children }) => {
 
     try {
       const data = await axios.post(
-        `http://localhost:3001/post/createShoppingCart`,
+        `/post/createShoppingCart`,
         cartItems
       );
       //console.log(data.data);
@@ -45,7 +45,7 @@ export const CartProvider = ({ children }) => {
 
   const getUserCartDB = async () => {
     try {
-      const data = await axios.get(`http://localhost:3001/getUserShoppingCart/${loginUser.id}`);
+      const data = await axios.get(`/getUserShoppingCart/${loginUser.id}`);
       /*const data = await axios.get(
         `http://localhost:3001/getUserShoppingCart/87bfab07-3db0-4d3d-8b59-9315fc03fa1a`
       );*/
@@ -138,6 +138,7 @@ export const CartProvider = ({ children }) => {
 
   const clearCart = (updateFlagHandler) => {
     setCart([]);
+    updateCartDB([]);
     updateFlagHandler && updateFlagHandler();
   };
 

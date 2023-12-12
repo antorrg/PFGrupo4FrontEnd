@@ -35,7 +35,11 @@ const FailurePage = () => {
   };
 
   useEffect(() => {
-    validePaymentResult();
+    if(externalReference != null) {
+      validePaymentResult();
+    } else {
+      //showResultHandler(data.data);
+    }
   }, []);
 
   return (
@@ -66,8 +70,8 @@ const FailurePage = () => {
                 </dd>
               </dt>
               <ul>
-                {paymentResult.orderData ? <div>{paymentResult.orderData.status}</div> : 
-                  <div>
+                {paymentResult.orderData ? <div>{paymentResult.orderData.status}</div> : <div>{"ERROR EN LA COMPRA"}</div>
+                  /*<div>
                     <li className="flex gap-4 py-6 justify-between border-t">
                       <img
                         src="https://tailwindui.com/img/ecommerce-images/confirmation-page-06-product-01.jpg"
@@ -107,7 +111,7 @@ const FailurePage = () => {
                       </div>
                       <p className="font-medium">$36.00</p>
                     </li>
-                  </div>
+                  </div>*/
                 }
               </ul>
               <dl className="pt-6 border-t">

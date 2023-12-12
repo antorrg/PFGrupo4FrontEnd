@@ -106,7 +106,8 @@ const Carrito = () => {
     //console.log("ids: " + JSON.stringify(videogamesIds));
     try {
       const data = await axios.post(
-        `http://localhost:3001/post/videogamesByIds`,
+        `/post/videogamesByIds`,
+        //`http://localhost:3001/post/videogamesByIds`,
         videogamesIds
       );
 
@@ -138,6 +139,7 @@ const Carrito = () => {
         unit_price: Math.round(item.price),
         quantity: item.quantity,
         currency_id: "USD",
+        picture_url: item.image
       };
     });
     setItemsPayment(auxItemsPayment);
@@ -213,6 +215,7 @@ const Carrito = () => {
         {itemsPayment.length && (
           <PaymentTest
             userID={loginUser.id}
+            userEmail={loginUser.email}
             //userID={"87bfab07-3db0-4d3d-8b59-9315fc03fa1a"}
             arrayItems={itemsPayment}
           />
