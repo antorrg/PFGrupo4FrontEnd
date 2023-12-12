@@ -18,6 +18,7 @@ import {
 export default function Filters(props) {
   const dispatch = useDispatch();
   const { onApplyFilters } = props;
+   const token =localStorage.getItem('validToken')
 
   // plataformas -------------------------------------------
   const platforms = useSelector((state) => state.platforms);
@@ -103,8 +104,8 @@ export default function Filters(props) {
   };
 
   useEffect(() => {
-    dispatch(getPlatforms());
-    dispatch(getGenres());
+    dispatch(getPlatforms(token));
+    dispatch(getGenres(token));
   }, [dispatch]);
 
   return (

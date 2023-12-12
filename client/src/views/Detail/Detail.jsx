@@ -8,11 +8,11 @@ import CommentsAndRatingsBox from "./CommentsAndRatingsBox";
 function Detail() {
   const dispatch = useDispatch();
   const { id } = useParams();
-  const token = localStorage.getItem('validToken');
+
   const detailGame = useSelector((state) => state.detailGame);
 
   useEffect(() => {
-    dispatch(getDetails(id, token));
+    dispatch(getDetails(id));
     return () => {
       dispatch(clearDetails());
       dispatch(changeBg(""));

@@ -10,7 +10,7 @@ import { Auth0Provider } from "@auth0/auth0-react";
 const domain = import.meta.env.VITE_AUTH0_DOMAIN;
 const clientId = import.meta.env.VITE_AUTH0_CLIENT_ID;
 const url = import.meta.env.VITE_URL;
-//axios.defaults.baseURL = "http://localhost:3001";
+
 
 axios.defaults.baseURL = url;
 

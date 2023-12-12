@@ -1,6 +1,7 @@
 import axios from "axios";
-import Swal from "sweetalert2";
+import { showError } from "../utils/Notifications";
 import setAuthHeader from "../utils/AxiosUtils";
+
 
 export const GET_GAMES = "GET_GAMES";
 export const GET_DETAILS = "GET_DETAILS";
@@ -56,11 +57,12 @@ export const getGames = (filtersObj) => {
       });
     } catch (error) {
       // alert(error);
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: `${error.message}`,
-      });
+      // Swal.fire({
+      //   icon: "error",
+      //   title: "Oops...",
+      //   text: `${error.message}`,
+      // });
+      showError(error.message);
     }
   };
 };
@@ -83,21 +85,22 @@ export const getGames = (value) => {
 };
 */
 
-export const getDetails = (id, token) => {
+export const getDetails = (id) => {
   return async function (dispatch) {
     try {
-      const response = await axios.get(`/games/${id}`,setAuthHeader(token));
+      const response = await axios.get(`/games/${id}`);
       return dispatch({
         type: GET_DETAILS,
         payload: response.data,
       });
     } catch (error) {
       // alert(error);
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: `${error.message}`,
-      });
+      // Swal.fire({
+      //   icon: "error",
+      //   title: "Oops...",
+      //   text: `${error.message}`,
+      // });
+      showError(error.message);
     }
   };
 };
@@ -108,40 +111,42 @@ export const clearDetails = () => {
   };
 };
 
-export const getPlatforms = () => {
+export const getPlatforms = (token) => {
   return async function (dispatch) {
     try {
-      const response = await axios.get("/platforms");
+      const response = await axios.get("/platforms",setAuthHeader(token));
       return dispatch({
         type: GET_PLATFORMS,
         payload: response.data,
       });
     } catch (error) {
       // alert(error);
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: `${error.message}`,
-      });
+      // Swal.fire({
+      //   icon: "error",
+      //   title: "Oops...",
+      //   text: `${error.message}`,
+      // });
+      showError(error.message);
     }
   };
 };
 
-export const getGenres = () => {
+export const getGenres = (token) => {
   return async function (dispatch) {
     try {
-      const response = await axios.get("/genres");
+      const response = await axios.get("/genres",setAuthHeader(token));
       return dispatch({
         type: GET_GENRES,
         payload: response.data,
       });
     } catch (error) {
       // alert(error);
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: `${error.message}`,
-      });
+      // Swal.fire({
+      //   icon: "error",
+      //   title: "Oops...",
+      //   text: `${error.message}`,
+      // });
+      showError(error.message);
     }
   };
 };
@@ -156,11 +161,12 @@ export const searchGame = (name) => {
       });
     } catch (error) {
       // alert(error);
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: `${error.message}`,
-      });
+      // Swal.fire({
+      //   icon: "error",
+      //   title: "Oops...",
+      //   text: `${error.message}`,
+      // });
+      showError(error.message);
     }
   };
 };
@@ -172,23 +178,24 @@ export const changeBg = (data) => {
   };
 };
 
-export const getAllGames = () => {
+export const getAllGames = (token) => {
   return async function (dispatch) {
     try {
-      const response = await axios.get("/games");
+      const response = await axios.get("/games",setAuthHeader(token));
       return dispatch({
         type: GET_ALL_GAMES,
         payload: response.data,
       });
     } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: `${error.message}`,
-      });
+      // Swal.fire({
+      //   icon: "error",
+      //   title: "Oops...",
+      //   text: `${error.message}`,
+      // });
+      showError(error.message);
     }
   };
-};
+}; 
 
 export const login = (userData) => {
   return {

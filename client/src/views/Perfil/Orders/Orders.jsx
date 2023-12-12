@@ -8,14 +8,17 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import setAuthHeader from '../../../utils/AxiosUtils.jsx'
 
 const Orders = () => {
   const [orders, setOrders] = useState({});
   const loginUser = useSelector((state) => state.loginUser);
+  const token = localStorage.getItem('validToken');
 
   const searchOrdersBD = async () => {
     const { data } = await axios.get(
-      `http://localhost:3001/getOrdersByUserId?userID=${loginUser.id}&page=0&size=100`
+      `/getOrdersByUserId?userID=${loginUser.id}&page=0&size=100`,
+      setAuthHeader(token)
     );
     setOrders(data);
   };

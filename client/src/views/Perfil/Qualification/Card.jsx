@@ -2,6 +2,8 @@ import { useState } from "react";
 import Stars from "./Stars.jsx";
 import { Chip, Textarea, Button } from "@nextui-org/react";
 import axios from "axios";
+import setAuthHeader from '../../../utils/AxiosUtils.jsx'
+
 
 const Card = ({
   name,
@@ -19,6 +21,8 @@ const Card = ({
   const [comment, setComment] = useState("");
   const [commentErrors, setCommentErrors] = useState("");
 
+ const token = localStorage.getItem('validToken');
+ 
   const validateComment = (text) => {
     setComment(text);
     if (text.length < 10) {
@@ -48,13 +52,13 @@ const Card = ({
   const submitRatingAndCommentDB = async () => {
     try {
       const data = await axios.post(
-        `http://localhost:3001/post/postUserRated`,
+        `/post/postUserRated`,
         {
           userID,
           itemID,
           comment,
           score: rating,
-        }
+        }, setAuthHeader(token)
       );
       handlerUpdateView();
     } catch (error) {
