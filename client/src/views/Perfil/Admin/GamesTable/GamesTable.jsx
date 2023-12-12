@@ -2,8 +2,12 @@ import axios from "axios";
 import Modal from "../../../../Modal/Modal";
 import Swal from "sweetalert2";
 import Formulario from "../../../../components/Form/Form";
-import { showSuccess, showError, showInfo } from "../../../../utils/Notifications";
-import setAuthHeader from '../../../../utils/AxiosUtils'
+import {
+  showSuccess,
+  showError,
+  showInfo,
+} from "../../../../utils/Notifications";
+import setAuthHeader from "../../../../utils/AxiosUtils";
 import {
   Table,
   TableHeader,
@@ -23,7 +27,12 @@ import {
 } from "@heroicons/react/24/outline";
 import { useState } from "react";
 
-const columns = [{ name: "GAME" }, { name: "CANTIDAD" }, { name: "PRICE" }, { name: "ACCIONES" }];
+const columns = [
+  { name: "GAME" },
+  { name: "CANTIDAD" },
+  { name: "PRICE" },
+  { name: "ACCIONES" },
+];
 
 const statusColorMap = {
   active: "success",
@@ -32,9 +41,8 @@ const statusColorMap = {
 };
 
 const GamesTable = ({ videogames }) => {
-  const token = localStorage.getItem('validToken')
+  const token = localStorage.getItem("validToken");
   const handlerDelete = async (id, game) => {
-
     const userConfirmation = await Swal.fire({
       title: `¿Estás seguro de eliminar ${game.name}?`,
       text: "Esta acción no se puede deshacer.",
@@ -48,7 +56,10 @@ const GamesTable = ({ videogames }) => {
 
     if (userConfirmation.isConfirmed) {
       try {
-        const response = await axios.delete(`/delete/games/${id}`,setAuthHeader(token));
+        const response = await axios.delete(
+          `/delete/games/${id}`,
+          setAuthHeader(token)
+        );
         const { data } = response;
         if (response.status === 200) {
           showSuccess(`${game.name} eliminado`);
@@ -65,13 +76,28 @@ const GamesTable = ({ videogames }) => {
   };
 
   return (
-    <Table aria-label="games admin table">
+    <Table
+      aria-label="games admin table"
+      classNames={{
+        base: "",
+        table: "dark:bg-secondary min-h-[600px]",
+        wrapper: "dark:bg-secondary",
+        thead: "",
+        tbody: "",
+        tr: "",
+        th: "dark:bg-[#0B0120]",
+        td: "",
+        tfoot: "",
+        sortIcon: "",
+        emptyWrapper: "dark:text-white",
+      }}
+    >
       <TableHeader>
         {columns.map((column) => {
           return <TableColumn>{column.name}</TableColumn>;
         })}
       </TableHeader>
-      <TableBody>
+      <TableBody emptyContent={"Nada para mostrar."}>
         {videogames.map((game, index) => {
           return (
             <TableRow key={`${game}-row-${index}`}>
@@ -82,7 +108,9 @@ const GamesTable = ({ videogames }) => {
                   name={game.name}
                 />
               </TableCell>
-              <TableCell>{game.physicalGame ? game.stock : "Digital"}</TableCell>
+              <TableCell>
+                {game.physicalGame ? game.stock : "Digital"}
+              </TableCell>
               <TableCell>${game.price}</TableCell>
               <TableCell>
                 <div className="relative flex items-center gap-2">
@@ -98,7 +126,9 @@ const GamesTable = ({ videogames }) => {
                             onClose={onClose}
                           />
                         )}
-                        openButton={<PencilSquareIcon className="text-black w-4" />}
+                        openButton={
+                          <PencilSquareIcon className="text-black w-4" />
+                        }
                       />
                     </span>
                   </Tooltip>
@@ -107,12 +137,11 @@ const GamesTable = ({ videogames }) => {
                       <EyeIcon className="text-black w-4" />
                     </span>
                   </Tooltip>
-                  <Tooltip
-                    color="danger"
-                    content="Eliminar">
+                  <Tooltip color="danger" content="Eliminar">
                     <span
                       className="text-lg text-danger cursor-pointer active:opacity-50"
-                      onClick={() => handlerDelete(game.id, game)}>
+                      onClick={() => handlerDelete(game.id, game)}
+                    >
                       <TrashIcon className="text-black w-4" />
                     </span>
                   </Tooltip>
