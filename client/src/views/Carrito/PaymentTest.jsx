@@ -2,7 +2,7 @@ import { useState } from 'react';
 import React, { useEffect } from 'react';
 import { initMercadoPago, Wallet } from '@mercadopago/sdk-react';
 import axios from "axios";
-import setAuthHeader from '../../../utils/AxiosUtils.jsx'
+import setAuthHeader from '../../utils/AxiosUtils'
 //require ('dotenv').config();
 //const { MERCADOPAGO_PUBLIC_KEY }=process.env;
 

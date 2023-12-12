@@ -1,7 +1,7 @@
 import img from "../../Landing/all_games.jpg";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import setAuthHeader from '../../../utils/AxiosUtils.jsx'
+import setAuthHeader from '../../../utils/AxiosUtils'
 
 
 const PendingPage = () => {
