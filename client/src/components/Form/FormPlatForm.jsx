@@ -6,14 +6,16 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import { Button } from "@nextui-org/react";
 import { getPlatforms } from "../../redux/actions";
 import { showInfo, showError, showSuccess } from "../../utils/Notifications";
+import setAuthHeader from '../../../utils/AxiosUtils.jsx'
 
 const FormPlatForm = ({ props, onClose }) => {
   const dispatch = useDispatch();
   const platforms = useSelector((state) => state.platforms).map((p) => p.name);
   // console.log(platforms);
+   const token =localStorage.getItem('validToken')
 
   useEffect(() => {
-    dispatch(getPlatforms());
+    dispatch(getPlatforms(token));
   }, [dispatch]);
 
   const platform = {
@@ -30,21 +32,21 @@ const FormPlatForm = ({ props, onClose }) => {
       }),
   });
 
-  const postPlatform = async (value) => {
+  const postPlatform = async (value,token) => {
     try {
-      await axios.post("/post/platform/", value);
+      await axios.post("/post/platform/",setAuthHeader(token), value);
       showSuccess(`Plataforma ${value.name} agregada`);
-      dispatch(getPlatforms());
+      dispatch(getPlatforms(token));
     } catch (error) {
       // console.log(error.response.data.error);
       showError(`${error.response.data.error}`);
     }
   };
 
-  const putPlatform = async (values, props) => {
+  const putPlatform = async (values,token, props) => {
     try {
-      const { data } = await axios.put(`/put/platform/${props.id}`, values);
-      dispatch(getPlatforms());
+      const { data } = await axios.put(`/put/platform/${props.id}`,setAuthHeader(token), values);
+      dispatch(getPlatforms(token));
       showSuccess(`Plataforma ${values.name} actualizada`);
       onClose();
     } catch (error) {

@@ -9,6 +9,7 @@ import { RemoveFromCartIcon } from "../../icono/icono";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import setAuthHeader from '../../../utils/AxiosUtils.jsx'
 
 const CartItem = ({
   image,
@@ -84,6 +85,7 @@ const CartItem = ({
 
 const Carrito = () => {
   //const cartRedux = useSelector((state) => state.cart);
+  const token = localStorage.getItem('validToken')
   const loginUser = useSelector((state) => state.loginUser);
   const { isAuthenticated } = useAuth0();
   const { cart, removeItem, addToCart, removeIdCart, clearCart } =
@@ -106,7 +108,7 @@ const Carrito = () => {
     //console.log("ids: " + JSON.stringify(videogamesIds));
     try {
       const data = await axios.post(
-        `/post/videogamesByIds`,
+        `/post/videogamesByIds`, setAuthHeader(token),
         videogamesIds
       );
 

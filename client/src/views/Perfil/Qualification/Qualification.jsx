@@ -2,15 +2,18 @@ import { useEffect, useState } from "react";
 import Card from "./Card.jsx";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import setAuthHeader from '../../../utils/AxiosUtils.jsx'
 
 const Qualification = () => {
+  const token = localStorage.getItem('validToken');
   const loginUser = useSelector((state) => state.loginUser);
   const [ratedPending, setRatedPending] = useState({});
   const [updateView, setUpdateView] = useState(false);
 
   const searchGamesPurchaseDB = async () => {
     const { data } = await axios.get(
-      `/getRatedPendingItemsByUserId?userID=${loginUser.id}&page=0&size=100`
+      `/getRatedPendingItemsByUserId?userID=${loginUser.id}&page=0&size=100`,
+      setAuthHeader(token)
     );
     setRatedPending(data);
   };
