@@ -2,7 +2,12 @@ import axios from "axios";
 import Modal from "../../../../Modal/Modal";
 import Swal from "sweetalert2";
 import Formulario from "../../../../components/Form/Form";
-import setAuthHeader from '../../../../utils/AxiosUtils'
+import {
+  showSuccess,
+  showError,
+  showInfo,
+} from "../../../../utils/Notifications";
+import setAuthHeader from "../../../../utils/AxiosUtils";
 import {
   Table,
   TableHeader,
@@ -36,36 +41,64 @@ const statusColorMap = {
 };
 
 const GamesTable = ({ videogames }) => {
-  const token = localStorage.getItem('validToken')
+  const token = localStorage.getItem("validToken");
   const handlerDelete = async (id, game) => {
-    try {
-      const { data } = await axios.delete(`delete/games/${id}`,setAuthHeader(token));
-      Swal.fire({
-        position: "center",
-        icon: "success",
-        title: `${game.name}`,
-        text: `${data.message}`,
-        showConfirmButton: true,
-      });
-    } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: `${error.message}`,
-      });
+    const userConfirmation = await Swal.fire({
+      title: `¿Estás seguro de eliminar ${game.name}?`,
+      text: "Esta acción no se puede deshacer.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+    });
+
+    if (userConfirmation.isConfirmed) {
+      try {
+        const response = await axios.delete(
+          `/delete/games/${id}`,
+          setAuthHeader(token)
+        );
+        const { data } = response;
+        if (response.status === 200) {
+          showSuccess(`${game.name} eliminado`);
+          dispatch(getGenres());
+        } else {
+          showError(`Error al eliminar ${game.name}`);
+        }
+      } catch (error) {
+        showError(`${error.response.data.error}`);
+      }
+    } else {
+      showInfo(`Se canceló la eliminación de ${game.name}`);
     }
   };
 
   return (
-    <Table aria-label="games admin table">
+    <Table
+      aria-label="games admin table"
+      classNames={{
+        base: "",
+        table: "dark:bg-secondary min-h-[600px]",
+        wrapper: "dark:bg-secondary",
+        thead: "",
+        tbody: "",
+        tr: "",
+        th: "dark:bg-[#0B0120]",
+        td: "",
+        tfoot: "",
+        sortIcon: "",
+        emptyWrapper: "dark:text-white",
+      }}
+    >
       <TableHeader>
         {columns.map((column) => {
           return <TableColumn>{column.name}</TableColumn>;
         })}
       </TableHeader>
-      <TableBody>
+      <TableBody emptyContent={"Nada para mostrar."}>
         {videogames.map((game, index) => {
-          
           return (
             <TableRow key={`${game}-row-${index}`}>
               <TableCell>

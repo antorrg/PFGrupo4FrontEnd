@@ -22,20 +22,20 @@ const Landing = () => {
           data-aos="fade-in"
           className="max-w-[700px] gap-10 flex items-center justify-evenly flex-col z-10"
         >
-          <h1 className="text-7xl font-bold text-white">
+          <h1 className="text-3xl sm:text-7xl font-bold text-white">
             LA TIENDA DE GAMERS PARA GAMERS
           </h1>
-          <p className="text-xl max-w-xs text-white">
+          <p className="text-base sm:text-xl max-w-xs text-white">
             compra juegos digitales y fisicos al mejor precio del mercado
           </p>
-          <div className=" w-[420px] flex items-center justify-between">
+          <div className="w-[250px] sm:w-[420px] flex items-center justify-between">
             <Link to="/join">
-              <button className="w-[190px] h-[50px] bg-gradient-to-r from-violet-600 to-orange-600 text-white text-xl">
+              <button className="w-[120px] h-[35px] sm:w-[190px] sm:h-[50px] bg-gradient-to-r from-violet-600 to-orange-600 text-white text-base sm:text-xl">
                 Join now
               </button>
             </Link>
             <Link to="/home">
-              <button className="w-[190px] h-[50px] border-[#8f00ff] border-2 text-xl text-white">
+              <button className="w-[120px] h-[35px] sm:w-[190px] sm:h-[50px] border-[#8f00ff] border-2 text-white text-base sm:text-xl">
                 Home
               </button>
             </Link>
@@ -45,10 +45,12 @@ const Landing = () => {
       <section
         data-aos-duration="2000"
         data-aos="fade-up"
-        className="flex w-full h-[100vh] items-start justify-center overflow-hidden"
+        className="flex w-full h-fit py-20 sm:p-0 sm:h-[100vh] items-start justify-center overflow-hidden"
       >
         <div className="flex items-center justify-evenly gap-8 flex-col overflow-hidden h-full">
-          <h1 className="text-5xl font-bold">ACCEDE A +1000 JUEGOS</h1>
+          <h1 className="text-2xl sm:text-5xl font-bold">
+            ACCEDE A +1000 JUEGOS
+          </h1>
           <div className="w-full">
             <Carousel />
           </div>
@@ -57,7 +59,7 @@ const Landing = () => {
       <section
         data-aos-duration="2000"
         data-aos="fade-up"
-        className="grid grid-cols-2 grid-rows-3	w-10/12 h-[100vh] items-center justify-center py-12"
+        className="hidden sm:grid grid-cols-2 grid-rows-3	w-10/12 h-[100vh] items-center justify-center py-12"
       >
         <img
           data-aos="fade-right"
@@ -89,12 +91,12 @@ const Landing = () => {
       >
         <div className="absolute inset-0 bg-black opacity-50"></div>
         <div className="flex items-center gap-8 flex-col mt-[50px] z-10">
-          <h1 className="text-7xl font-bold text-white">
+          <h1 className="text-3xl sm:text-7xl font-bold text-white">
             SE PARTE DE LA COMUNIDAD
           </h1>
           <div className=" w-auto flex items-center justify-center">
             <Link to="/join">
-              <button className="w-[190px] h-[50px] bg-gradient-to-r from-violet-600 to-orange-600 text-white text-xl">
+              <button className="w-[120px] h-[35px] sm:w-[190px] sm:h-[50px] bg-gradient-to-r from-violet-600 to-orange-600 text-white text-base sm:text-xl">
                 Join now
               </button>
             </Link>

@@ -28,7 +28,7 @@ const FormPlatForm = ({ props, onClose }) => {
       .min(2, "Minimo dos caracteres")
       .test("Plataforma repetida", "La plataforma ya existe", (value) => {
         const upperCaseValue = value.toUpperCase();
-        return !platforms.includes(upperCaseValue);
+        return !platforms.toUpperCase().includes(upperCaseValue);
       }),
   });
 

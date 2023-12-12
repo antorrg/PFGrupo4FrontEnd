@@ -1,16 +1,28 @@
 import axios from "axios";
-import Modal from "../../../../Modal/Modal";
+import Modal from "../../../../../Modal/Modal.jsx";
 import Swal from "sweetalert2";
-import { getPlatforms } from "../../../../redux/actions";
-import FormPlatForm from "../../../../components/Form/FormPlatForm";
-import { showSuccess, showError, showInfo } from "../../../../utils/Notifications";
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, User, Tooltip } from "@nextui-org/react";
+import { getPlatforms } from "../../../../../redux/actions.js";
+import FormPlatForm from "../../../../../components/Form/FormPlatForm.jsx";
+import {
+  showSuccess,
+  showError,
+  showInfo,
+} from "../../../../../utils/Notifications.js";
+import {
+  Table,
+  TableHeader,
+  TableColumn,
+  TableBody,
+  TableRow,
+  TableCell,
+  User,
+  Tooltip,
+} from "@nextui-org/react";
 import { TrashIcon, PencilSquareIcon } from "@heroicons/react/24/outline";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import setAuthHeader from "../../../../utils/AxiosUtils";
-
 
 const columns = [{ name: "PLATAFORMA" }, { name: "ACCIONES" }];
 
@@ -18,7 +30,7 @@ const PlatformTable = () => {
   const dispatch = useDispatch();
   const platforms = useSelector((state) => state.platforms);
   // console.log(platforms);
-  const token = localStorage.getItem('validToken')
+  const token = localStorage.getItem("validToken");
 
   const handlerDelete = async (id, platform) => {
     const userConfirmation = await Swal.fire({
@@ -57,7 +69,22 @@ const PlatformTable = () => {
   }, [dispatch]);
 
   return (
-    <Table aria-label="platform admin table">
+    <Table
+      aria-label="platform admin table"
+      classNames={{
+        base: "",
+        table: "dark:bg-secondary min-h-[600px]",
+        wrapper: "dark:bg-secondary",
+        thead: "",
+        tbody: "",
+        tr: "",
+        th: "dark:bg-[#0B0120]",
+        td: "",
+        tfoot: "",
+        sortIcon: "",
+        emptyWrapper: "dark:text-white",
+      }}
+    >
       <TableHeader>
         {columns.map((column, index) => (
           <TableColumn key={index}>{column.name}</TableColumn>
@@ -85,17 +112,18 @@ const PlatformTable = () => {
                             onClose={onClose}
                           />
                         )}
-                        openButton={<PencilSquareIcon className="text-black w-4" />}
+                        openButton={
+                          <PencilSquareIcon className="text-black w-4" />
+                        }
                       />
                     </span>
                   </Tooltip>
 
-                  <Tooltip
-                    color="danger"
-                    content="Eliminar">
+                  <Tooltip color="danger" content="Eliminar">
                     <span
                       className="text-lg text-danger cursor-pointer active:opacity-50"
-                      onClick={() => handlerDelete(platform.id, platform)}>
+                      onClick={() => handlerDelete(platform.id, platform)}
+                    >
                       <TrashIcon className="text-black w-4" />
                     </span>
                   </Tooltip>
