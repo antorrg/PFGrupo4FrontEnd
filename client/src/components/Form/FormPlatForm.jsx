@@ -13,7 +13,6 @@ const FormPlatForm = ({ props, onClose }) => {
   const platforms = useSelector((state) => state.platforms).map((p) => p.name);
   // console.log(platforms);
    const token =localStorage.getItem('validToken')
-
   useEffect(() => {
     dispatch(getPlatforms());
   }, [dispatch]);
@@ -32,8 +31,8 @@ const FormPlatForm = ({ props, onClose }) => {
       }),
   });
 
-  const postPlatform = async (value,token) => {
-     const token =localStorage.getItem('validToken')
+  const postPlatform = async (value, token) => {
+    
     try {
       await axios.post("/post/platform/", value, setAuthHeader(token));
       showSuccess(`Plataforma ${value.name} agregada`);
@@ -45,7 +44,6 @@ const FormPlatForm = ({ props, onClose }) => {
   };
 
   const putPlatform = async (values,token, props) => {
-     const token =localStorage.getItem('validToken')
     try {
       const { data } = await axios.put(`/put/platform/${props.id}`, values, setAuthHeader(token));
       dispatch(getPlatforms());
