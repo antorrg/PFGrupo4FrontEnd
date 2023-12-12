@@ -9,7 +9,7 @@ import { RemoveFromCartIcon } from "../../icono/icono";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useSelector } from "react-redux";
 import axios from "axios";
-import setAuthHeader from '../../../utils/AxiosUtils.jsx'
+import setAuthHeader from '../../utils/AxiosUtils'
 
 const CartItem = ({
   image,
