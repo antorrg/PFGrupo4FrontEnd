@@ -6,7 +6,7 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import { Button } from "@nextui-org/react";
 import { getPlatforms } from "../../redux/actions";
 import { showInfo, showError, showSuccess } from "../../utils/Notifications";
-import setAuthHeader from '../../../utils/AxiosUtils.jsx'
+import setAuthHeader from '../../utils/AxiosUtils.jsx'
 
 const FormPlatForm = ({ props, onClose }) => {
   const dispatch = useDispatch();
@@ -28,7 +28,7 @@ const FormPlatForm = ({ props, onClose }) => {
       .min(2, "Minimo dos caracteres")
       .test("Plataforma repetida", "La plataforma ya existe", (value) => {
         const upperCaseValue = value.toUpperCase();
-        return !platforms.includes(upperCaseValue);
+        return !platforms.toUpperCase().includes(upperCaseValue);
       }),
   });
 
