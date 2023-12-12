@@ -30,12 +30,7 @@ const GenresTable = () => {
   const dispatch = useDispatch();
   const genres = useSelector((state) => state.genres);
   // console.log(genres);
-<<<<<<< HEAD:client/src/views/Perfil/Admin/GenresTable/GenresTable.jsx
   const token =localStorage.getItem('validToken');
-
-=======
-  const token = localStorage.getItem("validToken");
->>>>>>> 7a5896808aa96aff07c9ac68e3bb2539f0c65952:client/src/views/Perfil/Admin/Genres/GenresTable/GenresTable.jsx
 
   const handlerDelete = async (id, genre) => {
     const userConfirmation = await Swal.fire({
