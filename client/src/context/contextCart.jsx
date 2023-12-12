@@ -34,8 +34,8 @@ export const CartProvider = ({ children }) => {
 
     try {
       const data = await axios.post(
-        `/post/createShoppingCart`, setAuthHeader(token),cartItems,
-        
+        `/post/createShoppingCart`, 
+        cartItems, setAuthHeader(token)
       );
       //console.log(data.data);
       dispatch(updateCart(data.data));

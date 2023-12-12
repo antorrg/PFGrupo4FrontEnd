@@ -9,6 +9,7 @@ import { TrashIcon, PencilSquareIcon } from "@heroicons/react/24/outline";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
+import setAuthHeader from "../../../../utils/AxiosUtils";
 
 
 const columns = [{ name: "PLATAFORMA" }, { name: "ACCIONES" }];
@@ -33,7 +34,7 @@ const PlatformTable = () => {
 
     if (userConfirmation.isConfirmed) {
       try {
-        const response = await axios.delete(`/delete/platforms/${id}`);
+        const response = await axios.delete(`/delete/platforms/${id}`, setAuthHeader(token));
         const { data } = response;
 
         if (response.status === 200) {
