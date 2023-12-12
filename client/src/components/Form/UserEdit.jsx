@@ -54,7 +54,7 @@ const UserEdit = ({ onClose }) => {
 
   const editUser = async (values) => {
     try {
-      const response = await axios.put(`/put/user/${id}`, valuessetAuthHeader(token));
+      const response = await axios.put(`/put/user/${id}`, values, setAuthHeader(token));
       showSuccess("Usuario actualizado");
       dispatch(limpiarLogin());
       navigate("/");
