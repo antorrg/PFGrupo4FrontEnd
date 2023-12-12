@@ -65,7 +65,7 @@ const PlatformTable = () => {
   };
 
   useEffect(() => {
-    dispatch(getPlatforms(token));
+    dispatch(getPlatforms());
   }, [dispatch]);
 
   return (
