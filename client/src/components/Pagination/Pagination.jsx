@@ -1,6 +1,7 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
-
+import { useLocation } from "react-router-dom";
 const Pagination = (props) => {
+  const currentLocation = useLocation().pathname;
   const { PaginationData, onPageChange } = props;
   const {
     totalItems,
@@ -68,7 +69,9 @@ const Pagination = (props) => {
   };
 
   return totalItems <= 0 ? (
-    <div>No hay juegos que cumplan los filtros</div>
+    currentLocation !== "/perfil/games" && (
+      <div>No hay juegos que cumplan los filtros</div>
+    )
   ) : (
     <div className="flex items-center justify-center px-4 py-3 sm:px-6">
       <div className="hidden sm:flex sm:items-center sm:justify-between">
