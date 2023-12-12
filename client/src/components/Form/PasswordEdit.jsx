@@ -11,11 +11,10 @@ import { useDispatch } from "react-redux";
 import { limpiarLogin } from "../../redux/actions";
 import { useNavigate } from "react-router-dom";
 
-
 const PasswordEdit = ({ onClose }) => {
   const user = useSelector((state) => state.loginUser);
-const dispatch = useDispatch();
-const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const initialValues = {
     password: "",
     passwordNew: "",
@@ -71,10 +70,10 @@ const navigate = useNavigate();
       const response = await axios.put(`/put/user/${user.id}`, {
         password: values.passwordNew,
       });
-  console.log(response)
+
       showSuccess("Usuario editado ");
-      dispatch(limpiarLogin())
-      navigate("/")
+      dispatch(limpiarLogin());
+      navigate("/");
     } catch (error) {
       showError("No fue posible editar el usuario");
     }
@@ -97,7 +96,7 @@ const navigate = useNavigate();
 
           <hr />
           <br />
-          {!validate && user.password  && (
+          {!validate && user.password && (
             <div className="mb-4">
               <label
                 htmlFor="password"
@@ -123,7 +122,7 @@ const navigate = useNavigate();
             </div>
           )}
 
-          {(validate || !user.password && setValidate(true)) && (
+          {(validate || (!user.password && setValidate(true))) && (
             <div>
               <div className="mb-4">
                 <label
