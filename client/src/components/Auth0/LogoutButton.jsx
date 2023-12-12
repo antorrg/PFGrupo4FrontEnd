@@ -13,7 +13,7 @@ const LogoutButton = () => {
         logout({ logoutParams: { returnTo: window.location.origin } })
         dispatch(limpiarLogin())
         //limpiar el localStorage:
-        localStorage.clear();
+        localStorage.removeItem('validToken');
       }
         
       }
