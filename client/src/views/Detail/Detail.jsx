@@ -3,10 +3,12 @@ import { Link, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { clearDetails, getDetails, changeBg } from "../../redux/actions";
 import ConsoleLogos from "../../components/ConsoleLogos/ConsoleLogos";
+import CommentsAndRatingsBox from "./CommentsAndRatingsBox";
 
 function Detail() {
   const dispatch = useDispatch();
   const { id } = useParams();
+
   const detailGame = useSelector((state) => state.detailGame);
 
   useEffect(() => {
@@ -20,6 +22,7 @@ function Detail() {
   if (detailGame.image) {
     dispatch(changeBg(detailGame.image));
   }
+  console.log(detailGame);
 
   return (
     <div className="overflow-hidden w-full flex-1 ">
@@ -72,37 +75,39 @@ function Detail() {
             </div>
           </div>
         </div>
-        {
-        detailGame.rated && 
-        <div>
-          {detailGame.rated.scorePercentajes.length > 0 &&
+        {detailGame.rated && <CommentsAndRatingsBox rated={detailGame.rated} />}
+        {/* {detailGame.rated && (
           <div>
-            <p className="text-[14px]">{"Puntaje Promedio: " + detailGame.rated.avgScore} </p>
-            <br></br>
-            {detailGame.rated.scorePercentajes.map((rated) => {
-                return (
-                  <p className="text-[14px]" key={rated.score}>
-                    {"Puntaje " + rated.score + " = " + rated.percent + "%"}
-                  </p>
-                );
-              })}
-            {detailGame.rated.lastTenRatings.map((rating) => {
-                return (
-                  <div>
-                    <br></br>
-                    <p className="text-[14px]" key={rating.id}>
-                      {"Comentario: " + rating.comment}
+            {detailGame.rated.scorePercentajes.length > 0 && (
+              <div>
+                <p className="text-[14px]">
+                  {"Puntaje Promedio: " + detailGame.rated.avgScore}{" "}
+                </p>
+                <br></br>
+                {detailGame.rated.scorePercentajes.map((rated) => {
+                  return (
+                    <p className="text-[14px]" key={rated.score}>
+                      {"Puntaje " + rated.score + " = " + rated.percent + "%"}
                     </p>
-                    <p className="text-[14px]" key={rating.id}>
-                      {"Score: " + rating.score}
-                    </p>
-                  </div>
-                );
-              })}
+                  );
+                })}
+                {detailGame.rated.lastTenRatings.map((rating) => {
+                  return (
+                    <div>
+                      <br></br>
+                      <p className="text-[14px]" key={rating.id}>
+                        {"Comentario: " + rating.comment}
+                      </p>
+                      <p className="text-[14px]" key={rating.id}>
+                        {"Score: " + rating.score}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
-          }
-        </div>
-        }
+        )} */}
       </div>
     </div>
   );

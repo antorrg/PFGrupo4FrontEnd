@@ -2,10 +2,12 @@ import { useState } from 'react';
 import React, { useEffect } from 'react';
 import { initMercadoPago, Wallet } from '@mercadopago/sdk-react';
 import axios from "axios";
+import setAuthHeader from '../../../utils/AxiosUtils.jsx'
 //require ('dotenv').config();
 //const { MERCADOPAGO_PUBLIC_KEY }=process.env;
 
 const PaymentTest = (props) => {
+    const token = localStorage.getItem('validToken')
 
     const { userID, userEmail, arrayItems } = props;
 
@@ -26,8 +28,7 @@ const PaymentTest = (props) => {
 
     const createPreference = async () => {
         try {
-            //const response = await axios.post("http://localhost:3001/post/createParchuseOrder", {
-            const response = await axios.post("/post/createParchuseOrder", {
+            const response = await axios.post("/post/createParchuseOrder",setAuthHeader(token), {
                 userID: userID,//"634829e8-cb56-4d71-9668-21fc95fa8789",
                 userEmail: userEmail,
                 items: arrayItems/*[
