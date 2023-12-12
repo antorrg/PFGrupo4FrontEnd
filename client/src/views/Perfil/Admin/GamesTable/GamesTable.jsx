@@ -2,9 +2,6 @@ import axios from "axios";
 import Modal from "../../../../Modal/Modal";
 import Swal from "sweetalert2";
 import Formulario from "../../../../components/Form/Form";
-
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, User, Chip, Tooltip, getKeyValue } from "@nextui-org/react";
-import { EyeIcon, TrashIcon, PencilSquareIcon } from "@heroicons/react/24/outline";
 import { showSuccess, showError, showInfo } from "../../../../utils/Notifications";
 import setAuthHeader from '../../../../utils/AxiosUtils'
 import {
