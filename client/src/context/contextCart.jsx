@@ -3,7 +3,7 @@ import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { useAuth0 } from "@auth0/auth0-react";
 import { updateCart } from "../redux/actions";
-import setAuthHeader from '.././utils/AxiosUtils'
+import setAuthHeader from '../utils/AxiosUtils'
 export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
@@ -34,8 +34,8 @@ export const CartProvider = ({ children }) => {
 
     try {
       const data = await axios.post(
-        `/post/createShoppingCart`, setAuthHeader(token),
-        cartItems
+        `/post/createShoppingCart`, setAuthHeader(token),cartItems,
+        
       );
       //console.log(data.data);
       dispatch(updateCart(data.data));
