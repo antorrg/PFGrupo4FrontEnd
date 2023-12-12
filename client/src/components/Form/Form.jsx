@@ -14,6 +14,7 @@ import Swal from "sweetalert2";
 import { Button, select } from "@nextui-org/react";
 import setAuthHeader from '../../utils/AxiosUtils'
 
+
 const Formulario = ({ props, onClose }) => {
   const dispatch = useDispatch();
   const platforms = useSelector((state) => state.platforms);

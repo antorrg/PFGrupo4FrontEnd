@@ -134,7 +134,7 @@ const FormRegistrer = ({ onClose }) => {
               placeholder="Obigatorio"
               type={!viewPassword ? "password" : "text"}
             />
-            <button onClick={handlerPassword}>
+            <button  type="button" onClick={handlerPassword}>
               {" "}
               {viewPassword ? "Ocultar" : "Ver"}{" "}
             </button>
@@ -158,7 +158,7 @@ const FormRegistrer = ({ onClose }) => {
               placeholder="Obigatorio"
               type={!viewPassword ? "password" : "text"}
             />
-            <button onClick={handlerPassword}>
+            <button  type="button" onClick={handlerPassword}>
               {" "}
               {viewPassword ? "Ocultar" : "Ver"}{" "}
             </button>
@@ -173,7 +173,7 @@ const FormRegistrer = ({ onClose }) => {
             <Button type="submit" color="primary">
               Crear Usuario
             </Button>
-            <Button onClick={handlerClose} color="primary">
+            <Button  type="button" onClick={handlerClose} color="primary">
               Cancelar
             </Button>
           </div>

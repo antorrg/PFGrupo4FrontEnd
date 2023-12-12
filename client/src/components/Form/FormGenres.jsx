@@ -8,6 +8,7 @@ import { getGenres } from "../../redux/actions";
 import { showInfo, showError, showSuccess } from "../../utils/Notifications";
 import setAuthHeader from '../../utils/AxiosUtils';
 
+
 const FormGenres = ({ props, onClose }) => {
   const dispatch = useDispatch();
   const genres = useSelector((state) => state.genres).map((g) => g.name);
@@ -28,7 +29,7 @@ const FormGenres = ({ props, onClose }) => {
       .min(2, "Minimo dos caracteres")
       .test("Genero repetido", "El genero ya existe", (value) => {
         const upperCaseValue = value.toUpperCase();
-        return !genres.includes(upperCaseValue);
+        return !genres.toUpperCase().includes(upperCaseValue);
       }),
   });
 
