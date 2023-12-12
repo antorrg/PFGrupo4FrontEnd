@@ -28,7 +28,7 @@ const FormGenres = ({ props, onClose }) => {
       .min(2, "Minimo dos caracteres")
       .test("Genero repetido", "El genero ya existe", (value) => {
         const upperCaseValue = value.toUpperCase();
-        return !genres.includes(upperCaseValue);
+        return !genres.toUpperCase().includes(upperCaseValue);
       }),
   });
 
