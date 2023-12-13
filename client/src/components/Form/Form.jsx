@@ -12,7 +12,7 @@ import {
 import Select from "react-select";
 import Swal from "sweetalert2";
 import { Button, select } from "@nextui-org/react";
-import setAuthHeader from '../../utils/AxiosUtils';
+import setAuthHeader from '../../utils/AxiosUtils'
 
 
 const Formulario = ({ props, onClose }) => {
