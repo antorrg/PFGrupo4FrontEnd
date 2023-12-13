@@ -9,6 +9,7 @@ import { useState } from "react";
 YupPassword(Yup);
 
 import axios from "axios";
+import { EyeFilledIcon, EyeSlashFilledIcon } from "./UtilsForms/iconos";
 
 const FormRegistrer = ({ onClose }) => {
   const user = {
@@ -128,16 +129,25 @@ const FormRegistrer = ({ onClose }) => {
             >
               Contraseña
             </label>
-            <Field
-              className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              name="password"
-              placeholder="Obigatorio"
-              type={!viewPassword ? "password" : "text"}
-            />
-            <button  type="button" onClick={handlerPassword}>
-              {" "}
-              {viewPassword ? "Ocultar" : "Ver"}{" "}
-            </button>
+            <div className="flex items-center relative">
+              <Field
+                className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                name="password"
+                placeholder="Obigatorio"
+                type={!viewPassword ? "password" : "text"}
+              />
+              <button
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 -translate-x-1/2 focus:outline-none"
+                type="button"
+                onClick={handlerPassword}
+              >
+                {viewPassword ? (
+                  <EyeSlashFilledIcon className="text-2xl text-default-400" />
+                ) : (
+                  <EyeFilledIcon className="text-2xl text-default-400" />
+                )}
+              </button>
+            </div>
             <ErrorMessage
               name="password"
               component="div"
@@ -152,16 +162,25 @@ const FormRegistrer = ({ onClose }) => {
             >
               Repita su contraseña
             </label>
-            <Field
-              className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              name="password1"
-              placeholder="Obigatorio"
-              type={!viewPassword ? "password" : "text"}
-            />
-            <button  type="button" onClick={handlerPassword}>
-              {" "}
-              {viewPassword ? "Ocultar" : "Ver"}{" "}
-            </button>
+            <div className="flex items-center relative">
+              <Field
+                className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                name="password1"
+                placeholder="Obigatorio"
+                type={!viewPassword ? "password" : "text"}
+              />
+              <button
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 -translate-x-1/2 focus:outline-none"
+                type="button"
+                onClick={handlerPassword}
+              >
+                {viewPassword ? (
+                  <EyeSlashFilledIcon className="text-2xl text-default-400" />
+                ) : (
+                  <EyeFilledIcon className="text-2xl text-default-400" />
+                )}
+              </button>
+            </div>
             <ErrorMessage
               name="password1"
               component="div"
@@ -173,7 +192,7 @@ const FormRegistrer = ({ onClose }) => {
             <Button type="submit" color="primary">
               Crear Usuario
             </Button>
-            <Button  type="button" onClick={handlerClose} color="primary">
+            <Button type="button" onClick={handlerClose} color="primary">
               Cancelar
             </Button>
           </div>

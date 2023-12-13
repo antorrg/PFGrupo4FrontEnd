@@ -10,6 +10,7 @@ import {
   LOG,
   CLEAN_LOG,
   UPDATE_CART,
+  GET_ALL_USERS,
 } from "./actions";
 
 let initialState = {
@@ -18,8 +19,8 @@ let initialState = {
   detailGame: [],
   platforms: [],
   genres: [],
-  loginUser:  JSON.parse(localStorage.getItem("loginUser")) || [] ,
-  filtersObj: { 
+  loginUser: JSON.parse(localStorage.getItem("loginUser")) || [],
+  filtersObj: {
     page: 0,
     platforms: "",
     genres: "",
@@ -30,6 +31,7 @@ let initialState = {
   bgPage: "",
   allGames: [],
   cart: [],
+  allUsers: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -85,7 +87,7 @@ const reducer = (state = initialState, action) => {
       return { ...state, allGames: action.payload };
 
     case LOG:
-      localStorage.setItem("loginUser",JSON.stringify(action.payload));
+      localStorage.setItem("loginUser", JSON.stringify(action.payload));
       return {
         ...state,
         loginUser: action.payload,
@@ -100,6 +102,9 @@ const reducer = (state = initialState, action) => {
 
     case UPDATE_CART:
       return { ...state, cart: action.payload };
+
+    case GET_ALL_USERS:
+      return { ...state, allUsers: action.payload };
 
     default:
       return { ...state };
