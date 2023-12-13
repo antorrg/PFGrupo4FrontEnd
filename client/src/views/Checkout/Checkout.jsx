@@ -1,16 +1,16 @@
 import { Routes, Route } from "react-router-dom";
-import Pending from "./PendingPage/PendingPage";
-import Succesfull from "./SuccesfullPage/SuccesfullPage";
-import Failure from "./FailurePage/FailurePage";
+import PendingPage from "./PendingPage/PendingPage";
+import SuccesfullPage from "./SuccesfullPage/SuccesfullPage";
+import FailurePage from "./FailurePage/FailurePage";
 import NotFound from "../NotFound/NotFound";
 
 const Checkout = () => {
   return (
     <>
       <Routes>
-        <Route path="/Pending" element={<Pending />} />
-        <Route path="/Succesfull" element={<Succesfull />} />
-        <Route path="/Failure" element={<Failure />} />
+        <Route path="/Pending" element={<PendingPage />} />
+        <Route path="/Succesfull" element={<SuccesfullPage />} />
+        <Route path="/Failure" element={<FailurePage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>
