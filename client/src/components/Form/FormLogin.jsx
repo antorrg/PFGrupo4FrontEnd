@@ -1,6 +1,6 @@
 import * as Yup from "yup";
 import YupPassword from "yup-password";
-import { Formik, Field, Form, ErrorMessage } from "formik";
+import { Formik, Field, FastField, Form, ErrorMessage } from "formik";
 import { Button } from "@nextui-org/react";
 import userLog from "../Auth0/Send";
 import { useState } from "react";
@@ -12,8 +12,11 @@ import LoginButton from "../Auth0/LoginButton";
 import { useDispatch } from "react-redux";
 import FormRegistrer from "./FormRegistrer";
 import Modal from "../../Modal/Modal";
+import logo from "../NavBar/logo.png";
+import { EyeFilledIcon, EyeSlashFilledIcon } from "./UtilsForms/iconos";
 
 const FormularioLogin = ({ onClose }) => {
+ 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -67,13 +70,17 @@ const FormularioLogin = ({ onClose }) => {
       {({ values, setFieldValue }) => (
         <Form>
           <div className="flex items-center justify-center">
-            <NavbarItem>
-              <LoginButton />
-            </NavbarItem>
+            {" "}
+            <img src={logo} alt="logo" className="h-[60px] w-auto" />
           </div>
           <br />
           <hr />
           <br />
+          <div className="flex items-center justify-center">
+            <NavbarItem>
+              <LoginButton />
+            </NavbarItem>
+          </div>
 
           <div className="mb-4">
             <label
@@ -102,20 +109,30 @@ const FormularioLogin = ({ onClose }) => {
             >
               Contraseña
             </label>
-            <Field
-              className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              name="password"
-              placeholder=""
-              type={!viewPassword ? "password" : "text"}
-            />
-            <button type="button" onClick={handlerPassword}>
-              {" "}
-              {viewPassword ? "Ocultar" : "Ver"}{" "}
-            </button>
+            <div className="flex items-center relative">
+              <Field
+                className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                name="password"
+                placeholder="Obigatorio"
+                type={!viewPassword ? "password" : "text"}
+              />
+              <button
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 -translate-x-1/2 focus:outline-none"
+                type="button"
+                onClick={handlerPassword}
+              >
+                {viewPassword ? (
+                  <EyeSlashFilledIcon className="text-2xl text-default-400" />
+                ) : (
+                  <EyeFilledIcon className="text-2xl text-default-400" />
+                )}
+              </button>
+            </div>
+
             <ErrorMessage
               name="password"
               component="div"
-              className="mt-1 text-sm text-red-600"
+              className="mt-2 text-sm text-red-600"
             />
           </div>
           <div className="flex items-center justify-center">
@@ -126,15 +143,13 @@ const FormularioLogin = ({ onClose }) => {
           <br />
           <hr />
           <br />
-          <div>
-            <h3>
-              ¿No tiene una cuenta ?
-              <Modal
-                textButton="Registrese"
-                title="Cree su usuario"
-                body={({ onClose }) => <FormRegistrer onClose={onClose} />}
-              />
-            </h3>
+          <div className="flex justify-center items-center">
+            <h3 className="mr-5">¿No tiene una cuenta ?</h3>
+            <Modal
+              textButton="Registrese"
+              title="Cree su usuario"
+              body={({ onClose }) => <FormRegistrer onClose={onClose} />}
+            />
           </div>
         </Form>
       )}
