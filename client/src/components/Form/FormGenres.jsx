@@ -80,7 +80,7 @@ const FormGenres = ({ props, onClose }) => {
           <div className="mb-4">
             <label
               htmlFor="name"
-              className="block text-sm font-medium text-gray-700">
+              className="block text-sm font-medium text-gray-700 dark:text-white">
               Agregar Genero
             </label>
             <div className="flex items-center gap-2 mt-2">

@@ -12,6 +12,7 @@ import setAuthHeader from '../../utils/AxiosUtils'
 const FormPlatForm = ({ props, onClose }) => {
   const dispatch = useDispatch();
   const platforms = useSelector((state) => state.platforms).map((p) => p.name);
+
   // console.log(platforms);
    const token =localStorage.getItem('validToken')
   useEffect(() => {
@@ -33,8 +34,8 @@ const FormPlatForm = ({ props, onClose }) => {
   });
 
 
-  const postPlatform = async (value) => {
-     const token =localStorage.getItem('validToken')
+  const postPlatform = async (value,token) => {
+    // const token =localStorage.getItem('validToken')
 
     try {
       await axios.post("/post/platform/", value, setAuthHeader(token));
@@ -47,8 +48,10 @@ const FormPlatForm = ({ props, onClose }) => {
   };
 
 
+
   const putPlatform = async (values, props) => {
      const token =localStorage.getItem('validToken')
+
 
     try {
       const { data } = await axios.put(`/put/platform/${props.id}`, values, setAuthHeader(token));
@@ -85,7 +88,7 @@ const FormPlatForm = ({ props, onClose }) => {
           <div className="mb-4">
             <label
               htmlFor="name"
-              className="block text-sm font-medium text-gray-700">
+              className="block text-sm font-medium text-gray-700 dark:text-white">
               Agregar Plataforma
             </label>
             <div className="flex items-center gap-2 mt-2">
