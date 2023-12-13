@@ -28,8 +28,8 @@ const PaymentTest = (props) => {
 
     const createPreference = async () => {
         try {
-            const response = await axios.post("/post/createParchuseOrder",setAuthHeader(token), {
-                userID: userID,//"634829e8-cb56-4d71-9668-21fc95fa8789",
+            const response = await axios.post("/post/createParchuseOrder", {
+   userID: userID,//"634829e8-cb56-4d71-9668-21fc95fa8789",
                 userEmail: userEmail,
                 items: arrayItems/*[
                     {
@@ -74,7 +74,7 @@ const PaymentTest = (props) => {
                         //currency_id: "COP"
                     }
                 ]*/
-            });
+            }, setAuthHeader(token));
             //return response.data.body.id;
             if(response.data.body.id) {
                 setPreferenceId(response.data.body.id);

@@ -32,7 +32,10 @@ const Carousel = () => {
         <Slider {...settings} className="flex items-center justify-center">
           {games.videogames.map((game, index) => {
             return (
-              <div className="w-[300px] h-[400px]" key={game.name}>
+              <div
+                className="h-[200px] sm:w-[300px] sm:h-[400px]"
+                key={game.name}
+              >
                 <img
                   src={game.image}
                   alt={`imagen-${index}`}

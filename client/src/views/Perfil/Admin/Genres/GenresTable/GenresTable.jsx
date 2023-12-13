@@ -1,15 +1,28 @@
 import axios from "axios";
-import Modal from "../../../../Modal/Modal";
+import Modal from "../../../../../Modal/Modal";
 import Swal from "sweetalert2";
-import { getGenres } from "../../../../redux/actions";
-import FormGenres from "../../../../components/Form/FormGenres";
-import { showSuccess, showError, showInfo } from "../../../../utils/Notifications";
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, User, Tooltip } from "@nextui-org/react";
+import { getGenres } from "../../../../../redux/actions";
+import FormGenres from "../../../../../components/Form/FormGenres";
+import {
+  showSuccess,
+  showError,
+  showInfo,
+} from "../../../../../utils/Notifications";
+import {
+  Table,
+  TableHeader,
+  TableColumn,
+  TableBody,
+  TableRow,
+  TableCell,
+  User,
+  Tooltip,
+} from "@nextui-org/react";
 import { TrashIcon, PencilSquareIcon } from "@heroicons/react/24/outline";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-
+import setAuthHeader from "../../../../../utils/AxiosUtils";
 
 const columns = [{ name: "GENERO" }, { name: "ACCIONES" }];
 
@@ -17,7 +30,7 @@ const GenresTable = () => {
   const dispatch = useDispatch();
   const genres = useSelector((state) => state.genres);
   // console.log(genres);
-  const token = localStorage.getItem('validToken');
+  const token =localStorage.getItem('validToken');
 
   const handlerDelete = async (id, genre) => {
     const userConfirmation = await Swal.fire({
@@ -33,7 +46,7 @@ const GenresTable = () => {
 
     if (userConfirmation.isConfirmed) {
       try {
-        const response = await axios.delete(`/delete/genres/${id}`);
+        const response = await axios.delete(`/delete/genres/${id}`,setAuthHeader(token));
         const { data } = response;
 
         if (response.status === 200) {
@@ -52,11 +65,26 @@ const GenresTable = () => {
   };
 
   useEffect(() => {
-    dispatch(getGenres(token));
+    dispatch(getGenres());
   }, [dispatch]);
 
   return (
-    <Table aria-label="genre admin table">
+    <Table
+      aria-label="genre admin table"
+      classNames={{
+        base: "",
+        table: "dark:bg-secondary min-h-[600px]",
+        wrapper: "dark:bg-secondary",
+        thead: "",
+        tbody: "",
+        tr: "",
+        th: "dark:bg-[#0B0120]",
+        td: "",
+        tfoot: "",
+        sortIcon: "",
+        emptyWrapper: "dark:text-white",
+      }}
+    >
       <TableHeader>
         {columns.map((column, index) => (
           <TableColumn key={index}>{column.name}</TableColumn>
@@ -84,17 +112,18 @@ const GenresTable = () => {
                             onClose={onClose}
                           />
                         )}
-                        openButton={<PencilSquareIcon className="text-black w-4" />}
+                        openButton={
+                          <PencilSquareIcon className="text-black w-4" />
+                        }
                       />
                     </span>
                   </Tooltip>
 
-                  <Tooltip
-                    color="danger"
-                    content="Eliminar">
+                  <Tooltip color="danger" content="Eliminar">
                     <span
                       className="text-lg text-danger cursor-pointer active:opacity-50"
-                      onClick={() => handlerDelete(genre.id, genre)}>
+                      onClick={() => handlerDelete(genre.id, genre)}
+                    >
                       <TrashIcon className="text-black w-4" />
                     </span>
                   </Tooltip>

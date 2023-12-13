@@ -8,7 +8,6 @@ import GamesTable from "./GamesTable/GamesTable";
 const AdminHome = () => {
   const dispatch = useDispatch();
   const games = useSelector((state) => state.games);
-  const token = localStorage.getItem('validToken');
 
   const [filters, setFilters] = useState({
     page: 0,
@@ -29,12 +28,12 @@ const AdminHome = () => {
 
   useEffect(() => {
     dispatch(getGames(filters));
-    dispatch(getAllGames(token));
+    dispatch(getAllGames());
   }, [filters, dispatch]);
 
   return (
     <div className="mt-4 flex items-start justify-center gap-8 w-[80%]">
-      <div className="p-4 w-[220px] h-auto bg-[#5825cc]">
+      <div className="p-4 w-[220px] h-auto bg-[#5825cc] hidden sm:flex">
         <Filters onApplyFilters={onApplyFiltersHandlers} />
       </div>
       <div className="flex-1 h-auto">

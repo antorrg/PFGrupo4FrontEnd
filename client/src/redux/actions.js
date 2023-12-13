@@ -1,6 +1,6 @@
 import axios from "axios";
 import { showError } from "../utils/Notifications";
-import setAuthHeader from "../utils/AxiosUtils";
+
 
 
 export const GET_GAMES = "GET_GAMES";
