@@ -11,10 +11,14 @@ import { useDispatch } from "react-redux";
 import { limpiarLogin } from "../../redux/actions";
 import { useNavigate } from "react-router-dom";
 import setAuthHeader from "../../utils/AxiosUtils";
+import { EyeFilledIcon, EyeSlashFilledIcon } from "./UtilsForms/iconos";
+import Swal from "sweetalert2"
+
+
 const PasswordEdit = ({ onClose }) => {
   const user = useSelector((state) => state.loginUser);
   const dispatch = useDispatch();
-  const token = localStorage.getItem('validToken') 
+  const token = localStorage.getItem("validToken");
   const navigate = useNavigate();
   const initialValues = {
     password: "",
@@ -66,17 +70,40 @@ const PasswordEdit = ({ onClose }) => {
       showError("Contraseña incorrecta");
     }
   };
-  const editUser = async (values) => {
-    try {
-      const response = await axios.put(`/put/user/${user.id}`, {
-        password: values.passwordNew,
-      }, setAuthHeader(token));
+ 
+  const editPassword = async (values) => {
+    const userConfirmation = await Swal.fire({
+      title: `¿Estás seguro de cambiar la contraseña?`,
+      text: "Esta acción no se puede deshacer.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Sí, cambiar",
+      cancelButtonText: "Cancelar",
+    });
 
-      showSuccess("Usuario editado ");
-      dispatch(limpiarLogin());
-      navigate("/");
-    } catch (error) {
-      showError("No fue posible editar el usuario");
+    if (userConfirmation.isConfirmed) {
+      try {
+        const response = await axios.put(`/put/user/${user.id}`,
+          {
+            password: values.passwordNew,
+          },
+          setAuthHeader(token)
+        );
+
+        if (response.status === 200) {
+          showSuccess(`Su contraseña se cambio exitosamente `);
+          dispatch(limpiarLogin());
+          navigate("/");
+        } else {
+          showError(`No fue posible cambiar la contraseña`);
+        }
+      } catch (error) {
+        showError(`${error.response.data.error}`);
+      }
+    } else {
+      showInfo(`Se cancelo el cambio de la contraseña`);
     }
   };
   return (
@@ -85,7 +112,7 @@ const PasswordEdit = ({ onClose }) => {
       validationSchema={validate ? formSchema1 : formSchema}
       onSubmit={async (values) => {
         if (validate) {
-          await editUser(values);
+          await editPassword(values);
         } else {
           await validateUser(values);
         }
@@ -105,16 +132,25 @@ const PasswordEdit = ({ onClose }) => {
               >
                 Contraseña actual
               </label>
-              <Field
-                className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                name="password"
-                placeholder="Obigatorio"
-                type={!viewPassword ? "password" : "text"}
-              />
-              <button type="button" onClick={handlerPassword}>
-                {" "}
-                {viewPassword ? "Ocultar" : "Ver"}{" "}
-              </button>
+              <div className="flex items-center relative">
+                <Field
+                  className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  name="password"
+                  placeholder="Obigatorio"
+                  type={!viewPassword ? "password" : "text"}
+                />
+                <button
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2 -translate-x-1/2 focus:outline-none"
+                  type="button"
+                  onClick={handlerPassword}
+                >
+                  {viewPassword ? (
+                    <EyeSlashFilledIcon className="text-2xl text-default-400" />
+                  ) : (
+                    <EyeFilledIcon className="text-2xl text-default-400" />
+                  )}
+                </button>
+              </div>
               <ErrorMessage
                 name="password"
                 component="div"
@@ -132,16 +168,25 @@ const PasswordEdit = ({ onClose }) => {
                 >
                   Ingrese su nueva contraseña
                 </label>
-                <Field
-                  className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                  name="passwordNew"
-                  placeholder="Obigatorio"
-                  type={!viewPassword ? "password" : "text"}
-                />
-                <button type="button" onClick={handlerPassword}>
-                  {" "}
-                  {viewPassword ? "Ocultar" : "Ver"}{" "}
-                </button>
+                <div className="flex items-center relative">
+                  <Field
+                    className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    name="passwordNew"
+                    placeholder="Obigatorio"
+                    type={!viewPassword ? "password" : "text"}
+                  />
+                  <button
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 -translate-x-1/2 focus:outline-none"
+                    type="button"
+                    onClick={handlerPassword}
+                  >
+                    {viewPassword ? (
+                      <EyeSlashFilledIcon className="text-2xl text-default-400" />
+                    ) : (
+                      <EyeFilledIcon className="text-2xl text-default-400" />
+                    )}
+                  </button>
+                </div>
                 <ErrorMessage
                   name="passwordNew"
                   component="div"
@@ -156,16 +201,25 @@ const PasswordEdit = ({ onClose }) => {
                 >
                   Repita su contraseña
                 </label>
-                <Field
-                  className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                  name="passwordNewRepeat"
-                  placeholder="Obigatorio"
-                  type={!viewPassword ? "password" : "text"}
-                />
-                <button type="button" onClick={handlerPassword}>
-                  {" "}
-                  {viewPassword ? "Ocultar" : "Ver"}{" "}
-                </button>
+                <div className="flex items-center relative">
+                  <Field
+                    className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    name="passwordNewRepeat"
+                    placeholder="Obigatorio"
+                    type={!viewPassword ? "password" : "text"}
+                  />
+                  <button
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 -translate-x-1/2 focus:outline-none"
+                    type="button"
+                    onClick={handlerPassword}
+                  >
+                    {viewPassword ? (
+                      <EyeSlashFilledIcon className="text-2xl text-default-400" />
+                    ) : (
+                      <EyeFilledIcon className="text-2xl text-default-400" />
+                    )}
+                  </button>
+                </div>
                 <ErrorMessage
                   name="passwordNewRepeat"
                   component="div"

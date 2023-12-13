@@ -1,8 +1,6 @@
 import axios from "axios";
 import { showError } from "../utils/Notifications";
 
-
-
 export const GET_GAMES = "GET_GAMES";
 export const GET_DETAILS = "GET_DETAILS";
 export const CLEAR_DETAILS = "CLEAR_DETAILS";
@@ -15,6 +13,7 @@ export const GET_ALL_GAMES = "GET_ALL_GAMES";
 export const LOG = "LOG";
 export const CLEAN_LOG = "CLEAN_LOG";
 export const UPDATE_CART = "UPDATE_CART";
+export const GET_ALL_USERS = "GET_ALL_USERS";
 
 export const updateCart = (cart) => {
   return (dispatch) => {
@@ -195,7 +194,7 @@ export const getAllGames = () => {
       showError(error.message);
     }
   };
-}; 
+};
 
 export const login = (userData) => {
   return {
@@ -208,5 +207,24 @@ export const limpiarLogin = (payload) => {
   return {
     type: CLEAN_LOG,
     payload,
+  };
+};
+
+export const getAllUsers = () => {
+  return async function (dispatch) {
+    try {
+      const response = await axios.get("/user");
+      return dispatch({
+        type: GET_ALL_USERS,
+        payload: response.data,
+      });
+    } catch (error) {
+      // Swal.fire({
+      //   icon: "error",
+      //   title: "Oops...",
+      //   text: `${error.message}`,
+      // });
+      showError(error.message);
+    }
   };
 };

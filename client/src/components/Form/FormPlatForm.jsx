@@ -28,14 +28,14 @@ const FormPlatForm = ({ props, onClose }) => {
       .required("Campo obligatorio")
       .min(2, "Minimo dos caracteres")
       .test("Plataforma repetida", "La plataforma ya existe", (value) => {
-        const upperCaseValue = value.toUpperCase();
-        return !platforms.toUpperCase().includes(upperCaseValue);
+        let upperCaseValue = value.toUpperCase();
+        return !platforms.some((platform) => platform.toUpperCase() === upperCaseValue);
       }),
   });
 
 
-  const postPlatform = async (value,token) => {
-    // const token =localStorage.getItem('validToken')
+  const postPlatform = async (value) => {
+     const token =localStorage.getItem('validToken')
 
     try {
       await axios.post("/post/platform/", value, setAuthHeader(token));
@@ -50,7 +50,7 @@ const FormPlatForm = ({ props, onClose }) => {
 
 
   const putPlatform = async (values, props) => {
-     const token =localStorage.getItem('validToken')
+   
 
 
     try {
