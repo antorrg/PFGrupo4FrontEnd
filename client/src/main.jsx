@@ -11,7 +11,6 @@ const domain = import.meta.env.VITE_AUTH0_DOMAIN;
 const clientId = import.meta.env.VITE_AUTH0_CLIENT_ID;
 const url = import.meta.env.VITE_URL;
 
-
 axios.defaults.baseURL = url;
 
 ReactDOM.createRoot(document.getElementById("root")).render(
