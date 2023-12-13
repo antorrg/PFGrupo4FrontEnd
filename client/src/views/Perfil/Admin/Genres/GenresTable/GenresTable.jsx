@@ -30,7 +30,9 @@ const GenresTable = () => {
   const dispatch = useDispatch();
   const genres = useSelector((state) => state.genres);
   // console.log(genres);
-  const token =localStorage.getItem('validToken');
+
+  const token = localStorage.getItem("validToken");
+
 
   const handlerDelete = async (id, genre) => {
     const userConfirmation = await Swal.fire({

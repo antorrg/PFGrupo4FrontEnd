@@ -5,7 +5,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { showSuccess, showError } from "../../utils/Notifications";
 import { useDispatch } from "react-redux";
-import { limpiarLogin } from "../../redux/actions";
+import { limpiarLogin, login } from "../../redux/actions";
 import { useNavigate } from "react-router-dom";
 import {Input} from "@nextui-org/react";
 import setAuthHeader from "../../utils/AxiosUtils";
@@ -54,10 +54,11 @@ const UserEdit = ({ onClose }) => {
 
   const editUser = async (values) => {
     try {
-      const response = await axios.put(`/put/user/${id}`, values, setAuthHeader(token));
-      showSuccess("Usuario actualizado");
+      const {data} = await axios.put(`/put/user/${id}`, values, setAuthHeader(token));
+      showSuccess("Usuario actualizado, vuelva a ingresar ");
       dispatch(limpiarLogin());
       navigate("/");
+      
     } catch (error) {
       showError("No fue posible actualizar su usuario")
       throw new Error(error);

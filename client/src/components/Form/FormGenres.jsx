@@ -27,13 +27,13 @@ const FormGenres = ({ props, onClose }) => {
     name: Yup.string()
       .required("Campo obligatorio")
       .min(2, "Minimo dos caracteres")
-      .test("Genero repetido", "El genero ya existe", (value) => {
-        const upperCaseValue = value.toUpperCase();
-        return !genres.toUpperCase().includes(upperCaseValue);
+      .test("Plataforma repetida", "La plataforma ya existe", (value) => {
+        let upperCaseValue = value.toUpperCase();
+        return !genres.some((genre) => genre.toUpperCase() === upperCaseValue);
       }),
   });
 
-  const postGenre = async (value, token) => {
+  const postGenre = async (value) => {
     try {
       await axios.post("/post/genre/", value, setAuthHeader(token));
       showSuccess(`Genero ${value.name} agregado`);
@@ -44,7 +44,7 @@ const FormGenres = ({ props, onClose }) => {
     }
   };
 
-  const putGenre = async (values,token, props) => {
+  const putGenre = async (values, props) => {
     try {
       const { data } = await axios.put(`/put/genre/${props.id}`, values,setAuthHeader(token));
       dispatch(getGenres());
@@ -80,7 +80,7 @@ const FormGenres = ({ props, onClose }) => {
           <div className="mb-4">
             <label
               htmlFor="name"
-              className="block text-sm font-medium text-gray-700">
+              className="block text-sm font-medium text-gray-700 dark:text-white">
               Agregar Genero
             </label>
             <div className="flex items-center gap-2 mt-2">
