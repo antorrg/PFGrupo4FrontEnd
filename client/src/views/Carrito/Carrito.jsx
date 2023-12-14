@@ -108,7 +108,7 @@ const Carrito = () => {
     //console.log("ids: " + JSON.stringify(videogamesIds));
     try {
       const data = await axios.post(
-        `/post/videogamesByIds`, setAuthHeader(token),
+        `/post/videogamesByIds`, videogamesIds, setAuthHeader(token),
 
       );
 
