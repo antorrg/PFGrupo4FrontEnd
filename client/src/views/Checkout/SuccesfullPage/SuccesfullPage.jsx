@@ -1,36 +1,40 @@
 import img from "../../Landing/all_games.jpg";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import setAuthHeader from '../../../utils/AxiosUtils'
-
+import setAuthHeader from "../../../utils/AxiosUtils";
+import { Spinner } from "@nextui-org/react";
 
 const SuccesfullPage = () => {
-  const token = localStorage.getItem('validToken')
+  const token = localStorage.getItem("validToken");
 
   const searchParams = new URLSearchParams(window.location.search);
   const paymentId = searchParams.get("payment_id");
-  const externalReference = searchParams.get("external_reference");
+  const arrayExternalData = searchParams.get("external_reference").split("-_");
+  const externalReference = arrayExternalData[0];
 
   const [paymentResult, setPaymentResult] = useState({});
+  console.log(paymentResult);
 
   const showResultHandler = (auxPaymentResult) => {
-    setPaymentResult(auxPaymentResult)
-  }
+    setPaymentResult(auxPaymentResult);
+  };
 
   const validePaymentResult = async () => {
     try {
-      const data = await axios.get(`/getParchuseOrder?payment_id=${paymentId}&external_reference=${externalReference}`,setAuthHeader(token));
-      
-      if(data.data.orderData.status === "waiting"){
+      const data = await axios.get(
+        `/getParchuseOrder?payment_id=${paymentId}&external_reference=${externalReference}`,
+        setAuthHeader(token)
+      );
+
+      if (data.data.orderData.status === "waiting") {
         const waitTime = setTimeout(() => {
-            validePaymentResult();
+          validePaymentResult();
         }, 2000);
       } else {
         showResultHandler(data.data);
       }
 
-    //return () => clearTimeout(waitTime);
-    
+      //return () => clearTimeout(waitTime);
     } catch (error) {
       window.alert(error.message);
     }
@@ -51,87 +55,67 @@ const SuccesfullPage = () => {
               className="h-full w-full object-cover"
             />
           </div>
-          <div className="flex flex-col max-w-[42rem] h-full flex-1 py-16 px-4 ">
-            <div>
-              <h1 className="text-[#5825CC] font-medium">Pago exitoso</h1>
-              <p className="font-bold text-4xl mt-2 sm:text-5xl">
-                Gracias por comprar
-              </p>
-              <p className="text-base text-gray-500 mt-2">
-                Agradecemos su pedido, actualmente lo estamos procesando. ¡Así
-                que espera y te enviaremos la confirmación muy pronto!
-              </p>
-              <dt className="mt-16">
-                <dt className="font-medium">Numero de Traking</dt>
-                <dd className="mt-2 text-[#5825CC] font-medium">
-                  51547878755545848512
-                </dd>
-              </dt>
-              <ul>
-                {paymentResult.orderData ? <div>{paymentResult.orderData.status}</div> : 
+          {paymentResult.orderData ? (
+            <div className="flex flex-col max-w-[42rem] h-full flex-1 py-16 px-4 ">
+              <div>
+                <h1 className="text-[#5825CC] font-medium">Pago exitoso</h1>
+                <p className="font-bold text-4xl mt-2 sm:text-5xl">
+                  Gracias por comprar
+                </p>
+                <p className="text-base text-gray-500 mt-2">
+                  Agradecemos su pedido, ya hemos procesado tu pedido. Disfruta
+                  del producto y Gracias por Comprar!
+                </p>
+                <dt className="mt-16">
+                  <dt className="font-medium">Numero de Transacción</dt>
+                  <dd className="mt-2 text-[#5825CC] font-medium">
+                    {paymentResult.orderData.transactionId}
+                  </dd>
+                </dt>
+                <ul>
                   <div>
-                    <li className="flex gap-4 py-6 justify-between border-t">
-                      <img
-                        src="https://tailwindui.com/img/ecommerce-images/confirmation-page-06-product-01.jpg"
-                        alt=""
-                        className="w-[96px] h-[96px] object-cover rounded-lg"
-                      />
-                      <div className="flex-1">
-                        <h3 className="font-medium">Basic Tee</h3>
-                        <p>Charcoal</p>
-                        <p>L</p>
-                      </div>
-                      <p className="font-medium">$36.00</p>
-                    </li>
-                    <li className="flex gap-4 py-6 justify-between border-t">
-                      <img
-                        src="https://tailwindui.com/img/ecommerce-images/confirmation-page-06-product-01.jpg"
-                        alt=""
-                        className="w-[96px] h-[96px] object-cover rounded-lg"
-                      />
-                      <div className="flex-1">
-                        <h3 className="font-medium">Basic Tee</h3>
-                        <p>Charcoal</p>
-                        <p>L</p>
-                      </div>
-                      <p className="font-medium">$36.00</p>
-                    </li>
-                    <li className="flex gap-4 py-6 justify-between border-t">
-                      <img
-                        src="https://tailwindui.com/img/ecommerce-images/confirmation-page-06-product-01.jpg"
-                        alt=""
-                        className="w-[96px] h-[96px] object-cover rounded-lg"
-                      />
-                      <div className="flex-1">
-                        <h3 className="font-medium">Basic Tee</h3>
-                        <p>Charcoal</p>
-                        <p>L</p>
-                      </div>
-                      <p className="font-medium">$36.00</p>
-                    </li>
+                    {paymentResult.videogamesData.map((game) => {
+                      return (
+                        <li
+                          className="flex gap-4 py-6 justify-between border-t"
+                          key={game.name}
+                        >
+                          <img
+                            src={game.image}
+                            alt={game.name}
+                            className="w-[96px] h-[96px] object-cover rounded-lg"
+                          />
+                          <div className="flex-1">
+                            <h3 className="font-medium">{game.name}</h3>
+                            <p className="text-accent">
+                              {game.physicalGame ? "FISICO" : "DIGITAL"}
+                            </p>
+                            <p>{game.quantity} unidades</p>
+                          </div>
+                          <p className="font-medium">{`$${game.unitPrice} ${game.currencyId}`}</p>
+                        </li>
+                      );
+                    })}
                   </div>
-                }
-              </ul>
-              <dl className="pt-6 border-t">
-                <div className="flex justify-between items-center">
-                  <dt className="font-medium text-gray-500">Subtotal</dt>
-                  <dd className="font-medium ">$76.00</dd>
-                </div>
-                <div className="flex justify-between items-center mt-6">
-                  <dt className="font-medium text-gray-500">Envio</dt>
-                  <dd className="font-medium text-gray-500">$8.00</dd>
-                </div>
-                <div className="flex justify-between items-center mt-6">
-                  <dt className="font-medium text-gray-500">Tarifas</dt>
-                  <dd className="font-medium text-gray-500">$6.40</dd>
-                </div>
-                <div className="flex justify-between items-center pt-6 mt-6 border-t">
-                  <dt className="font-bold text-lg">Total</dt>
-                  <dd className="font-bold text-lg">$86.40</dd>
-                </div>
-              </dl>
+                </ul>
+                <dl className="pt-6 border-t">
+                  <div className="flex justify-between items-center pt-6 mt-6 border-t">
+                    <dt className="font-bold text-lg">Total</dt>
+                    <dd className="font-bold text-lg">
+                      {`$${paymentResult.orderData.totalCost} 
+                      ${paymentResult.videogamesData[0].currencyId}`}
+                    </dd>
+                  </div>
+                </dl>
+              </div>
             </div>
-          </div>
+          ) : (
+            <Spinner
+              color="secondary"
+              size="lg"
+              className="absolute top-[50%] left-[50%]"
+            />
+          )}
         </div>
       </div>
     </div>
