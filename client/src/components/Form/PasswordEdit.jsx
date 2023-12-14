@@ -12,8 +12,7 @@ import { limpiarLogin } from "../../redux/actions";
 import { useNavigate } from "react-router-dom";
 import setAuthHeader from "../../utils/AxiosUtils";
 import { EyeFilledIcon, EyeSlashFilledIcon } from "./UtilsForms/iconos";
-import Swal from "sweetalert2"
-
+import Swal from "sweetalert2";
 
 const PasswordEdit = ({ onClose }) => {
   const user = useSelector((state) => state.loginUser);
@@ -70,7 +69,7 @@ const PasswordEdit = ({ onClose }) => {
       showError("Contraseña incorrecta");
     }
   };
- 
+
   const editPassword = async (values) => {
     const userConfirmation = await Swal.fire({
       title: `¿Estás seguro de cambiar la contraseña?`,
@@ -85,7 +84,8 @@ const PasswordEdit = ({ onClose }) => {
 
     if (userConfirmation.isConfirmed) {
       try {
-        const response = await axios.put(`/put/user/${user.id}`,
+        const response = await axios.put(
+          `/put/user/${user.id}`,
           {
             password: values.passwordNew,
           },
@@ -120,10 +120,16 @@ const PasswordEdit = ({ onClose }) => {
     >
       {({ values, setFieldValue }) => (
         <Form>
-          <h1> {user.email} </h1>
-
-          <hr />
           <br />
+          <hr />
+          <div className="sm:border dark:border-none sm:dark:bg-[#0B0120] max-w-[42rem] lg:max-w-[50rem] w-full sm:my-8 rounded-3xl">
+            <header className="dark:text-white mx-auto w-fit my-8">
+              <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-secondary">
+                Editar Usuario
+              </h1>
+            </header>
+          </div>
+          
           {!validate && user.password && (
             <div className="mb-4">
               <label

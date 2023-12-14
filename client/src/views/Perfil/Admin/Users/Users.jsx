@@ -10,7 +10,7 @@ import AdminEdit from "../../../../components/Form/AdminEdit"
 import setAuthHeader from "../../../../utils/AxiosUtils";
 import axios from "axios";
 
-const columns = [{ name: "USUARIO" }, { name: "ESTADO" }, { name: "ROL" }, { name: "ACCIONES" }];
+const columns = [{ name: "USUARIO" },{name:"NOMBRE"},{name:"APODO"}, { name: "ESTADO" }, { name: "ROL" }, { name: "ACCIONES" }];
 
 const statusColorMap = {
   active: "success",
@@ -23,11 +23,11 @@ const Users = () => {
   const token = localStorage.getItem("validToken");
   const dispatch = useDispatch();
   const allUsers = useSelector((state) => state.allUsers.users);
-  const loginUser = useSelector((state) => state.loginUser);
+  
 
    console.log("todos los usaurios", allUsers);
 
-   const allUserss = allUsers &&  allUsers.filter((user) => user.email !== loginUser.email)
+   
    
 
   useEffect(() => {
@@ -91,8 +91,8 @@ const Users = () => {
         })}
       </TableHeader>
       <TableBody emptyContent={"Aun no hay usuarios registrados."}>
-        {allUserss &&
-          allUserss?.map((user, index) => {
+        {allUsers &&
+          allUsers?.map((user, index) => {
             return (
               <TableRow key={`${user}-row-${index}`}>
                 <TableCell>
@@ -102,8 +102,10 @@ const Users = () => {
                     name={user.email}
                   />
                 </TableCell>
-                <TableCell>{user.enable ? "ACTIVO" : "BANEADO"}</TableCell>
-                <TableCell>{user.role === 0 ? "ADMINISTRADOR" : "USUARIO "} </TableCell>
+                <TableCell>{user.given_name ? `${user.given_name}` : "-"}</TableCell>
+                <TableCell>{user.nickname ? `${user.nickname}` : "-"}</TableCell>
+                <TableCell>{user.enable ? "Habilitado" : "Deshabilitado"}</TableCell>
+                <TableCell>{user.role === 0 ? "Administrador" : "Usuario"} </TableCell>
                 <TableCell>
                   <div className="relative flex items-center gap-2">
                      <Tooltip content="Editar">
@@ -123,11 +125,11 @@ const Users = () => {
                     />
                   </span>
                 </Tooltip> 
-                    <Tooltip content="Detalle">
+                    {/* <Tooltip content="Detalle">
                       <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
                         <EyeIcon className="text-black w-4" />
                       </span>
-                    </Tooltip>
+                    </Tooltip> */}
                     <Tooltip
                       color="danger"
                       content="Eliminar">

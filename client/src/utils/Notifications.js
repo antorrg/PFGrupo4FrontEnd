@@ -11,7 +11,7 @@ export const showSuccess = (mensaje) => {
 export const showError = (mensaje) => {
   toast.error(mensaje, {
     position: toast.POSITION.BOTTOM_RIGHT,
-    autoClose: 3000,
+    autoClose: false,
   });
 };
 export const showInfo = (mensaje) => {

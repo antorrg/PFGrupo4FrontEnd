@@ -26,6 +26,8 @@ import {
   PencilSquareIcon,
 } from "@heroicons/react/24/outline";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { getGames } from "../../../../redux/actions";
 
 const columns = [
   { name: "GAME" },
@@ -40,8 +42,13 @@ const statusColorMap = {
   vacation: "warning",
 };
 
-const GamesTable = ({ videogames }) => {
+const GamesTable = ({ videogames ,filters}) => {
+
+  const dispatch = useDispatch()
   const token = localStorage.getItem("validToken");
+
+  
+
   const handlerDelete = async (id, game) => {
     const userConfirmation = await Swal.fire({
       title: `¿Estás seguro de eliminar ${game.name}?`,
@@ -63,7 +70,7 @@ const GamesTable = ({ videogames }) => {
         const { data } = response;
         if (response.status === 200) {
           showSuccess(`${game.name} eliminado`);
-          dispatch(getGenres());
+          dispatch(getGames(filters));
         } else {
           showError(`Error al eliminar ${game.name}`);
         }

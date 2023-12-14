@@ -25,22 +25,22 @@ const AdminEdit = ({ onClose, user }) => {
 
   const enableOptions = [
     {
-      label: "ACTIVO",
+      label: "Habilitado",
       value: true,
     },
     {
-        label: "BANEADO",
+        label: "Deshabilitado",
         value: false,
     },
   ];
   
   const roleOptions = [
       {
-      label: "USUARIO",
+      label: "Usuario",
       value: 1,
     },
     {
-        label: "ADMINISTRADOR",
+        label: "Administrador",
         value: 0,
     },
   ];
