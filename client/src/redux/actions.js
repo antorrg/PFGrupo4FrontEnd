@@ -1,5 +1,6 @@
 import axios from "axios";
 import { showError } from "../utils/Notifications";
+import setAuthHeader from "../utils/AxiosUtils";
 
 export const GET_GAMES = "GET_GAMES";
 export const GET_DETAILS = "GET_DETAILS";
@@ -211,9 +212,10 @@ export const limpiarLogin = (payload) => {
 };
 
 export const getAllUsers = () => {
+  const token = localStorage.getItem("validToken");
   return async function (dispatch) {
     try {
-      const response = await axios.get("/user");
+      const response = await axios.get("/user", setAuthHeader(token));
       return dispatch({
         type: GET_ALL_USERS,
         payload: response.data,
