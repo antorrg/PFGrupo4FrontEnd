@@ -181,7 +181,7 @@ const Formulario = ({ props, onClose }) => {
     }
   };
 
-  const createVideogames = async (values, token) => {
+  const createVideogames = async (values) => {
     try {
       await axios.post("/post", values ,setAuthHeader(token));
 
@@ -203,7 +203,7 @@ const Formulario = ({ props, onClose }) => {
     }
   };
 
-  const editVideogames = async (values, props, token) => {
+  const editVideogames = async (values, props) => {
     try {
       if (!values.physicalGame) {
         values = { ...values, stock: 0 };
