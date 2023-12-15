@@ -84,17 +84,27 @@ const UserEdit = ({ onClose }) => {
                 alt={values.nickname ? values.nickname : values.given_name}
               />
             </div>
-            <div className="w-full">
-              <input
-                type="file"
-                id="picture"
-                name="picture"
-                className="mt-4 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                onChange={(event) =>
-                  handleImageChange(event, setFieldValue, values)
-                }
-              />
-            </div>
+
+            <div className="w-full h-fit flex items-center justify-center overflow-hidden mt-4">
+           
+                <input
+                  type="file"
+                  accept="image/png, image/jpeg, image/svg+xml"
+                  id="image"
+                  name="image"
+                  className="absolute inset-0 opacity-0 w-full h-full cursor-pointer mx-0 my-auto"
+                  onChange={(event) =>
+                    handleImageChange(event, setFieldValue, values)
+                  }
+                />
+                <label
+                  for="image"
+                  className="cursor-pointer bg-blue-500 text-white p-2 rounded-md"
+                >
+                  Seleccionar Imagen
+                </label>
+              </div>
+            
 
             <ErrorMessage
               name="picture"
