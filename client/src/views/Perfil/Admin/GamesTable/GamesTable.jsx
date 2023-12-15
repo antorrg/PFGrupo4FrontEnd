@@ -142,7 +142,7 @@ const GamesTable = ({ videogames ,filters}) => {
                   </Tooltip>
                   <Tooltip content="Detalle">
                     <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                    <Link to={/detail/${game.id}}>
+                    <Link to={`/detail/${game.id}`}>
                       <EyeIcon className="text-black w-4" />
                     </Link>
                     </span>
