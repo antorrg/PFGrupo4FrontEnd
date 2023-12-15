@@ -139,11 +139,11 @@ const GamesTable = ({ videogames ,filters}) => {
                       />
                     </span>
                   </Tooltip>
-                  <Tooltip content="Detalle">
+                  {/* <Tooltip content="Detalle">
                     <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
                       <EyeIcon className="text-black w-4" />
                     </span>
-                  </Tooltip>
+                  </Tooltip> */}
                   <Tooltip color="danger" content="Eliminar">
                     <span
                       className="text-lg text-danger cursor-pointer active:opacity-50"
