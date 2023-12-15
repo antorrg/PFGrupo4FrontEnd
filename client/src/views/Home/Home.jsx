@@ -39,7 +39,7 @@ const Home = () => {
         <Filters onApplyFilters={onApplyFiltersHandlers} />
       </div>
       <div className="flex-1 h-auto">
-        {games.videogames ? (
+        {/* {games.videogames ? ( */}
           <div className="flex flex-col">
             <Orders onApplyFilters={onApplyFiltersHandlers} filters={filters} />
             <Cards videogames={games.videogames} />
@@ -48,11 +48,11 @@ const Home = () => {
               onPageChange={onPageChangeHandler}
             />
           </div>
-        ) : (
+        {/* ) : (
           <div className="w-full h-[250px] flex items-center justify-center">
             <Spinner color="secondary" size="lg" />
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );

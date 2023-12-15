@@ -105,7 +105,7 @@ export default function Filters(props) {
   }, [dispatch, selectedPlatforms]);
 
   return (
-    <div className="">
+    <div className="w-full">
       <Accordion
         selectionMode="multiple"
         defaultExpandedKeys={["1", "2", "3", "4"]}
@@ -122,6 +122,11 @@ export default function Filters(props) {
               min="0"
               radius="none"
               name="minPrice"
+              classNames={{
+                label:"text-white",
+                inputWrapper: "bg-black/10 dark:hover:bg-black/20 hover:bg-black/20 shadow-base",
+                innerWrapper: "bg-transparent",
+              }}
               className="flex-1"
               value={prices.minPrice}
               onChange={() => {
@@ -137,6 +142,16 @@ export default function Filters(props) {
               min="0"
               radius="none"
               name="maxPrice"
+              classNames={{
+                mainWrapper:"bg-secondary",
+                label:"text-white",
+                input: [
+                  "bg-transparent",
+                  "text-black/90 dark:text-white/90",
+                ],
+                inputWrapper: "bg-black/10 dark:hover:bg-black/20 hover:bg-black/20 shadow-base",
+                innerWrapper: "bg-transparent",
+              }}
               className="flex-1 bg"
               value={prices.maxPrice}
               onChange={() => {
@@ -176,6 +191,9 @@ export default function Filters(props) {
             }}
             value={selectedPlatforms}
             defaultValue={selectedPlatforms}
+            classNames={{
+              base:"mx-2"
+            }}
             className={`overflow-hidden ${heightPlatforms}`}
           >
             {platforms[0] ? (
@@ -184,8 +202,8 @@ export default function Filters(props) {
                   <Checkbox
                     value={platform.name}
                     key={platform.name}
-                    radius="none"
-                    className={{
+                    radius="sm"
+                    classNames={{
                       base: "#1F0A4D",
                     }}
                   >
@@ -223,12 +241,15 @@ export default function Filters(props) {
             }}
             value={selectedGenres}
             defaultValue={selectedGenres}
+            classNames={{
+              base:"mx-2"
+            }}
             className={`overflow-hidden ${heightGenres}`}
           >
             {genres[0] ? (
               genres.map((genre) => {
                 return (
-                  <Checkbox value={genre.name} key={genre.name} radius="none">
+                  <Checkbox value={genre.name} key={genre.name} radius="sm">
                     <p className="text-white">{genre.name}</p>
                   </Checkbox>
                 );
@@ -251,7 +272,7 @@ export default function Filters(props) {
           </button>
         </AccordionItem>
       </Accordion>
-      <div className="flex justify-between w-full mt-4">
+      <div className="flex justify-center w-full mt-2 mb-4">
         <Button
           size="sm"
           variant="shadow"

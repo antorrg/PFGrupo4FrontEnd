@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const UnderConstruction = () => {
   return (
-    <div className="flex flex-col items-center justify-center max-w-[42rem]">
+    <div className="flex flex-col items-center justify-center max-w-[42rem] my-8">
       <img
         src={`./Mario.png`}
         alt="Under Construction"
