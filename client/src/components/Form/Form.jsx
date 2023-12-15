@@ -14,7 +14,7 @@ import Swal from "sweetalert2";
 import { Button, select } from "@nextui-org/react";
 import setAuthHeader from "../../utils/AxiosUtils";
 import { useNavigate } from "react-router-dom";
-import { showSuccess, showError } from "../../utils/Notifications";
+import { showSuccess } from "../../utils/Notifications";
 
 const Formulario = ({ props, onClose }) => {
   const navigate = useNavigate();
@@ -27,7 +27,7 @@ const Formulario = ({ props, onClose }) => {
   let nameGames = games.nombres;
 
   if (props) {
-    nameGames = nameGames.filter((name) => name !== props.name);
+    nameGames = nameGames && nameGames.filter((name) => name !== props.name);
   }
 
   useEffect(() => {
@@ -163,7 +163,7 @@ const Formulario = ({ props, onClose }) => {
           "https://api.cloudinary.com/v1_1/duy9efu8j/image/upload",
           formData
         );
-        showSuccess( "Imagen cargada con exito")
+        showSuccess("Imagen cargada con exito");
         setFieldValue("image", response.data.url);
       } catch (error) {
         Swal.fire({
@@ -180,7 +180,7 @@ const Formulario = ({ props, onClose }) => {
   const createVideogames = async (values) => {
     try {
       await axios.post("/post", values, setAuthHeader(token));
-      showSuccess( "Videojuego creado con exito !!")
+      showSuccess("Videojuego creado con exito !!");
     } catch (error) {
       Swal.fire({
         position: "top-end",
@@ -192,7 +192,7 @@ const Formulario = ({ props, onClose }) => {
     }
   };
 
-  const editVideogames = async (values, props, token) => {
+  const editVideogames = async (values, props) => {
     try {
       if (!values.physicalGame) {
         values = { ...values, stock: 0 };
@@ -213,13 +213,7 @@ const Formulario = ({ props, onClose }) => {
           name: "",
         })
       );
-      Swal.fire({
-        position: "center",
-        icon: "success",
-        title: " El videojuego se ha actualizado  !!",
-        showConfirmButton: false,
-        timer: 2000,
-      });
+      showSuccess(" El videojuego se ha actualizado  !!");
       onClose();
     } catch (error) {
       Swal.fire({
@@ -297,22 +291,26 @@ const Formulario = ({ props, onClose }) => {
             </div>
 
             <div className="mb-4">
-              <label
-                htmlFor="image"
-                className="block text-sm font-medium text-gray-700 dark:text-white"
-              >
-                {" "}
-                Imagen{" "}
-              </label>
-              <input
-                type="file"
-                id="image"
-                name="image"
-                className="mt-1 p-2 block w-full border dark:border-none rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                onChange={(event) =>
-                  handleImageChange(event, setFieldValue, values)
-                }
-              />
+              <div class="relative">
+                <input
+                  type="file"
+                  accept="image/png, image/jpeg, image/svg+xml"
+                  id="image"
+                  name="image"
+                  class="absolute inset-0 opacity-0 w-full h-full cursor-pointer"
+                  onChange={(event) =>
+                    handleImageChange(event, setFieldValue, values)
+                  }
+                />
+                <label
+                  for="image"
+                  class="cursor-pointer bg-blue-500 text-white p-2 rounded-md"
+                >
+                  Seleccionar Imagen
+                </label>
+              </div>
+             
+              <br />
               <div>
                 <img className="rounded-xl" src={values.image} alt="" />
               </div>
@@ -366,7 +364,32 @@ const Formulario = ({ props, onClose }) => {
                 className="mt-1 p-2 block w-full border dark:border-none rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 name="released"
                 placeholder="AAAA-MM-DD"
-                type="text"
+                type="date"
+                onChange={(e) => {
+                  const value = e.target.value;
+
+                  // Verifica si el valor no es nulo ni indefinido
+                  if (value) {
+                    // Ajusta la fecha para tener en cuenta la zona horaria
+                    const dateObject = new Date(`${value}T00:00:00Z`);
+                    const year = dateObject.getUTCFullYear();
+                    const month = String(dateObject.getUTCMonth() + 1).padStart(
+                      2,
+                      "0"
+                    );
+                    const day = String(dateObject.getUTCDate()).padStart(
+                      2,
+                      "0"
+                    );
+                    const formattedDate = `${year}-${month}-${day}`;
+
+                    console.log(formattedDate);
+                    setFieldValue("released", formattedDate);
+                  } else {
+                    // Puedes manejar el caso cuando el valor es nulo o indefinido
+                    setFieldValue("released", ""); // O algún otro valor predeterminado
+                  }
+                }}
               />
               <ErrorMessage
                 name="released"
