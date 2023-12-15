@@ -45,9 +45,8 @@ const SuccesfullPage = () => {
   }, []);
 
   return (
-    <div>
-      <div className="max-w-[1200px]">
-        <div className="flex-1  min-h-full flex flex-col text-left items-center justify-center lg:flex-row lg:gap-16 overflow-hidden">
+      <div className="max-w-[1200px] h-full flex-1 flex flex-col">
+        <div className="flex-1 min-h-full flex flex-col text-left items-center justify-center lg:flex-row lg:gap-16 overflow-hidden">
           <div className="h-[300px] w-full lg:w-[50%] lg:h-[1050px]">
             <img
               src={img}
@@ -110,15 +109,16 @@ const SuccesfullPage = () => {
               </div>
             </div>
           ) : (
-            <Spinner
+            <div className="flex flex-1 w-full items-center justify-center h-full">
+              <Spinner
               color="secondary"
               size="lg"
-              className="absolute top-[50%] left-[50%]"
-            />
+              className=""
+              />
+            </div>
           )}
         </div>
       </div>
-    </div>
   );
 };
 
