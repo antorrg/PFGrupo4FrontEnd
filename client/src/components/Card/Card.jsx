@@ -3,7 +3,7 @@ import ConsoleLogos from "../ConsoleLogos/ConsoleLogos";
 import { AddToCartIcon, RemoveFromCartIcon } from "../../icono/icono";
 import { useContext } from "react";
 import { CartContext } from "../../context/contextCart";
-import {showSuccess, showError} from "../../utils/Notifications"
+import { showSuccess, showError } from "../../utils/Notifications";
 
 const Card = ({ game }) => {
   const { id, Platforms, name, image, price, physicalGame } = game;
@@ -11,9 +11,13 @@ const Card = ({ game }) => {
   const isProductInCart = cart.some((item) => item.id === game.id);
 
   return (
-    <div className="w-[220px] h-[400px] bg-primary dark:bg-secondary text-white flex flex-col">
-      <img className="w-full h-[65%] object-cover" src={image} alt={name} />
-      <div className="text-left p-2 h-[35%] flex flex-col justify-evenly">
+    <div className="w-full h-[150px] sm:w-[220px] sm:h-[400px] bg-primary dark:bg-secondary text-white flex flex-row sm:flex-col">
+      <img
+        className="w-[100px] h-full sm:w-full sm:h-[65%] object-cover"
+        src={image}
+        alt={name}
+      />
+      <div className="text-left p-2 w-full sm:h-[35%] flex flex-col justify-evenly">
         <ConsoleLogos Platforms={Platforms} />
         <Link to={`/detail/${id}`}>
           <h3 className="text-sm font-bold">{name}</h3>
@@ -24,7 +28,15 @@ const Card = ({ game }) => {
           <button
             // style={{ backgroundColor: isProductInCart ? "red" : "#09f" }}
             onClick={() => {
-              isProductInCart ? (removeFromCart(game),showError(`El Video Juego ${game.name} se ha eliminado del carrito`)) : (addToCart(game), showSuccess(`El Video Juego ${game.name} se ha agregado al carrito`));
+              isProductInCart
+                ? (removeFromCart(game),
+                  showError(
+                    `El Video Juego ${game.name} se ha eliminado del carrito`
+                  ))
+                : (addToCart(game),
+                  showSuccess(
+                    `El Video Juego ${game.name} se ha agregado al carrito`
+                  ));
             }}
           >
             {isProductInCart ? <RemoveFromCartIcon /> : <AddToCartIcon />}

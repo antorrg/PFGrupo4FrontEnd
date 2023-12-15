@@ -56,7 +56,9 @@ const PendingPage = () => {
           {paymentResult.orderData ? (
             <div className="flex flex-col max-w-[42rem] h-full flex-1 py-16 px-4 ">
               <div>
-                <h1 className="text-[#5825CC] font-medium">Pago Pendiente</h1>
+                <h1 className="text-[#5825CC] font-bold text-3xl">
+                  Pago Pendiente
+                </h1>
                 <p className="font-bold text-4xl mt-2 sm:text-5xl">
                   Gracias por comprar
                 </p>
@@ -90,7 +92,9 @@ const PendingPage = () => {
                             </p>
                             <p>{game.quantity} unidades</p>
                           </div>
-                          <p className="font-medium">{`$${game.unitPrice} ${game.currencyId}`}</p>
+                          <p className="font-medium">{`$${
+                            game.unitPrice * game.quantity
+                          } ${game.currencyId}`}</p>{" "}
                         </li>
                       );
                     })}

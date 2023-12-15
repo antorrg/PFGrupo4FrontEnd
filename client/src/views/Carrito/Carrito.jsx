@@ -122,6 +122,7 @@ const Carrito = () => {
   };
 
   const updateFlagHandler = () => {
+    setItemsPayment([]);
     setUpdateFlag(!updateFlag);
   };
 
@@ -146,7 +147,7 @@ const Carrito = () => {
         showConfirmButton: false,
         footer:
           '<button onclick="window.location.href=' /
-          '"class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Click para iniciar sesión</button>',
+          '"class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Click para iniciar sesiÃ³n</button>',
       });
     }
   };

@@ -3,7 +3,7 @@ import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { useAuth0 } from "@auth0/auth0-react";
 import { updateCart } from "../redux/actions";
-import setAuthHeader from '../utils/AxiosUtils'
+import setAuthHeader from "../utils/AxiosUtils";
 export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
@@ -11,10 +11,11 @@ export const CartProvider = ({ children }) => {
   const { isAuthenticated } = useAuth0();
   const loginUser = useSelector((state) => state.loginUser);
   //const cartRedux = useSelector((state) => state.cart);
-  const token = localStorage.getItem('validToken')
+  const token = localStorage.getItem("validToken");
 
   const [cart, setCart] = useState([]);
-  const [initUpdateCart, setInitUpdateCart] = useState(true);
+  const [cartIsInit, setCartIsInit] = useState(false);
+  const [isLogin, setIsLogin] = useState(false);
   /*const [cart, setCart] = useState(() => {
     if (isAuthenticated) {
       const initValue = getUserCartDB();
@@ -34,11 +35,12 @@ export const CartProvider = ({ children }) => {
 
     try {
       const data = await axios.post(
-        `/post/createShoppingCart`, 
-        cartItems, setAuthHeader(token)
+        `/post/createShoppingCart`,
+        cartItems,
+        setAuthHeader(token)
       );
       //console.log(data.data);
-      dispatch(updateCart(data.data));
+      //dispatch(updateCart(data.data));
     } catch (error) {
       window.alert(error.message);
     }
@@ -46,7 +48,10 @@ export const CartProvider = ({ children }) => {
 
   const getUserCartDB = async () => {
     try {
-      const data = await axios.get(`/getUserShoppingCart/${loginUser.id}`,setAuthHeader(token));
+      const data = await axios.get(
+        `/getUserShoppingCart/${loginUser.id}`,
+        setAuthHeader(token)
+      );
       /*const data = await axios.get(
         `http://localhost:3001/getUserShoppingCart/87bfab07-3db0-4d3d-8b59-9315fc03fa1a`
       );*/
@@ -58,29 +63,47 @@ export const CartProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    if (initUpdateCart) {
-      //Initialize cart
-      if (isAuthenticated) {
-        //Initialize if user is login
+    console.log("isLogin: " + isLogin);
+    if (!cartIsInit) {
+      setCartIsInit(true);
+      if (loginUser.token) {
         getUserCartDB();
+        setIsLogin(true);
       } else {
-        //Initialize with local storage:
-        const storeCart = localStorage.getItem("cart");
-        //dispatch(storeCart ? JSON.parse(storeCart) : []);
-        setCart(storeCart ? JSON.parse(storeCart) : []);
+        if (isLogin) {
+          setIsLogin(false);
+          localStorage.removeItem("cart");
+          setCart([]);
+        } else {
+          const storeCart = localStorage.getItem("cart");
+          setCart(storeCart ? JSON.parse(storeCart) : []);
+        }
       }
-      setInitUpdateCart(false);
     } else {
-      if (isAuthenticated) {
-        updateCartDB(cart);
-        //localStorage.cart = [];
+      if (loginUser.token) {
+        if (isLogin) {
+          localStorage.removeItem("cart");
+          updateCartDB(cart);
+        } else {
+          if (cart.length) {
+            localStorage.removeItem("cart");
+            updateCartDB(cart);
+          } else {
+            getUserCartDB();
+          }
+          setIsLogin(true);
+        }
       } else {
-        localStorage.setItem("cart", JSON.stringify(cart));
+        if (isLogin) {
+          setIsLogin(false);
+          localStorage.removeItem("cart");
+          setCart([]);
+        } else {
+          localStorage.setItem("cart", JSON.stringify(cart));
+        }
       }
-      //console.log("JSON.stringify(cart): " + JSON.stringify(cart))
-      //localStorage.setItem("cart", JSON.stringify(cart));
     }
-  }, [cart]);
+  }, [cart, loginUser]);
 
   const getQuantityId = (id) => {
     return cart.find((item) => item.id === id)?.quantity || 0;
@@ -138,8 +161,10 @@ export const CartProvider = ({ children }) => {
   };
 
   const clearCart = (updateFlagHandler) => {
+    if (loginUser.token) {
+      updateCartDB([]);
+    }
     setCart([]);
-    updateCartDB([]);
     updateFlagHandler && updateFlagHandler();
   };
 

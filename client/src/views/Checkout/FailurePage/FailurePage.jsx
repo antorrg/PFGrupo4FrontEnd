@@ -40,10 +40,16 @@ const FailurePage = () => {
   };
 
   useEffect(() => {
-    if (externalReference != null) {
+    if (paymentId !== "null") {
       validePaymentResult();
     } else {
-      //showResultHandler(data.data);
+      setPaymentResult({
+        orderData: {
+          transactionId: "",
+          totalCost: 0,
+        },
+        videogamesData: [],
+      });
     }
   }, []);
 
@@ -61,7 +67,9 @@ const FailurePage = () => {
           {paymentResult.orderData ? (
             <div className="flex flex-col max-w-[42rem] h-full flex-1 py-16 px-4 ">
               <div>
-                <h1 className="text-[#5825CC] font-medium">Pago rechazado</h1>
+                <h1 className="text-[#5825CC] font-bold text-3xl">
+                  Pago rechazado
+                </h1>
                 <p className="font-bold text-4xl mt-2 sm:text-5xl">
                   Lamentamos el inconveniente
                 </p>
@@ -108,7 +116,10 @@ const FailurePage = () => {
                     <dt className="font-bold text-lg">Total</dt>
                     <dd className="font-bold text-lg">
                       {`$${paymentResult.orderData.totalCost} 
-                      ${paymentResult.videogamesData[0].currencyId}`}
+                      ${
+                        paymentResult.videogamesData.length &&
+                        paymentResult.videogamesData[0].currencyId
+                      }`}
                     </dd>
                   </div>
                 </dl>
