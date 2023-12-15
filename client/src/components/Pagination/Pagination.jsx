@@ -41,7 +41,7 @@ const Pagination = (props) => {
     }
   }
 
-  if (currentPage != totalPages - 1 && nextPage != totalPages - 1) {
+ if (currentPage != totalPages - 1 && nextPage + incremental != totalPages) {
     indexPagesArray.push({ isEllipsis: false, page: totalPages - 1 });
   }
 
