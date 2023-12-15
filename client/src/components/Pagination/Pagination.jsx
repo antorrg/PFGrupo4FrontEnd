@@ -28,9 +28,8 @@ const Pagination = (props) => {
   } else {
     indexPagesArray.push({ isEllipsis: false, page: currentPage });
   }
-
+  let incremental = 1;
   if (hasNextPage) {
-    let incremental = 1;
     indexPagesArray.push({ isEllipsis: false, page: nextPage });
     if (!hasPrevPage && nextPage < totalPages - 1) {
       indexPagesArray.push({ isEllipsis: false, page: nextPage + incremental });
