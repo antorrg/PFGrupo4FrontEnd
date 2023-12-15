@@ -206,7 +206,7 @@ const Carrito = () => {
                 className="text-white py-6 w-full bg-secondary dark:bg-primary"
                 onClick={() => checkoutHandler()}
               >
-                <p className="text-base">Checkout</p>
+                <p className="text-base">Comprar</p>
               </Button>
               <div className="w-full">
                 {itemsPayment.length ? (
