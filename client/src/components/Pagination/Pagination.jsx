@@ -74,7 +74,7 @@ const Pagination = (props) => {
     )
   ) : (
     <div className="flex items-center justify-center px-4 py-3 sm:px-6">
-      <div className="hidden sm:flex sm:items-center sm:justify-between">
+      <div className=" sm:flex sm:items-center sm:justify-between">
         <div>
           <nav
             className="isolate inline-flex -space-x-px rounded-md shadow-sm"

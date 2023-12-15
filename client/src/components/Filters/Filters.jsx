@@ -1,6 +1,6 @@
 import style from "./Filters.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 
 import { getPlatforms, getGenres } from "../../redux/actions";
 import SearchBar from "../../components/SearchBar/SearchBar";
@@ -18,18 +18,16 @@ import {
 export default function Filters(props) {
   const dispatch = useDispatch();
   const { onApplyFilters } = props;
-   const token =localStorage.getItem('validToken')
+  const token = localStorage.getItem("validToken");
 
   // plataformas -------------------------------------------
   const platforms = useSelector((state) => state.platforms);
   const [selectedPlatforms, setSelectedPlatforms] = useState([]);
   const [heightPlatforms, setHeightPlatforms] = useState("h-[250px]");
-  const selectedPlatformsRef = useRef(null);
   // generos -------------------------------------------------
   const genres = useSelector((state) => state.genres);
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [heightGenres, setHeightGenres] = useState("h-[250px]");
-  const selectedGenresRef = useRef(null);
   // Precios ---------------------------------------------------
   const [prices, setPrices] = useState({
     minPrice: "",
@@ -98,15 +96,17 @@ export default function Filters(props) {
       minPrice: "",
       maxPrice: "",
     });
-    selectedGenresRef.current.clearValue();
-    selectedPlatformsRef.current.clearValue();
-    selectedOrderRef.current.clearValue();
+    setSelectedPlatforms([]);
+    setSelectedGenres([]);
+    // selectedGenresRef.current.clearValue();
+    // selectedPlatformsRef.current.clearValue();
+    // selectedOrderRef.current.clearValue();
   };
 
   useEffect(() => {
     dispatch(getPlatforms(token));
     dispatch(getGenres(token));
-  }, [dispatch]);
+  }, [dispatch, selectedPlatforms]);
 
   return (
     <div className="">
@@ -159,6 +159,7 @@ export default function Filters(props) {
         >
           <SearchBar
             name="name"
+            className="dark:text-white"
             setSearchText={(value) => {
               setInputValue(value);
               handlerSubmit(event, value);
@@ -177,6 +178,7 @@ export default function Filters(props) {
               setSelectedPlatforms(platform);
               handlerSubmit(event, platform);
             }}
+            value={selectedPlatforms}
             defaultValue={selectedPlatforms}
             className={`overflow-hidden ${heightPlatforms}`}
           >
@@ -217,6 +219,7 @@ export default function Filters(props) {
               setSelectedGenres(genres);
               handlerSubmit(event, genres);
             }}
+            value={selectedGenres}
             defaultValue={selectedGenres}
             className={`overflow-hidden ${heightGenres}`}
           >

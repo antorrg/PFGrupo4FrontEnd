@@ -4,12 +4,18 @@ import { useSelector, useDispatch } from "react-redux";
 import { clearDetails, getDetails, changeBg } from "../../redux/actions";
 import ConsoleLogos from "../../components/ConsoleLogos/ConsoleLogos";
 import CommentsAndRatingsBox from "./CommentsAndRatingsBox";
+import { useContext } from "react";
+import { CartContext } from "../../context/contextCart";
+import { showSuccess, showError } from "../../utils/Notifications";
 
 function Detail() {
   const dispatch = useDispatch();
   const { id } = useParams();
 
+  const { cart, addToCart, removeFromCart } = useContext(CartContext);
   const detailGame = useSelector((state) => state.detailGame);
+
+  const isProductInCart = cart.some((item) => item.id === detailGame.id);
 
   useEffect(() => {
     dispatch(getDetails(id));
@@ -22,11 +28,10 @@ function Detail() {
   if (detailGame.image) {
     dispatch(changeBg(detailGame.image));
   }
-  console.log(detailGame);
 
   return (
     <div className="overflow-hidden w-full flex-1 ">
-      <div className="w-full h-full mb-4">
+      <div className="w-full h-full mb-4 max-w-[64rem] mx-auto my-0">
         <div className="flex flex-col items-center gap-4">
           <div className="flex items-center justify-center flex-wrap w-full gap-2">
             <p className="bg-[#1F0A4D] text-white w-fit px-2 rounded-md">
@@ -37,11 +42,11 @@ function Detail() {
             )}
           </div>
           <h1 className="text-4xl font-bold"> {detailGame?.name}</h1>
-          <div>
+          <div className="w-full">
             <img
               src={detailGame?.image}
               alt={detailGame?.name}
-              className="w-full sm:w-[400px]"
+              className="w-full h-[400px] object-cover"
             />
             <div className="flex w-full items-center p-2 pb-0">
               {detailGame.Genres?.map((genre) => {
@@ -69,8 +74,21 @@ function Detail() {
               <p className="font-extrabold text-white text-xl mb-2">
                 ${detailGame?.price}{" "}
               </p>
-              <button className="bg-[#fad318] w-full font-bold text-base min-h-[35px]">
-                Comprar ahora
+              <button
+                className="bg-accent w-full font-bold text-base min-h-[35px]"
+                onClick={() => {
+                  isProductInCart
+                    ? (removeFromCart({ id: detailGame.id }),
+                      showError(
+                        `El Video Juego ${detailGame.name} se ha eliminado del carrito`
+                      ))
+                    : (addToCart({ id: detailGame.id }),
+                      showSuccess(
+                        `El Video Juego ${detailGame.name} se ha agregado al carrito`
+                      ));
+                }}
+              >
+                {isProductInCart ? "Remover del carrito" : "Agregar al carrito"}
               </button>
             </div>
           </div>
