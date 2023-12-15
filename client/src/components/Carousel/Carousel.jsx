@@ -28,7 +28,7 @@ const Carousel = () => {
 
   return (
     <div>
-      {games.videogames && games.videogames[9].image ? (
+      {games.videogames ? (
         <Slider {...settings} className="flex items-center justify-center">
           {games.videogames.map((game, index) => {
             return (
