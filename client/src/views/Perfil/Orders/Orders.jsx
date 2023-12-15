@@ -97,12 +97,12 @@ const Orders = () => {
                                     </p>
                                   </div>
                                 </div>
-                                <p className="text-gray-500 mt-2 dark:text-white hidden sm:flex">
+                                <p className="text-gray-500 mt-2 dark:text-white hidden sm:flex h-[150px] sm:overflow-auto">
                                   {item.description}
                                 </p>
                               </div>
                             </div>
-                            <div className="mt-2 sm:flex justify-between">
+                            {/* <div className="mt-2 sm:flex justify-between">
                               <div className="w-full py-2 justify-between flex sm:p-0 sm:justify-end">
                                 <Button
                                   // variant="light"
@@ -126,7 +126,7 @@ const Orders = () => {
                                   </p>
                                 </Button>
                               </div>
-                            </div>
+                            </div> */}
                           </li>
                         );
                       })}

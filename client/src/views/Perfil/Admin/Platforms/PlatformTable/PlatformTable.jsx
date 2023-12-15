@@ -1,67 +1,21 @@
-import axios from "axios";
 import Modal from "../../../../../Modal/Modal.jsx";
-import Swal from "sweetalert2";
 import { getPlatforms } from "../../../../../redux/actions.js";
 import FormPlatForm from "../../../../../components/Form/FormPlatForm.jsx";
-import {
-  showSuccess,
-  showError,
-  showInfo,
-} from "../../../../../utils/Notifications.js";
-import {
-  Table,
-  TableHeader,
-  TableColumn,
-  TableBody,
-  TableRow,
-  TableCell,
-  User,
-  Tooltip,
-} from "@nextui-org/react";
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, User, Tooltip } from "@nextui-org/react";
 import { TrashIcon, PencilSquareIcon } from "@heroicons/react/24/outline";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import setAuthHeader from "../../../../../utils/AxiosUtils.jsx";
-
+import handleDeleteConformation from "../../../../../utils/handlerDeleteConfimartion.js";
 const columns = [{ name: "PLATAFORMA" }, { name: "ACCIONES" }];
 
 const PlatformTable = () => {
   const dispatch = useDispatch();
   const platforms = useSelector((state) => state.platforms);
-  // console.log(platforms);
-  const token = localStorage.getItem("validToken");
 
   const handlerDelete = async (id, platform) => {
-    const userConfirmation = await Swal.fire({
-      title: `¿Estás seguro de eliminar la plataforma ${platform.name}?`,
-      text: "Esta acción no se puede deshacer.",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#d33",
-      cancelButtonColor: "#3085d6",
-      confirmButtonText: "Sí, eliminar",
-      cancelButtonText: "Cancelar",
-    });
-
-    if (userConfirmation.isConfirmed) {
-      try {
-        const response = await axios.delete(`/delete/platforms/${id}`, setAuthHeader(token));
-        const { data } = response;
-
-        if (response.status === 200) {
-          console.log(data.message);
-          showSuccess(`Plataforma ${platform.name} eliminada`);
-          dispatch(getPlatforms());
-        } else {
-          showError(`Error al eliminar la plataforma ${platform.name}`);
-        }
-      } catch (error) {
-        showError(`${error.response.data.error}`);
-      }
-    } else {
-      showInfo(`Se canceló la eliminación de la plataforma`);
-    }
+    await handleDeleteConformation(id, `${platform.name}`, "platforms");
+    dispatch(getPlatforms());
   };
 
   useEffect(() => {
@@ -83,8 +37,7 @@ const PlatformTable = () => {
         tfoot: "",
         sortIcon: "",
         emptyWrapper: "dark:text-white",
-      }}
-    >
+      }}>
       <TableHeader>
         {columns.map((column, index) => (
           <TableColumn key={index}>{column.name}</TableColumn>
@@ -112,18 +65,17 @@ const PlatformTable = () => {
                             onClose={onClose}
                           />
                         )}
-                        openButton={
-                          <PencilSquareIcon className="text-black w-4" />
-                        }
+                        openButton={<PencilSquareIcon className="text-black w-4" />}
                       />
                     </span>
                   </Tooltip>
 
-                  <Tooltip color="danger" content="Eliminar">
+                  <Tooltip
+                    color="danger"
+                    content="Eliminar">
                     <span
                       className="text-lg text-danger cursor-pointer active:opacity-50"
-                      onClick={() => handlerDelete(platform.id, platform)}
-                    >
+                      onClick={() => handlerDelete(platform.id, platform)}>
                       <TrashIcon className="text-black w-4" />
                     </span>
                   </Tooltip>

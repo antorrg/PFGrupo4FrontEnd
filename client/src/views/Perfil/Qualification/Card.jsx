@@ -3,7 +3,7 @@ import Stars from "./Stars.jsx";
 import { Chip, Textarea, Button } from "@nextui-org/react";
 import axios from "axios";
 import setAuthHeader from '../../../utils/AxiosUtils.jsx'
-
+import Swal from "sweetalert2";
 
 const Card = ({
   name,
@@ -73,10 +73,26 @@ const Card = ({
     const isRatingValid = validateRating(); //true si esta mal
 
     if (isCommentValid === false && isRatingValid === false) {
-      submitRatingAndCommentDB();
-      setRating(0);
-      setComment("");
-      console.log("formulario aprobado y enviado");
+      Swal.fire({
+        title: "Estas seguro?",
+        text: "Se enviará tu calificación!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Calificarlo!"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          submitRatingAndCommentDB();
+          setRating(0);
+          setComment("");
+          Swal.fire({
+            title: "Calificado!",
+            text: "el juego ha sido calificado.",
+            icon: "success"
+          });
+        }
+      });
     }
   };
 
@@ -137,7 +153,7 @@ const Card = ({
             value={comment}
             placeholder="Ingresa tu comentario acerca del juego"
             errorMessage={commentErrors}
-            className="max-w-[40rem]"
+            className="max-w-[40rem] text-white"
           />
           <div className="flex flex-col justify-evenly">
             <Stars

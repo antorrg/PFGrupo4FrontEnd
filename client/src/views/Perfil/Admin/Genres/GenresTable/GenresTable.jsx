@@ -1,69 +1,22 @@
-import axios from "axios";
 import Modal from "../../../../../Modal/Modal";
-import Swal from "sweetalert2";
 import { getGenres } from "../../../../../redux/actions";
 import FormGenres from "../../../../../components/Form/FormGenres";
-import {
-  showSuccess,
-  showError,
-  showInfo,
-} from "../../../../../utils/Notifications";
-import {
-  Table,
-  TableHeader,
-  TableColumn,
-  TableBody,
-  TableRow,
-  TableCell,
-  User,
-  Tooltip,
-} from "@nextui-org/react";
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, User, Tooltip } from "@nextui-org/react";
 import { TrashIcon, PencilSquareIcon } from "@heroicons/react/24/outline";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import setAuthHeader from "../../../../../utils/AxiosUtils";
+import handleDeleteConfirmation from "../../../../../utils/handlerDeleteConfimartion";
 
 const columns = [{ name: "GENERO" }, { name: "ACCIONES" }];
 
 const GenresTable = () => {
   const dispatch = useDispatch();
   const genres = useSelector((state) => state.genres);
-  // console.log(genres);
-
-  const token = localStorage.getItem("validToken");
-
 
   const handlerDelete = async (id, genre) => {
-    const userConfirmation = await Swal.fire({
-      title: `¿Estás seguro de eliminar el genero ${genre.name}?`,
-      text: "Esta acción no se puede deshacer.",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#d33",
-      cancelButtonColor: "#3085d6",
-      confirmButtonText: "Sí, eliminar",
-      cancelButtonText: "Cancelar",
-    });
-
-    if (userConfirmation.isConfirmed) {
-      try {
-        const response = await axios.delete(`/delete/genres/${id}`,setAuthHeader(token));
-        const { data } = response;
-
-        if (response.status === 200) {
-          console.log(data.message);
-          showSuccess(`Genero ${genre.name} eliminado`);
-          dispatch(getGenres());
-        } else {
-          showError(`Error al eliminar el genero ${genre.name}`);
-        }
-      } catch (error) {
-        showError(`${error.response.data.error}`);
-      }
-    } else {
-      showInfo(`Se canceló la eliminación de el genero`);
-    }
+    await handleDeleteConfirmation(id, `${genre.name}`, "genres");
+    dispatch(getGenres());
   };
 
   useEffect(() => {
@@ -85,8 +38,7 @@ const GenresTable = () => {
         tfoot: "",
         sortIcon: "",
         emptyWrapper: "dark:text-white",
-      }}
-    >
+      }}>
       <TableHeader>
         {columns.map((column, index) => (
           <TableColumn key={index}>{column.name}</TableColumn>
@@ -114,18 +66,17 @@ const GenresTable = () => {
                             onClose={onClose}
                           />
                         )}
-                        openButton={
-                          <PencilSquareIcon className="text-black w-4" />
-                        }
+                        openButton={<PencilSquareIcon className="text-black w-4" />}
                       />
                     </span>
                   </Tooltip>
 
-                  <Tooltip color="danger" content="Eliminar">
+                  <Tooltip
+                    color="danger"
+                    content="Eliminar">
                     <span
                       className="text-lg text-danger cursor-pointer active:opacity-50"
-                      onClick={() => handlerDelete(genre.id, genre)}
-                    >
+                      onClick={() => handlerDelete(genre.id, genre)}>
                       <TrashIcon className="text-black w-4" />
                     </span>
                   </Tooltip>

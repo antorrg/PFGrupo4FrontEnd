@@ -1,7 +1,7 @@
 import Filters from "../../../components/Filters/Filters";
 import Pagination from "../../../components/Pagination/Pagination";
 import { useSelector, useDispatch } from "react-redux";
-import { getGames, getAllGames } from "../../../redux/actions";
+import { getGames } from "../../../redux/actions";
 import { useState, useEffect } from "react";
 import GamesTable from "./GamesTable/GamesTable";
 
@@ -28,7 +28,7 @@ const AdminHome = () => {
 
   useEffect(() => {
     dispatch(getGames(filters));
-    dispatch(getAllGames());
+    
   }, [filters, dispatch]);
 
   return (
@@ -39,7 +39,7 @@ const AdminHome = () => {
       <div className="flex-1 h-auto">
         {games.videogames ? (
           <>
-            <GamesTable videogames={games.videogames} />
+            <GamesTable videogames={games.videogames} filters={filters} />
             <Pagination
               PaginationData={games.PaginationData}
               onPageChange={onPageChangeHandler}

@@ -224,7 +224,7 @@ export const getAllUsers = () => {
       // Swal.fire({
       //   icon: "error",
       //   title: "Oops...",
-      //   text: `${error.message}`,
+      //   text: ${error.message},
       // });
       showError(error.message);
     }
