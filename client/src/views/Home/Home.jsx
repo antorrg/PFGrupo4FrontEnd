@@ -7,6 +7,7 @@ import Pagination from "../../components/Pagination/Pagination";
 import { useSelector, useDispatch } from "react-redux";
 import { getGames, updateFilterObj } from "../../redux/actions";
 import { useState, useEffect } from "react";
+import { Spinner } from "@nextui-org/react";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -25,22 +26,7 @@ const Home = () => {
   };
 
   const onPageChangeHandler = (pageNumber) => {
-    /*const auxFilter  = {
-      page: pageNumber
-    }
-    dispatch(updateFilterObj(auxFilter));*/
-    //dispatch(getGames(filtersObj));
-
     setFilters({ ...filters, page: pageNumber });
-
-    /*dispatch(getGames({
-      page: pageNumber,
-      platforms: "",
-      genres: "",
-      minPrice: -1,
-      maxPrice: -1,
-      name: ""
-    }));*/
   };
 
   useEffect(() => {
@@ -63,7 +49,9 @@ const Home = () => {
             />
           </div>
         ) : (
-          console.log("NO CARGO")
+          <div className="w-full h-[250px] flex items-center justify-center">
+            <Spinner color="secondary" size="lg" />
+          </div>
         )}
       </div>
     </div>

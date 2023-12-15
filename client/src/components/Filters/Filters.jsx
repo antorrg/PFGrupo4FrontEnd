@@ -1,7 +1,7 @@
 import style from "./Filters.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
-
+import { Spinner } from "@nextui-org/react";
 import { getPlatforms, getGenres } from "../../redux/actions";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import valideInputFilters from "../../utils/valideInputFilters";
@@ -75,7 +75,6 @@ export default function Filters(props) {
         paramsObj[key] = value;
       }
     }
-    console.log(paramsObj);
 
     onApplyFilters(paramsObj);
   };
@@ -98,9 +97,6 @@ export default function Filters(props) {
     });
     setSelectedPlatforms([]);
     setSelectedGenres([]);
-    // selectedGenresRef.current.clearValue();
-    // selectedPlatformsRef.current.clearValue();
-    // selectedOrderRef.current.clearValue();
   };
 
   useEffect(() => {
@@ -182,20 +178,26 @@ export default function Filters(props) {
             defaultValue={selectedPlatforms}
             className={`overflow-hidden ${heightPlatforms}`}
           >
-            {platforms.map((platform) => {
-              return (
-                <Checkbox
-                  value={platform.name}
-                  key={platform.name}
-                  radius="none"
-                  className={{
-                    base: "#1F0A4D",
-                  }}
-                >
-                  <p className="text-white/80">{platform.name}</p>
-                </Checkbox>
-              );
-            })}
+            {platforms[0] ? (
+              platforms.map((platform) => {
+                return (
+                  <Checkbox
+                    value={platform.name}
+                    key={platform.name}
+                    radius="none"
+                    className={{
+                      base: "#1F0A4D",
+                    }}
+                  >
+                    <p className="text-white/80">{platform.name}</p>
+                  </Checkbox>
+                );
+              })
+            ) : (
+              <div className="w-full h-[250px] flex items-center justify-center">
+                <Spinner color="primary" size="lg" />
+              </div>
+            )}
           </CheckboxGroup>
           <button
             className="mt-2 text-accent"
@@ -223,13 +225,19 @@ export default function Filters(props) {
             defaultValue={selectedGenres}
             className={`overflow-hidden ${heightGenres}`}
           >
-            {genres.map((genre) => {
-              return (
-                <Checkbox value={genre.name} key={genre.name} radius="none">
-                  <p className="text-white">{genre.name}</p>
-                </Checkbox>
-              );
-            })}
+            {genres[0] ? (
+              genres.map((genre) => {
+                return (
+                  <Checkbox value={genre.name} key={genre.name} radius="none">
+                    <p className="text-white">{genre.name}</p>
+                  </Checkbox>
+                );
+              })
+            ) : (
+              <div className="w-full h-[250px] flex items-center justify-center">
+                <Spinner color="primary" size="lg" />
+              </div>
+            )}
           </CheckboxGroup>
           <button
             className="mt-2 text-accent"

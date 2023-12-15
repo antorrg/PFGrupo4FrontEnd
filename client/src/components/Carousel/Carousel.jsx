@@ -3,6 +3,7 @@ import Slider from "react-slick";
 import axios from "axios";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { Spinner } from "@nextui-org/react";
 
 const Carousel = () => {
   const [games, setGames] = useState({});
@@ -17,6 +18,7 @@ const Carousel = () => {
     autoplaySpeed: 1500,
     pauseOnHover: true,
   };
+  console.log(games);
 
   useEffect(() => {
     const getGames = async () => {
@@ -28,7 +30,8 @@ const Carousel = () => {
 
   return (
     <div>
-      {games.videogames && games.videogames[9].image ? (
+      {/* {games.videogames && games.videogames[9].image ? ( */}
+      {games.videogames ? (
         <Slider {...settings} className="flex items-center justify-center">
           {games.videogames.map((game, index) => {
             return (
@@ -45,7 +48,11 @@ const Carousel = () => {
             );
           })}
         </Slider>
-      ) : null}
+      ) : (
+        <div className="">
+          <Spinner color="secondary" size="lg" />
+        </div>
+      )}
     </div>
   );
 };
