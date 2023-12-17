@@ -85,21 +85,21 @@ const UserEdit = ({ onClose }) => {
               />
             </div>
 
-            <div className="w-full h-fit flex items-center justify-center overflow-hidden mt-4">
-           
+          <br />
+            <div class="relative flex justify-center items-center">
                 <input
                   type="file"
                   accept="image/png, image/jpeg, image/svg+xml"
                   id="image"
                   name="image"
-                  className="absolute inset-0 opacity-0 w-full h-full cursor-pointer mx-0 my-auto"
+                  class="absolute inset-0 opacity-0 w-full h-full cursor-pointer"
                   onChange={(event) =>
                     handleImageChange(event, setFieldValue, values)
                   }
                 />
                 <label
                   for="image"
-                  className="cursor-pointer bg-blue-500 text-white p-2 rounded-md"
+                  class="cursor-pointer bg-blue-500 text-white p-2 rounded-md"
                 >
                   Seleccionar Imagen
                 </label>
