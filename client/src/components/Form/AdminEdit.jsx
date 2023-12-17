@@ -104,6 +104,7 @@ return (
                 className="text-sm text-red-600"
               />
             </div>
+            <br/>
             <div>
               <label
                 htmlFor="role"
@@ -129,6 +130,8 @@ return (
                 className="text-sm text-red-600"
               />
             </div>
+            <br/>
+            <br/>
 
             <div className="flex items-center justify-center">
               <Button type="submit" color="primary">

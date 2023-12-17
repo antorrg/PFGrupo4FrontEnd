@@ -9,6 +9,7 @@ import Modal from "../../../../Modal/Modal";
 import AdminEdit from "../../../../components/Form/AdminEdit"
 import setAuthHeader from "../../../../utils/AxiosUtils";
 import axios from "axios";
+import UserDetail from "./UserDetail";
 
 const columns = [{ name: "USUARIO" },{name:"NOMBRE"},{name:"APODO"}, { name: "ESTADO" }, { name: "ROL" }, { name: "ACCIONES" }];
 
@@ -125,11 +126,23 @@ const Users = () => {
                     />
                   </span>
                 </Tooltip> 
-                    {/* <Tooltip content="Detalle">
+                     <Tooltip content="Detalle">
                       <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                        <EyeIcon className="text-black w-4" />
+                      <Modal
+                        textButton="Detalle"
+
+                        body={({ onClose }) => (
+                           <UserDetail
+                            user={user}
+                          onClose={onClose}
+                         />
+                        )}
+                        openButton={
+                          <EyeIcon className="text-black w-4" />
+                        }
+                      />
                       </span>
-                    </Tooltip> */}
+                    </Tooltip>
                     <Tooltip
                       color="danger"
                       content="Eliminar">

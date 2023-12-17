@@ -7,6 +7,7 @@ import CommentsAndRatingsBox from "./CommentsAndRatingsBox";
 import { useContext } from "react";
 import { CartContext } from "../../context/contextCart";
 import { showSuccess, showError } from "../../utils/Notifications";
+import BackButton from "../../components/BackButton/BackButton";
 
 function Detail() {
   const dispatch = useDispatch();
@@ -32,11 +33,9 @@ function Detail() {
   return (
     <div className="overflow-hidden w-full flex-1 ">
       <div className="w-full h-full mb-4 max-w-[64rem] mx-auto my-0">
+        <BackButton/>
         <div className="flex flex-col items-center gap-4">
           <div className="flex items-center justify-center flex-wrap w-full gap-2">
-            <p className="bg-[#1F0A4D] text-white w-fit px-2 rounded-md">
-              {detailGame?.released}
-            </p>
             {detailGame?.Platforms && (
               <ConsoleLogos Platforms={detailGame.Platforms} />
             )}
@@ -63,8 +62,9 @@ function Detail() {
           </div>
           <div className="w-full p-2 pt-0 flex flex-col gap-4">
             <div className="">
-              <h2 className="text-lg font-semibold">About</h2>
+              <h2 className="text-lg font-semibold">Descripción</h2>
               <p className="text-[14px]">{detailGame?.description} </p>
+              <h2 className="text-lg font-semibold bg-[#1F0A4D] text-white w-fit rounded-md">Fecha de Lanzamiento: {detailGame?.released}</h2>
             </div>
 
             {/* <p>Rating: {detailGame?.rating} </p> */}
