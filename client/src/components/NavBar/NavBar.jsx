@@ -50,7 +50,7 @@ export default function NavBar() {
 
   const perfilItems = [
     {
-      element: "Wishlist",
+      element: "Deseados",
       to: "/wishlist",
       access: "all",
       icon: HeartIcon,
@@ -118,7 +118,7 @@ export default function NavBar() {
       to: "/home",
     },
     {
-      element: "Wishlist",
+      element: "Deseados",
       icon: HeartIcon,
       to: "/wishlist",
     },
@@ -264,18 +264,11 @@ export default function NavBar() {
         {navItems.map((item, index) => (
           <NavbarMenuItem key={`${item}-${index}-Menu`}>
             <Link
-              color={
-                index === 2
-                  ? "primary"
-                  : index === perfilItems.length - 1
-                  ? "danger"
-                  : "foreground"
-              }
-              className="w-full"
+              className="w-full dark:text-white"
               href={item.to}
               size="lg"
             >
-              {item.element}
+              <item.icon className="w-5 mr-2" /> {item.element}
             </Link>
           </NavbarMenuItem>
         ))}

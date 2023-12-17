@@ -1,7 +1,7 @@
 import style from "./Filters.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
-
+import { Spinner } from "@nextui-org/react";
 import { getPlatforms, getGenres } from "../../redux/actions";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import valideInputFilters from "../../utils/valideInputFilters";
@@ -75,7 +75,6 @@ export default function Filters(props) {
         paramsObj[key] = value;
       }
     }
-    console.log(paramsObj);
 
     onApplyFilters(paramsObj);
   };
@@ -98,9 +97,6 @@ export default function Filters(props) {
     });
     setSelectedPlatforms([]);
     setSelectedGenres([]);
-    // selectedGenresRef.current.clearValue();
-    // selectedPlatformsRef.current.clearValue();
-    // selectedOrderRef.current.clearValue();
   };
 
   useEffect(() => {
@@ -109,7 +105,7 @@ export default function Filters(props) {
   }, [dispatch, selectedPlatforms]);
 
   return (
-    <div className="">
+    <div className="w-full">
       <Accordion
         selectionMode="multiple"
         defaultExpandedKeys={["1", "2", "3", "4"]}
@@ -126,6 +122,11 @@ export default function Filters(props) {
               min="0"
               radius="none"
               name="minPrice"
+              classNames={{
+                label:"text-white",
+                inputWrapper: "bg-black/10 dark:hover:bg-black/20 hover:bg-black/20 shadow-base",
+                innerWrapper: "bg-transparent",
+              }}
               className="flex-1"
               value={prices.minPrice}
               onChange={() => {
@@ -141,6 +142,16 @@ export default function Filters(props) {
               min="0"
               radius="none"
               name="maxPrice"
+              classNames={{
+                mainWrapper:"bg-secondary",
+                label:"text-white",
+                input: [
+                  "bg-transparent",
+                  "text-black/90 dark:text-white/90",
+                ],
+                inputWrapper: "bg-black/10 dark:hover:bg-black/20 hover:bg-black/20 shadow-base",
+                innerWrapper: "bg-transparent",
+              }}
               className="flex-1 bg"
               value={prices.maxPrice}
               onChange={() => {
@@ -180,22 +191,31 @@ export default function Filters(props) {
             }}
             value={selectedPlatforms}
             defaultValue={selectedPlatforms}
+            classNames={{
+              base:"mx-2"
+            }}
             className={`overflow-hidden ${heightPlatforms}`}
           >
-            {platforms.map((platform) => {
-              return (
-                <Checkbox
-                  value={platform.name}
-                  key={platform.name}
-                  radius="none"
-                  className={{
-                    base: "#1F0A4D",
-                  }}
-                >
-                  <p className="text-white/80">{platform.name}</p>
-                </Checkbox>
-              );
-            })}
+            {platforms[0] ? (
+              platforms.map((platform) => {
+                return (
+                  <Checkbox
+                    value={platform.name}
+                    key={platform.name}
+                    radius="sm"
+                    classNames={{
+                      base: "#1F0A4D",
+                    }}
+                  >
+                    <p className="text-white/80">{platform.name}</p>
+                  </Checkbox>
+                );
+              })
+            ) : (
+              <div className="w-full h-[250px] flex items-center justify-center">
+                <Spinner color="primary" size="lg" />
+              </div>
+            )}
           </CheckboxGroup>
           <button
             className="mt-2 text-accent"
@@ -221,15 +241,24 @@ export default function Filters(props) {
             }}
             value={selectedGenres}
             defaultValue={selectedGenres}
+            classNames={{
+              base:"mx-2"
+            }}
             className={`overflow-hidden ${heightGenres}`}
           >
-            {genres.map((genre) => {
-              return (
-                <Checkbox value={genre.name} key={genre.name} radius="none">
-                  <p className="text-white">{genre.name}</p>
-                </Checkbox>
-              );
-            })}
+            {genres[0] ? (
+              genres.map((genre) => {
+                return (
+                  <Checkbox value={genre.name} key={genre.name} radius="sm">
+                    <p className="text-white">{genre.name}</p>
+                  </Checkbox>
+                );
+              })
+            ) : (
+              <div className="w-full h-[250px] flex items-center justify-center">
+                <Spinner color="primary" size="lg" />
+              </div>
+            )}
           </CheckboxGroup>
           <button
             className="mt-2 text-accent"
@@ -243,7 +272,7 @@ export default function Filters(props) {
           </button>
         </AccordionItem>
       </Accordion>
-      <div className="flex justify-between w-full mt-4">
+      <div className="flex justify-center w-full mt-2 mb-4">
         <Button
           size="sm"
           variant="shadow"
