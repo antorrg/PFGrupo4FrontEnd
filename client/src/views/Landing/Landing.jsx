@@ -118,8 +118,8 @@ const Landing = () => {
               <div className="h-full flex items-center border-gray-800 border p-4 rounded-lg">
                 <img
                   alt="team"
-                  className="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4"
-                  src="https://dummyimage.com/80x80"
+                  className="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-medium mr-4"
+                  src="https://res.cloudinary.com/dmhxl1rpc/image/upload/v1702685833/antonio_wbzjyu.jpg"
                 />
                 <div className="flex-grow">
                   <h2 className="text-white title-font font-medium">
@@ -133,8 +133,8 @@ const Landing = () => {
               <div className="h-full flex items-center border-gray-800 border p-4 rounded-lg">
                 <img
                   alt="team"
-                  className="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4"
-                  src="https://dummyimage.com/84x84"
+                  className="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-medium mr-4"
+                  src="https://res.cloudinary.com/dmhxl1rpc/image/upload/v1702689533/vladimir_jd4ldg.jpg"
                 />
                 <div className="flex-grow">
                   <h2 className="text-white title-font font-medium">
@@ -148,8 +148,8 @@ const Landing = () => {
               <div className="h-full flex items-center border-gray-800 border p-4 rounded-lg">
                 <img
                   alt="team"
-                  className="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4"
-                  src="https://dummyimage.com/88x88"
+                  className="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-medium mr-4"
+                  src="https://res.cloudinary.com/dmhxl1rpc/image/upload/v1702687018/victor_j1yzvz.jpg"
                 />
                 <div className="flex-grow">
                   <h2 className="text-white title-font font-medium">
@@ -163,8 +163,8 @@ const Landing = () => {
               <div className="h-full flex items-center border-gray-800 border p-4 rounded-lg">
                 <img
                   alt="team"
-                  className="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4"
-                  src="https://dummyimage.com/90x90"
+                  className="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-medium mr-4"
+                  src="https://res.cloudinary.com/dmhxl1rpc/image/upload/v1702686394/franco_zfhkpw.jpg"
                 />
                 <div className="flex-grow">
                   <h2 className="text-white title-font font-medium">
@@ -178,8 +178,8 @@ const Landing = () => {
               <div className="h-full flex items-center border-gray-800 border p-4 rounded-lg">
                 <img
                   alt="team"
-                  className="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4"
-                  src="https://dummyimage.com/94x94"
+                  className="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-medium mr-4"
+                  src="https://res.cloudinary.com/dmhxl1rpc/image/upload/v1702685892/denis_oxzjdj.jpg"
                 />
                 <div className="flex-grow">
                   <h2 className="text-white title-font font-medium">
@@ -193,8 +193,8 @@ const Landing = () => {
               <div className="h-full flex items-center border-gray-800 border p-4 rounded-lg">
                 <img
                   alt="team"
-                  className="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4"
-                  src="https://dummyimage.com/98x98"
+                  className="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-medium mr-4"
+                  src="https://res.cloudinary.com/dmhxl1rpc/image/upload/v1702685903/eduardo_brhcpu.jpg"
                 />
                 <div className="flex-grow">
                   <h2 className="text-white title-font font-medium">
@@ -208,8 +208,8 @@ const Landing = () => {
               <div className="h-full flex items-center border-gray-800 border p-4 rounded-lg">
                 <img
                   alt="team"
-                  className="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4"
-                  src="https://dummyimage.com/100x90"
+                  className="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-medium mr-4"
+                  src="https://res.cloudinary.com/dmhxl1rpc/image/upload/v1702686394/lautaro_qtbs3x.jpg"
                 />
                 <div className="flex-grow">
                   <h2 className="text-white title-font font-medium">
