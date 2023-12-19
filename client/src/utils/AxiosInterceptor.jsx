@@ -16,7 +16,7 @@ const interceptor = (logout) => {
   axios.interceptors.response.use(
     (response) => response,
     (error) => {
-      if (error.response && error.response.status === 401) {
+      if (error.response && error.response.status === 401 || error.response && error.response.status === 403) {
         // Acceso no autorizado, redirigir al inicio de sesión
         redirectToLogin(logout);
       }
