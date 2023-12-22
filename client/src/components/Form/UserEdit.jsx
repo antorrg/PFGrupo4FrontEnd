@@ -53,11 +53,13 @@ const UserEdit = ({ onClose }) => {
 
   const editUser = async (values) => {
     try {
+      
       const { data } = await axios.put(
         `/put/user/${id}`,
         values,
         setAuthHeader(token)
       );
+      console.log(data)
       showSuccess("Usuario actualizado, vuelva a ingresar ");
       dispatch(limpiarLogin());
       navigate("/");
@@ -71,6 +73,7 @@ const UserEdit = ({ onClose }) => {
       initialValues={userEdit}
       validationSchema={formSchema}
       onSubmit={async (values) => {
+        
         await editUser(values);
       }}
     >

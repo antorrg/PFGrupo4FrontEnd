@@ -1,7 +1,7 @@
 import axios from "axios";
 import Modal from "../../../../Modal/Modal";
 import Swal from "sweetalert2";
-import Formulario from "../../../../components/Form/Form";
+import FormGameEdit from "../../../../components/Form/FormGameEdit";
 import {
   showSuccess,
   showError,
@@ -29,6 +29,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { getGames } from "../../../../redux/actions";
 import { Link } from "react-router-dom";
+
 
 const columns = [
   { name: "GAME" },
@@ -128,7 +129,7 @@ const GamesTable = ({ videogames ,filters}) => {
                         textButton="Editar Juego"
                         title="Actualizar Juego"
                         body={({ onClose }) => (
-                          <Formulario
+                          <FormGameEdit
                             props={game}
                             id={game.id}
                             onClose={onClose}
