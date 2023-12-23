@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useEffect } from "react";
-
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -9,7 +8,6 @@ import {
   getPlatforms,
   getGames,
 } from "../../redux/actions";
-import Select from "react-select";
 import Swal from "sweetalert2";
 import { Button, select } from "@nextui-org/react";
 import setAuthHeader from "../../utils/AxiosUtils";
@@ -81,12 +79,14 @@ const FormGameEdit = ({ props, onClose }) => {
     physicalGame,
     enable,
     stock,
+    description,
   } = props;
 
   const selectedPlatforms = platformsDefault.map((option) => option.id);
   const selectedGenres = genresDefault.map((option) => option.id);
   platforms = selectedPlatforms;
   genres = selectedGenres;
+  if (!stock) stock = 0;
 
   let valuesEdit = {};
 
@@ -100,41 +100,16 @@ const FormGameEdit = ({ props, onClose }) => {
     physicalGame,
     enable,
     stock,
+    description,
   };
 
+ 
   const formSchema = schemaFormGames(nameGames);
-
-  const handleImageChange = async (event, setFieldValue) => {
-    const image = event.currentTarget.files[0];
-
-    if (image) {
-      const formData = new FormData();
-      formData.append("file", image);
-      formData.append("upload_preset", "dynh9dt8");
-
-      try {
-        const response = await axios.post(
-          "https://api.cloudinary.com/v1_1/duy9efu8j/image/upload",
-          formData
-        );
-        showSuccess("Imagen cargada con exito");
-        setFieldValue("image", response.data.url);
-      } catch (error) {
-        Swal.fire({
-          position: "center",
-          icon: "error",
-          title: error.message,
-          showConfirmButton: false,
-          timer: 2000,
-        });
-      }
-    }
-  };
 
   const editVideogames = async (values, props) => {
     try {
       if (!values.physicalGame) {
-        values = { ...values, stock: 0 };
+        values = { ...values, stock: 1 };
       }
       const { data } = await axios.put(
         `/put/games/${props.id}`,
@@ -179,7 +154,11 @@ const FormGameEdit = ({ props, onClose }) => {
             encType="multipart/form-data"
             className="mx-auto p-6 rounded-md"
           >
-            <Input name={"description"} title={" Descripcion"} />
+            <Input
+              name={"description"}
+              title={" Descripcion"}
+              values={values}
+            />
 
             <InputImg
               name={"image"}
@@ -202,7 +181,12 @@ const FormGameEdit = ({ props, onClose }) => {
               cb={setFieldValue}
             />
 
-            <Input name={"price"} title={"Precio"} placeholder={"11111.11"} />
+            <Input
+              name={"price"}
+              title={"Precio"}
+              placeholder={"11111.11"}
+              values={values}
+            />
 
             <InputSelect
               name={"genres"}
@@ -232,7 +216,6 @@ const FormGameEdit = ({ props, onClose }) => {
               {" "}
               Editar Juego
             </Button>
-            
           </Form>
         </div>
       )}

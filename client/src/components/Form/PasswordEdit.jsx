@@ -1,11 +1,9 @@
-import * as Yup from "yup";
-import YupPassword from "yup-password";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import { Button } from "@nextui-org/react";
 import { useState } from "react";
 import axios from "axios";
-import { useSelector } from "react-redux";
-YupPassword(Yup);
+import { useSelector } from "react-redux"
+import { schemaFormPassword } from "./UtilsForms/schema/schema";
 import { showSuccess, showError } from "../../utils/Notifications";
 import { useDispatch } from "react-redux";
 import { limpiarLogin } from "../../redux/actions";
@@ -19,6 +17,7 @@ const PasswordEdit = ({ onClose }) => {
   const dispatch = useDispatch();
   const token = localStorage.getItem("validToken");
   const navigate = useNavigate();
+  
   const initialValues = {
     password: "",
     passwordNew: "",
@@ -31,29 +30,11 @@ const PasswordEdit = ({ onClose }) => {
   const handlerPassword = () => {
     setViewPassword(!viewPassword);
   };
-  const requiredField = () => Yup.string().required("Campo Requerido");
+ 
 
-  const passwordField = () =>
-    requiredField()
-      .min(
-        8,
-        "La contraseña debe contener 8 o más caracteres con al menos: una mayúscula, una minúscula, un número y un símbolo"
-      )
-      .minLowercase(1, "Debe contener al menos 1 letra minúscula")
-      .minUppercase(1, "Debe contener al menos 1 letra mayúscula")
-      .minNumbers(1, "Debe contener al menos 1 número")
-      .minSymbols(1, "Debe contener al menos 1 carácter especial");
+  const formSchema = schemaFormPassword()[0];
 
-  const formSchema = Yup.object().shape({
-    password: passwordField(),
-  });
-
-  const formSchema1 = Yup.object().shape({
-    passwordNew: passwordField(),
-    passwordNewRepeat: Yup.string()
-      .oneOf([Yup.ref("passwordNew"), null], "Las contraseñas no coinciden")
-      .required("Campo Requerido"),
-  });
+  const formSchema1 = schemaFormPassword()[1];
 
   const validateUser = async (values) => {
     try {
@@ -150,7 +131,7 @@ const PasswordEdit = ({ onClose }) => {
                   type="button"
                   onClick={handlerPassword}
                 >
-                  {viewPassword ? (
+                  {!viewPassword ? (
                     <EyeSlashFilledIcon className="text-2xl text-default-400" />
                   ) : (
                     <EyeFilledIcon className="text-2xl text-default-400" />
@@ -186,7 +167,7 @@ const PasswordEdit = ({ onClose }) => {
                     type="button"
                     onClick={handlerPassword}
                   >
-                    {viewPassword ? (
+                    {!viewPassword ? (
                       <EyeSlashFilledIcon className="text-2xl text-default-400" />
                     ) : (
                       <EyeFilledIcon className="text-2xl text-default-400" />
@@ -219,7 +200,7 @@ const PasswordEdit = ({ onClose }) => {
                     type="button"
                     onClick={handlerPassword}
                   >
-                    {viewPassword ? (
+                    {!viewPassword ? (
                       <EyeSlashFilledIcon className="text-2xl text-default-400" />
                     ) : (
                       <EyeFilledIcon className="text-2xl text-default-400" />

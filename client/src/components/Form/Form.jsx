@@ -49,6 +49,9 @@ const Formulario = ({ onClose }) => {
 
   const createVideogames = async (values) => {
     try {
+      if (!values.physicalGame) {
+        values = { ...values, stock: 1 };
+      }
       await axios.post("/post", values, setAuthHeader(token));
       showSuccess("Videojuego creado con exito !!");
     } catch (error) {
@@ -135,7 +138,7 @@ const Formulario = ({ onClose }) => {
             </div>
 
             {values.physicalGame && (
-              <Input name={"stock"} title={"Stock"} values={values} />
+              <Input name={"stock"} title={"Stock"} />
             )}
 
             <Button type="submit" color="primary">
