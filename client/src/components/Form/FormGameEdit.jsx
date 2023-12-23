@@ -11,23 +11,23 @@ import {
 import Swal from "sweetalert2";
 import { Button, select } from "@nextui-org/react";
 import setAuthHeader from "../../utils/AxiosUtils";
-import { useNavigate } from "react-router-dom";
 import { showSuccess } from "../../utils/Notifications";
 import { schemaFormGames } from "./UtilsForms/schema/schema";
 import Input from "./UtilsForms/Input";
-import InputSelect from "./UtilsForms/InputSelect";
-import InputImg from "./UtilsForms/InputImg";
 import InputDate from "./UtilsForms/InputDate";
+import InputImg from "./UtilsForms/InputImg";
+import InputSelect from "./UtilsForms/InputSelect";
 
-const Formulario = ({ onClose }) => {
-  const navigate = useNavigate();
+const FormGameEdit = ({ props, onClose }) => {
   const dispatch = useDispatch();
-  const platforms = useSelector((state) => state.platforms);
-  const genres = useSelector((state) => state.genres);
+  const platformss = useSelector((state) => state.platforms);
+  const genress = useSelector((state) => state.genres);
   const games = useSelector((state) => state.allGames);
   const token = localStorage.getItem("validToken");
 
   let nameGames = games.nombres;
+
+  nameGames = nameGames && nameGames.filter((name) => name !== props.name);
 
   useEffect(() => {
     dispatch(getPlatforms());
@@ -35,25 +35,100 @@ const Formulario = ({ onClose }) => {
     dispatch(getAllGames());
   }, [dispatch]);
 
-  const initialValues = {
-    name: "",
-    image: undefined,
-    platforms: [],
-    released: "",
-    price: "",
-    genres: [],
-    physicalGame: false,
+  const platformsOptions = platformss.map((platform) => ({
+    value: platform.name,
+    label: platform.name,
+    id: platform.id,
+  }));
+  const genresOptions = genress.map((genre) => ({
+    value: genre.name,
+    label: genre.name,
+    id: genre.id,
+  }));
+
+  let platformsDefault = [];
+  let genresDefault = [];
+
+  let gen = props.Genres;
+
+  for (let i = 0; i < gen.length; i++) {
+    const element = gen[i];
+    let genFilt = genresOptions.filter(
+      (obj) => obj.value.trim() === element.trim()
+    );
+    genresDefault.push(genFilt[0]);
+  }
+
+  let plat = props.Platforms;
+
+  for (let i = 0; i < plat.length; i++) {
+    const element = plat[i];
+    let platFilt = platformsOptions.filter(
+      (obj) => obj.value.trim() === element.trim()
+    );
+    platformsDefault.push(platFilt[0]);
+  }
+
+  let {
+    name,
+    image,
+    platforms,
+    released,
+    price,
+    genres,
+    physicalGame,
+    enable,
+    stock,
+    description,
+  } = props;
+
+  const selectedPlatforms = platformsDefault.map((option) => option.id);
+  const selectedGenres = genresDefault.map((option) => option.id);
+  platforms = selectedPlatforms;
+  genres = selectedGenres;
+  if (!stock) stock = 0;
+
+  let valuesEdit = {};
+
+  valuesEdit = {
+    name,
+    image,
+    platforms,
+    released,
+    price,
+    genres,
+    physicalGame,
+    enable,
+    stock,
+    description,
   };
 
+ 
   const formSchema = schemaFormGames(nameGames);
 
-  const createVideogames = async (values) => {
+  const editVideogames = async (values, props) => {
     try {
       if (!values.physicalGame) {
         values = { ...values, stock: 1 };
       }
-      await axios.post("/post", values, setAuthHeader(token));
-      showSuccess("Videojuego creado con exito !!");
+      const { data } = await axios.put(
+        `/put/games/${props.id}`,
+        values,
+        setAuthHeader(token)
+      );
+
+      dispatch(
+        getGames({
+          page: 0,
+          platforms: "",
+          genres: "",
+          minPrice: -1,
+          maxPrice: -1,
+          name: "",
+        })
+      );
+      showSuccess(" El videojuego se ha actualizado  !!");
+      onClose();
     } catch (error) {
       Swal.fire({
         position: "top-end",
@@ -65,25 +140,12 @@ const Formulario = ({ onClose }) => {
     }
   };
 
-  const platformsOptions = platforms.map((platform) => ({
-    value: platform.name,
-    label: platform.name,
-    id: platform.id,
-  }));
-  const genresOptions = genres.map((genre) => ({
-    value: genre.name,
-    label: genre.name,
-    id: genre.id,
-  }));
-
   return (
     <Formik
-      initialValues={initialValues}
+      initialValues={valuesEdit}
       validationSchema={formSchema}
       onSubmit={async (values, { resetForm }) => {
-        createVideogames(values);
-        resetForm();
-        navigate("/perfil/games");
+        await editVideogames(values, props);
       }}
     >
       {({ values, setFieldValue }) => (
@@ -92,9 +154,11 @@ const Formulario = ({ onClose }) => {
             encType="multipart/form-data"
             className="mx-auto p-6 rounded-md"
           >
-            <Input name={"name"} title={"Nombre"} />
-
-            <Input name={"description"} title={" Descripcion"} />
+            <Input
+              name={"description"}
+              title={" Descripcion"}
+              values={values}
+            />
 
             <InputImg
               name={"image"}
@@ -108,21 +172,28 @@ const Formulario = ({ onClose }) => {
               title={"Plataformas"}
               options={platformsOptions}
               cb={setFieldValue}
+              defaul={platformsDefault}
             />
 
             <InputDate
               name={"released"}
-              title={"Fecha de Lanzamiento "}
+              title={"Fecha de Lanzamiento"}
               cb={setFieldValue}
             />
 
-            <Input name={"price"} title={"Precio"} placeholder={"11111.11"} />
+            <Input
+              name={"price"}
+              title={"Precio"}
+              placeholder={"11111.11"}
+              values={values}
+            />
 
             <InputSelect
               name={"genres"}
               title={"Generos"}
               options={genresOptions}
               cb={setFieldValue}
+              defaul={genresDefault}
             />
 
             <div className="mb-4">
@@ -138,12 +209,12 @@ const Formulario = ({ onClose }) => {
             </div>
 
             {values.physicalGame && (
-              <Input name={"stock"} title={"Stock"} />
+              <Input name={"stock"} title={"Stock"} values={values} />
             )}
 
             <Button type="submit" color="primary">
               {" "}
-              Crear Juego
+              Editar Juego
             </Button>
           </Form>
         </div>
@@ -152,4 +223,4 @@ const Formulario = ({ onClose }) => {
   );
 };
 
-export default Formulario;
+export default FormGameEdit;

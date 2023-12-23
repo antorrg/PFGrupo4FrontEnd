@@ -9,6 +9,7 @@ import { limpiarLogin, login } from "../../redux/actions";
 import { useNavigate } from "react-router-dom";
 import { Input } from "@nextui-org/react";
 import setAuthHeader from "../../utils/AxiosUtils";
+import { schemaFormUserEdit } from "./UtilsForms/schema/schema";
 
 const UserEdit = ({ onClose }) => {
   const user = useSelector((state) => state.loginUser);
@@ -23,12 +24,7 @@ const UserEdit = ({ onClose }) => {
 
   if (userEdit.country === null) userEdit = { ...userEdit, country: "" };
 
-  const formSchema = Yup.object().shape({
-    country: Yup.string(),
-    given_name: Yup.string(),
-    nickname: Yup.string(),
-    picture: Yup.string(),
-  });
+  const formSchema = schemaFormUserEdit();
 
   const handleImageChange = async (event, setFieldValue) => {
     const image = event.currentTarget.files[0];
@@ -53,11 +49,13 @@ const UserEdit = ({ onClose }) => {
 
   const editUser = async (values) => {
     try {
+      
       const { data } = await axios.put(
         `/put/user/${id}`,
         values,
         setAuthHeader(token)
       );
+      console.log(data)
       showSuccess("Usuario actualizado, vuelva a ingresar ");
       dispatch(limpiarLogin());
       navigate("/");
@@ -71,6 +69,7 @@ const UserEdit = ({ onClose }) => {
       initialValues={userEdit}
       validationSchema={formSchema}
       onSubmit={async (values) => {
+        
         await editUser(values);
       }}
     >
