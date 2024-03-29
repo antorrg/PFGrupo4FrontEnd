@@ -15,7 +15,7 @@ const enviarInfoAlServer = async (userData) => {
   try {
     let response;
     if (userData.isLogin) {
-      response = await axios.post("/post/user/login", {
+      response = await axios.post("/user/login", {
         email,
         password,
         sub,
@@ -29,7 +29,7 @@ const enviarInfoAlServer = async (userData) => {
       // });
       showSuccess("Usuario logueado con exito");
     } else {
-      response = await axios.post("/post/user", {
+      response = await axios.post("/user", {
         email,
         password,
         nickname,

@@ -18,7 +18,7 @@ const handleDeleteConfirmation = async (id, itemName, deleteEndpoint) => {
 
   if (userConfirmation.isConfirmed) {
     try {
-      const response = await axios.delete(`/delete/${deleteEndpoint}/${id}`, setAuthHeader(token));
+      const response = await axios.delete(`/${deleteEndpoint}/${id}`, setAuthHeader(token));
       const { data } = response;
 
       if (response.status === 200) {

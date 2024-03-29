@@ -104,7 +104,7 @@ const Carrito = () => {
     };
     try {
       const data = await axios.post(
-        `/post/videogamesByIds`,
+        `/videogamesByIds`,
         videogamesIds,
         setAuthHeader(token)
       );

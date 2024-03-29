@@ -54,7 +54,7 @@ const UserEdit = ({ onClose }) => {
   const editUser = async (values) => {
     try {
       const { data } = await axios.put(
-        `/put/user/${id}`,
+        `/user/${id}`,
         values,
         setAuthHeader(token)
       );

@@ -65,7 +65,7 @@ const GamesTable = ({ videogames ,filters}) => {
     if (userConfirmation.isConfirmed) {
       try {
         const response = await axios.delete(
-          `/delete/games/${id}`,
+          `/games/${id}`,
           setAuthHeader(token)
         );
         const { data } = response;

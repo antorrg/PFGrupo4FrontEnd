@@ -57,7 +57,7 @@ const PasswordEdit = ({ onClose }) => {
 
   const validateUser = async (values) => {
     try {
-      const response = await axios.post("/post/user/login", {
+      const response = await axios.post("/user/login", {
         email: user.email,
         password: values.password,
         sub: null,
@@ -85,7 +85,7 @@ const PasswordEdit = ({ onClose }) => {
     if (userConfirmation.isConfirmed) {
       try {
         const response = await axios.put(
-          `/put/user/${user.id}`,
+          `/user/${user.id}`,
           {
             password: values.passwordNew,
           },

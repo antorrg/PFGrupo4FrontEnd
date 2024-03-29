@@ -22,7 +22,7 @@ const PaymentTest = (props) => {
   const createPreference = async () => {
     try {
       const response = await axios.post(
-        "/post/createParchuseOrder",
+        "/createParchuseOrder",
         {
           userID: userID,
           userEmail: userEmail,

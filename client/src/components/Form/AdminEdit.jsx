@@ -57,7 +57,7 @@ const AdminEdit = ({ onClose, user }) => {
     try {
         console.log(values)
       const { data } = await axios.put(
-           `/put/user/${id}`,
+           `/user/${id}`,
         values,
          setAuthHeader(token)
         );

@@ -38,7 +38,7 @@ const FormPlatForm = ({ props, onClose }) => {
      const token =localStorage.getItem('validToken')
 
     try {
-      await axios.post("/post/platform/", value, setAuthHeader(token));
+      await axios.post("/platform/", value, setAuthHeader(token));
       showSuccess(`Plataforma ${value.name} agregada`);
       dispatch(getPlatforms());
     } catch (error) {
@@ -54,7 +54,7 @@ const FormPlatForm = ({ props, onClose }) => {
 
 
     try {
-      const { data } = await axios.put(`/put/platform/${props.id}`, values, setAuthHeader(token));
+      const { data } = await axios.put(`/platform/${props.id}`, values, setAuthHeader(token));
       dispatch(getPlatforms());
       showSuccess(`Plataforma ${values.name} actualizada`);
       onClose();

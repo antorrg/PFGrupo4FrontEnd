@@ -179,7 +179,7 @@ const Formulario = ({ props, onClose }) => {
 
   const createVideogames = async (values) => {
     try {
-      await axios.post("/post", values, setAuthHeader(token));
+      await axios.post("/games", values, setAuthHeader(token));
       showSuccess("Videojuego creado con exito !!");
     } catch (error) {
       Swal.fire({
@@ -198,7 +198,7 @@ const Formulario = ({ props, onClose }) => {
         values = { ...values, stock: 0 };
       }
       const { data } = await axios.put(
-        `/put/games/${props.id}`,
+        `/games/${props.id}`,
         values,
         setAuthHeader(token)
       );

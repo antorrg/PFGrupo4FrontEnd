@@ -35,7 +35,7 @@ const FormGenres = ({ props, onClose }) => {
 
   const postGenre = async (value) => {
     try {
-      await axios.post("/post/genre/", value, setAuthHeader(token));
+      await axios.post("/genre/", value, setAuthHeader(token));
       showSuccess(`Genero ${value.name} agregado`);
       dispatch(getGenres());
     } catch (error) {
