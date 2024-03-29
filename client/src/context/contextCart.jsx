@@ -35,7 +35,7 @@ export const CartProvider = ({ children }) => {
 
     try {
       const data = await axios.post(
-        `/post/createShoppingCart`,
+        `/createShoppingCart`,
         cartItems,
         setAuthHeader(token)
       );

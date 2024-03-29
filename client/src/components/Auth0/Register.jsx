@@ -14,7 +14,7 @@ const Register = async (userData) => {
     
     
       try {
-        const response = await axios.post('http://localhost:3001/log/login',{
+        const response = await axios.post('/user',{
             email,
             nickname,
             given_name,
@@ -32,11 +32,11 @@ const Register = async (userData) => {
             return response.data.user;
         
         } else {
-           alert('Error al autenticar/crear usuario');
+           //alert('Error al autenticar/crear usuario');
         }
     
     } catch (error) {
-        alert('Error al enviar la solicitud al servidor', error);
+        //alert('Error al enviar la solicitud al servidor', error);
     }
     
     
